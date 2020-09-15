@@ -1,0 +1,5 @@
+C:\Users\ahand\Desktop\Coding\HorrorVue\HorrorVue.Data\bin\Debug\netcoreapp3.1\HorrorVue.Data.deps.json
+C:\Users\ahand\Desktop\Coding\HorrorVue\HorrorVue.Data\bin\Debug\netcoreapp3.1\HorrorVue.Data.dll
+C:\Users\ahand\Desktop\Coding\HorrorVue\HorrorVue.Data\obj\Debug\netcoreapp3.1\HorrorVue.Data.csprojAssemblyReference.cache
+C:\Users\ahand\Desktop\Coding\HorrorVue\HorrorVue.Data\obj\Debug\netcoreapp3.1\HorrorVue.Data.AssemblyInfoInputs.cache
+C:\Users\ahand\Desktop\Coding\HorrorVue\HorrorVue.Data\obj\Debug\netcoreapp3.1\HorrorVue.Data.AssemblyInfo.cs
