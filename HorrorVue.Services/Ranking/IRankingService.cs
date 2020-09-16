@@ -1,0 +1,14 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace HorrorVue.Services.Ranking
+{
+	public interface IRankingService
+	{
+		List<Data.Models.Ranking> GetAllRankings();
+		Data.Models.Ranking GetRankingById(int rankingId);
+		ServiceResponse<Data.Models.Ranking> CreateRanking(Data.Models.Ranking ranking);
+		ServiceResponse<bool> DeleteRanking(int rankingId);
+	}
+}

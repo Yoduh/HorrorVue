@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "SpL8CFAbNeKiuyajIci2haqtE4iDVwEeWnfpAijkanSLgSeAhSpxzdXPS8fuD6Fqb6nfBaBOHwn8MS5TPF2m4w==",
+  "dgSpecHash": "IhScRM9STyjtW1s/lKHgDmLrWYrLiuBB3c/Xj9ZVKxcf0fxNYAPfgXGbfkXyDBIbRBq085r93MnBEIWFxvAMpQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\ahand\\Desktop\\Coding\\HorrorVue\\HorrorVue.Data\\HorrorVue.Data.csproj",
   "expectedPackageFiles": [
@@ -23,9 +23,11 @@
     "C:\\Users\\ahand\\.nuget\\packages\\microsoft.aspnetcore.webutilities\\2.2.0\\microsoft.aspnetcore.webutilities.2.2.0.nupkg.sha512",
     "C:\\Users\\ahand\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\1.1.1\\microsoft.bcl.asyncinterfaces.1.1.1.nupkg.sha512",
     "C:\\Users\\ahand\\.nuget\\packages\\microsoft.bcl.hashcode\\1.1.0\\microsoft.bcl.hashcode.1.1.0.nupkg.sha512",
+    "C:\\Users\\ahand\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
     "C:\\Users\\ahand\\.nuget\\packages\\microsoft.entityframeworkcore\\3.1.8\\microsoft.entityframeworkcore.3.1.8.nupkg.sha512",
     "C:\\Users\\ahand\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\3.1.8\\microsoft.entityframeworkcore.abstractions.3.1.8.nupkg.sha512",
     "C:\\Users\\ahand\\.nuget\\packages\\microsoft.entityframeworkcore.analyzers\\3.1.8\\microsoft.entityframeworkcore.analyzers.3.1.8.nupkg.sha512",
+    "C:\\Users\\ahand\\.nuget\\packages\\microsoft.entityframeworkcore.design\\3.1.8\\microsoft.entityframeworkcore.design.3.1.8.nupkg.sha512",
     "C:\\Users\\ahand\\.nuget\\packages\\microsoft.entityframeworkcore.relational\\3.1.8\\microsoft.entityframeworkcore.relational.3.1.8.nupkg.sha512",
     "C:\\Users\\ahand\\.nuget\\packages\\microsoft.extensions.caching.abstractions\\3.1.8\\microsoft.extensions.caching.abstractions.3.1.8.nupkg.sha512",
     "C:\\Users\\ahand\\.nuget\\packages\\microsoft.extensions.caching.memory\\3.1.8\\microsoft.extensions.caching.memory.3.1.8.nupkg.sha512",
