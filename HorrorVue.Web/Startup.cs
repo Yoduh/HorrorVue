@@ -64,6 +64,13 @@ namespace HorrorVue.Web
 
             app.UseRouting();
 
+            app.UseCors(builder =>
+                builder
+                    .AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                );
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

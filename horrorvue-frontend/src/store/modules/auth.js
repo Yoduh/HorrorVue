@@ -7,12 +7,12 @@ const state = {
 };
 
 const getters = {
-    isLoggedIn: state => !!state.user
+    isLoggedIn: state => !!state.user,
+    user: state => state.user
 };
 
 const actions = {
     login: ({ commit }, user) => {
-        console.log("setting user state");
         commit('setUser', user);
     },
 

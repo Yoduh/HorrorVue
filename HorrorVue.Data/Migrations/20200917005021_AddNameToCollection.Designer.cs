@@ -4,15 +4,17 @@ using System.Collections.Generic;
 using HorrorVue.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace HorrorVue.Data.Migrations
 {
     [DbContext(typeof(HorrorDbContext))]
-    partial class HorrorDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200917005021_AddNameToCollection")]
+    partial class AddNameToCollection
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -32,9 +34,6 @@ namespace HorrorVue.Data.Migrations
 
                     b.Property<string>("FirstName")
                         .HasColumnType("text");
-
-                    b.Property<int>("GoogleId")
-                        .HasColumnType("integer");
 
                     b.Property<string>("LastName")
                         .HasColumnType("text");
@@ -94,9 +93,6 @@ namespace HorrorVue.Data.Migrations
 
                     b.Property<string>("ReleaseDate")
                         .HasColumnType("text");
-
-                    b.Property<int>("TMDId")
-                        .HasColumnType("integer");
 
                     b.Property<string>("Title")
                         .HasColumnType("text");

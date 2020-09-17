@@ -10,7 +10,6 @@ const getters = {
 
 const actions = {
     setSearchResults: ({ commit }, results) => {
-        console.log('setresults', results);
         commit('setSearchResults', results);
     },
     setLastSearched: ({ commit }, term) => {
@@ -20,7 +19,6 @@ const actions = {
 
 const mutations = {
     setSearchResults: (state, results) => {
-        console.log('mutator', results);
         state.searchResults = results;
     },
     setLastSearched: (state, term) => {

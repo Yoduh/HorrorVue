@@ -1,7 +1,7 @@
 
 <template>
     <v-app-bar
-      color="deep-purple accent-4"
+      color="deep-grey accent-4"
       dense
       dark
     >
@@ -12,41 +12,34 @@
     <v-spacer></v-spacer>
 
     <router-link to="/">
-        <v-btn icon>
-            <v-icon>mdi-view-dashboard</v-icon>
-        </v-btn>
+        <v-tooltip bottom>
+        <template v-slot:activator="{ on, attrs }">
+            <v-btn icon v-bind="attrs" v-on="on">
+                <v-icon>mdi-view-dashboard</v-icon>
+            </v-btn>
+        </template>
+        <span>Home</span>
+        </v-tooltip>
     </router-link>
-    <v-btn v-if="!isLoggedIn" icon @click="navLogin">
-        <v-icon>mdi-login</v-icon>
-    </v-btn>
-    <v-btn v-else icon @click="logout">
-        <v-icon>mdi-logout</v-icon>
-    </v-btn>
 
-    <v-menu
-    left
-    bottom
-    >
+    <v-tooltip bottom>
     <template v-slot:activator="{ on, attrs }">
-        <v-btn
-        icon
-        v-bind="attrs"
-        v-on="on"
-        >
-        <v-icon>mdi-dots-vertical</v-icon>
+        <v-btn v-if="!isLoggedIn" icon @click="navLogin" v-bind="attrs" v-on="on">
+            <v-icon>mdi-login</v-icon>
         </v-btn>
     </template>
+    <span>Login</span>
+    </v-tooltip>
 
-    <v-list>
-        <v-list-item
-        v-for="n in 5"
-        :key="n"
-        @click="() => {}"
-        >
-        <v-list-item-title>Option {{ n }}</v-list-item-title>
-        </v-list-item>
-    </v-list>
-    </v-menu>
+    <v-tooltip bottom>
+    <template v-slot:activator="{ on, attrs }">
+        <v-btn v-if="isLoggedIn" icon @click="logout" v-bind="attrs" v-on="on">
+            <v-icon>mdi-logout</v-icon>
+        </v-btn>
+    </template>
+    <span>Logout</span>
+    </v-tooltip>
+
 </v-app-bar>
 </template>
 
@@ -72,7 +65,6 @@ export default {
         ...mapActions(['login', 'logout']),
         async navLogin() {
             const guser = await this.$gAuth.signIn();
-            console.log('guser', guser);
             // save to state
             if (guser)
                 this.login(guser);

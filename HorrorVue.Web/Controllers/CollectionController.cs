@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using HorrorVue.Data.Models;
 using HorrorVue.Services;
 using HorrorVue.Services.Collection;
+using HorrorVue.Web.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -41,8 +41,8 @@ namespace HorrorVue.Web.Controllers
 			_logger.LogInformation("Creating collection...");
 			collection.CreatedOn = DateTime.UtcNow;
 			collection.UpdatedOn = DateTime.UtcNow;
-			ServiceResponse<Collection> createdCollection = _collectionService.CreateCollection(collection);
-			return Ok(createdCollection);
+			//ServiceResponse<Collection> createdCollection = _collectionService.CreateCollection(collection);
+			return Ok();// createdCollection);
 		}
 
 		[HttpGet("/api/collection/{id}")]

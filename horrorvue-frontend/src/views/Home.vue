@@ -1,6 +1,9 @@
 <template>
   <div class="home">
     <search-bar @search="addMovies"></search-bar>
+    <div v-if="noResults">
+      No results found! Try a different search
+    </div>
   </div>
 </template>
 
@@ -13,12 +16,22 @@ export default {
   components: {
     SearchBar
   },
+  data() {
+    return {
+      noResults: false
+    }
+  },
   methods: {
     ...mapActions(['setSearchResults']),
 
     addMovies(results) {
-      this.setSearchResults(results.data);
-      this.$router.push(`/search?q=${results.searchTerm}`);
+      if (results.data.length > 0) {
+        this.noResults = false;
+        this.setSearchResults(results.data);
+        this.$router.push(`/search?q=${results.searchTerm}`);
+      } else {
+        this.noResults = true;
+      }
     }
   }
 };

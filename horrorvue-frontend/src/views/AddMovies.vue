@@ -2,13 +2,15 @@
     <div class="add-movies-wrapper">
         <search-bar @search="searchMovies" :placeholder="query"></search-bar>
         <v-container fluid>
-            <v-row dense>
+            <v-row dense v-if="results.length > 0">
                 <v-col
                 v-for="result in results"
                 :key="result.id"
-                :cols="3"
+                :sm="6" :md="3"
                 >
-                    <v-card>
+                    <v-card 
+                    v-if="!containsMovieId(collection, result)" 
+                    >
                         <v-img
                         :src="getImagePath(result.poster_path)"
                         contain
@@ -17,10 +19,11 @@
                         >
                         </v-img>
                         <v-card-title v-text="result.title"></v-card-title>
-                        <v-card-subtitle v-text="result.release_date"></v-card-subtitle>
+                        <v-card-subtitle v-text="result.release_date.substring(0,4)"></v-card-subtitle>
                         <v-card-actions>
-                            <v-btn text>Add</v-btn>
-                            <v-btn text>Remove</v-btn>
+                            <v-btn v-if="!result.added" text @click="addMovie(result)">Add</v-btn>
+                            <v-btn v-else text @click="removeMovie(result)">Remove</v-btn>
+                            <v-icon class="checkmark" :class="{ selected : result.added }">mdi-checkbox-marked-circle</v-icon>
                             <v-spacer></v-spacer>
                             <v-btn
                                 icon
@@ -32,34 +35,69 @@
                         <v-expand-transition>
                             <div v-show="result.show">
                                 <v-divider></v-divider>
-                                <v-card-text v-text="result.overview">TESTING TEST TEST</v-card-text>
+                                <v-card-text v-text="result.overview"></v-card-text>
                             </div>
                         </v-expand-transition>
                     </v-card>
                 </v-col>
             </v-row>
+            <!-- <v-tooltip top>
+            <template v-slot:activator="{ on, attrs }">
+                <v-fab-transition>
+                    <v-btn @click="save"
+                    v-show="moviesToAdd.length > 0"
+                    v-bind="attrs"
+                    v-on="on"
+                    class="save-btn"
+                    color="red"
+                    dark
+                    absolute
+                    fixed
+                    bottom
+                    right
+                    fab
+                    >
+                    <v-icon>mdi-content-save</v-icon>
+                    </v-btn>
+                </v-fab-transition>
+            </template>
+            <span>Save selection</span>
+            </v-tooltip> -->
+            <save-new-modal 
+                :show="moviesToAdd.length"
+                @save="save">
+            </save-new-modal>
         </v-container>
+        <v-btn @click="save">WTF</v-btn>
     </div>
 </template>
 
 <script>
 import SearchBar from '@/components/SearchBar';
+import SaveNewModal from '@/components/modals/SaveNewModal';
 import { mapGetters, mapActions } from 'vuex';
-//import api from '@/api/tmdb.js';
+import api from '@/api/tmdb.js';
+import db from '@/api/db.js';
 
 export default {
     name: "AddMovies",
     components: {
-        SearchBar
+        SearchBar,
+        SaveNewModal
     },
     props: {
         query: {
             type: String
+        },
+        collection: {
+            type: Array,
+            default: function () { return [] }
         }
     },
     data() {
         return {
-            results: []
+            results: [],
+            moviesToAdd: []
         }
     },
     methods: {
@@ -68,7 +106,7 @@ export default {
         async searchMovies(results) {
             this.setSearchResults(results.data);
             this.results = results.data.map(result => {
-                return { ...result, show: false };
+                return { ...result, added: false, show: false };
             });
             this.$router.push(`/search?q=${results.searchTerm}`);
         },
@@ -76,25 +114,73 @@ export default {
             return `https://image.tmdb.org/t/p/w500${apiPath}`;
         },
         changeResultShow(selected) {
-            console.log('selected', selected);
             this.results.forEach(result => {
                 if (result.id === selected.id)
                 {
-                    console.log('changing ' + result.show + ' to ' + !result.show);
                     result.show = !result.show;
                     return;
                 }
             })
+        },
+        containsMovieId(movieArray, movie) {
+            let ret = false;
+            movieArray.forEach(m => {
+                if (m.id === movie.id) {
+                    ret = true;
+                }
+            });
+            return ret;
+        },
+        addMovie(movie) {
+            this.moviesToAdd.push(movie);
+            movie.added = true;
+        },
+        removeMovie(movie) {
+            this.moviesToAdd = this.moviesToAdd.filter(m => {
+                m.id !== movie.id;
+            });
+            movie.added = false;
+        },
+        save(name) {
+            if (this.collection.length === 0)
+                db.newCollection(this.moviesToAdd, name);
+            // else
+            //     db.updateCollection()
+
+            // go back home after save
+            // this.$router.push("/");
         }
     },
-    created() {
-        this.results = this.searchResults().map(result => {
-            return { ...result, show: false };
-        });
+    async created() {
+        // user has refreshed the page and we need to reset search results
+        if (this.results.length === 0) {
+            const movies = await api.fetchMovies(this.query);
+            this.setSearchResults(this.results);
+            this.results = movies.map(result => {
+                return { ...result, added: false,  show: false };
+            });;
+        }
+        else {
+            this.results = this.searchResults().map(result => {
+                return { ...result, added: false,  show: false };
+            });
+        }
     }
 }
 </script>
 
 <style scoped>
-
+.checkmark {
+    opacity: 0.2;
+}
+.selected {
+    opacity: 1;
+    color: green;
+}
+.v-card__title {
+    word-break: normal !important;
+}
+.save-btn {
+    bottom: 1rem !important;
+}
 </style>
