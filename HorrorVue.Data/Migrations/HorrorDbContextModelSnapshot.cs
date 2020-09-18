@@ -33,8 +33,8 @@ namespace HorrorVue.Data.Migrations
                     b.Property<string>("FirstName")
                         .HasColumnType("text");
 
-                    b.Property<int>("GoogleId")
-                        .HasColumnType("integer");
+                    b.Property<string>("GoogleId")
+                        .HasColumnType("text");
 
                     b.Property<string>("LastName")
                         .HasColumnType("text");

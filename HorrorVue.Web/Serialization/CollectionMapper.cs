@@ -27,6 +27,16 @@ namespace HorrorVue.Web.Serialization
 			};
 		}
 
+		internal static List<Collection> SerializeCollections(List<CollectionVM> collectionVMs)
+		{
+			List<Collection> collections = new List<Collection>();
+			foreach (CollectionVM collection in collectionVMs)
+			{
+				collections.Add(SerializeCollection(collection));
+			}
+			return collections;
+		}
+
 		/// <summary>
 		/// Serializes Collection => Collection VM
 		/// </summary>
@@ -43,6 +53,16 @@ namespace HorrorVue.Web.Serialization
 				Movies = MovieMapper.SerializeMovies(collection.Movies),
 				Rankings = RankingMapper.SerializeRankings(collection.Rankings)
 			};
+		}
+
+		internal static List<CollectionVM> SerializeCollections(List<Collection> collections)
+		{
+			List<CollectionVM> collectionVMs = new List<CollectionVM>();
+			foreach (Collection collection in collections)
+			{
+				collectionVMs.Add(SerializeCollection(collection));
+			}
+			return collectionVMs;
 		}
 	}
 }

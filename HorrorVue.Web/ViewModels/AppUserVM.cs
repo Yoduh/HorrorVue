@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace HorrorVue.Data.Models
+namespace HorrorVue.Web.ViewModels
 {
-	public class AppUser
+	public class AppUserVM
 	{
 		public int Id { get; set; }
 		public DateTime CreatedOn { get; set; }
@@ -12,6 +13,6 @@ namespace HorrorVue.Data.Models
 		public string GoogleId { get; set; }
 		public string FirstName { get; set; }
 		public string LastName { get; set; }
-		public virtual List<Collection> Collections { get; set; } = new List<Collection>();
+		public virtual List<CollectionVM> Collections { get; set; } = new List<CollectionVM>();
 	}
 }

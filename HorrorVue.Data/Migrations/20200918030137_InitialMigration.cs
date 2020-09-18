@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -16,6 +17,7 @@ namespace HorrorVue.Data.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     CreatedOn = table.Column<DateTime>(nullable: false),
                     UpdatedOn = table.Column<DateTime>(nullable: false),
+                    GoogleId = table.Column<string>(nullable: true),
                     FirstName = table.Column<string>(nullable: true),
                     LastName = table.Column<string>(nullable: true)
                 },
@@ -71,6 +73,7 @@ namespace HorrorVue.Data.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     CreatedOn = table.Column<DateTime>(nullable: false),
                     UpdatedOn = table.Column<DateTime>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
                     AppUserId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
@@ -191,34 +194,6 @@ namespace HorrorVue.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Ranking",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    CreatedOn = table.Column<DateTime>(nullable: false),
-                    UpdatedOn = table.Column<DateTime>(nullable: false),
-                    UserId = table.Column<int>(nullable: true),
-                    CollectionId = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Ranking", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Ranking_Collections_CollectionId",
-                        column: x => x.CollectionId,
-                        principalTable: "Collections",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Ranking_AppUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AppUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Movies",
                 columns: table => new
                 {
@@ -226,12 +201,12 @@ namespace HorrorVue.Data.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     CreatedOn = table.Column<DateTime>(nullable: false),
                     UpdatedOn = table.Column<DateTime>(nullable: false),
+                    TMDId = table.Column<int>(nullable: false),
                     Title = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
                     ReleaseDate = table.Column<string>(nullable: true),
                     PosterImage = table.Column<string>(nullable: true),
-                    CollectionId = table.Column<int>(nullable: true),
-                    RankingId = table.Column<int>(nullable: true)
+                    CollectionId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -242,12 +217,29 @@ namespace HorrorVue.Data.Migrations
                         principalTable: "Collections",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Rankings",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    CreatedOn = table.Column<DateTime>(nullable: false),
+                    UpdatedOn = table.Column<DateTime>(nullable: false),
+                    UserId = table.Column<int>(nullable: false),
+                    CollectionId = table.Column<int>(nullable: false),
+                    Order = table.Column<List<int>>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Rankings", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Movies_Ranking_RankingId",
-                        column: x => x.RankingId,
-                        principalTable: "Ranking",
+                        name: "FK_Rankings_Collections_CollectionId",
+                        column: x => x.CollectionId,
+                        principalTable: "Collections",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -298,19 +290,9 @@ namespace HorrorVue.Data.Migrations
                 column: "CollectionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Movies_RankingId",
-                table: "Movies",
-                column: "RankingId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Ranking_CollectionId",
-                table: "Ranking",
+                name: "IX_Rankings_CollectionId",
+                table: "Rankings",
                 column: "CollectionId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Ranking_UserId",
-                table: "Ranking",
-                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -334,13 +316,13 @@ namespace HorrorVue.Data.Migrations
                 name: "Movies");
 
             migrationBuilder.DropTable(
+                name: "Rankings");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
-                name: "Ranking");
 
             migrationBuilder.DropTable(
                 name: "Collections");
