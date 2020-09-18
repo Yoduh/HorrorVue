@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace HorrorVue.Data.Models
+namespace HorrorVue.Web.ViewModels
 {
-	public class Ranking
+	public class RankingVM
 	{
 		public int Id { get; set; }
 		public DateTime CreatedOn { get; set; }

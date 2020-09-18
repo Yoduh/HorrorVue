@@ -5,13 +5,14 @@ using System.Threading.Tasks;
 
 namespace HorrorVue.Web.ViewModels
 {
-	public class Collection
+	public class CollectionVM
 	{
+		public int Id { get; set; }
 		public DateTime CreatedOn { get; set; }
 		public DateTime UpdatedOn { get; set; }
 		public string Name { get; set; }
 		public string UserId { get; set; }
-		public virtual List<Movie> Movies { get; set; } = new List<Movie>();
-		public virtual List<Ranking> Rankings { get; set; } = new List<Ranking>();
+		public virtual List<MovieVM> Movies { get; set; } = new List<MovieVM>();
+		public virtual List<RankingVM> Rankings { get; set; } = new List<RankingVM>();
 	}
 }

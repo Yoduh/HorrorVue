@@ -81,7 +81,7 @@ namespace HorrorVue.Services.Ranking
 		public List<Data.Models.Ranking> GetAllRankings()
 		{
 			return _db.Rankings
-				.OrderBy(ranking => ranking.User)
+				.OrderBy(ranking => ranking.UserId)
 				.ToList();
 		}
 

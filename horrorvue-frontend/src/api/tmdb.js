@@ -8,7 +8,10 @@ export default {
         return axios.get(`${ROOT_URL}/3/search/movie?api_key=${API_KEY}&language=en-US&query=${search}&page=1&include_adult=false`)
         .then(res => {
             if (res.status == 200) {
-                results = res.data.results;
+                results = res.data.results.map(result => {
+                    // "id" is already an auto generated key in our database so we have to rename the id on the returned object
+                    return { ...result, tmdId: result.id}
+                });
                 return results;
             }
         })

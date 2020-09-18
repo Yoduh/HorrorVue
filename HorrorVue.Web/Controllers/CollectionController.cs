@@ -32,7 +32,7 @@ namespace HorrorVue.Web.Controllers
 		}
 
 		[HttpPost("/api/collection")]
-		public ActionResult CreateCollection([FromBody] Collection collection)
+		public ActionResult CreateCollection([FromBody] CollectionVM collection)
 		{
 			if (!ModelState.IsValid)
 			{

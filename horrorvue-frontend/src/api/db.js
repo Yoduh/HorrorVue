@@ -7,12 +7,12 @@ export default {
         console.log('sending collection', collection);
         console.log('user', store.getters.user.getId());
         const request = {
-            createdOn: new Date(),
-            updatedOn: new Date(),
             id: 0,
             UserId: store.getters.user.getId(),
             Name: name,
-            ...collection
+            Movies: [
+                ...collection
+            ]
         }
         console.log(request);
         axios.post(`${ROOT_URL}/api/collection`, request)
