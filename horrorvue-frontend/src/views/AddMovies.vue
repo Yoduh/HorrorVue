@@ -5,7 +5,7 @@
             <v-row dense v-if="results.length > 0">
                 <v-col
                 v-for="result in results"
-                :key="result.id"
+                :key="result.tmdId"
                 :sm="6" :md="3"
                 >
                     <v-card 
@@ -41,28 +41,6 @@
                     </v-card>
                 </v-col>
             </v-row>
-            <!-- <v-tooltip top>
-            <template v-slot:activator="{ on, attrs }">
-                <v-fab-transition>
-                    <v-btn @click="save"
-                    v-show="moviesToAdd.length > 0"
-                    v-bind="attrs"
-                    v-on="on"
-                    class="save-btn"
-                    color="red"
-                    dark
-                    absolute
-                    fixed
-                    bottom
-                    right
-                    fab
-                    >
-                    <v-icon>mdi-content-save</v-icon>
-                    </v-btn>
-                </v-fab-transition>
-            </template>
-            <span>Save selection</span>
-            </v-tooltip> -->
             <save-new-modal 
                 :show="moviesToAdd.length"
                 @save="save">
