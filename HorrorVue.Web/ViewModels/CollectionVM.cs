@@ -14,5 +14,6 @@ namespace HorrorVue.Web.ViewModels
 		public string UserId { get; set; }
 		public virtual List<MovieVM> Movies { get; set; } = new List<MovieVM>();
 		public virtual List<RankingVM> Rankings { get; set; } = new List<RankingVM>();
+		public virtual IEnumerable<AppUserVM> AppUsers { get; set; }
 	}
 }

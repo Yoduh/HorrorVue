@@ -84,6 +84,8 @@ namespace HorrorVue.Services.Collection
 		public List<Data.Models.Collection> GetAllCollections()
 		{
 			return _db.Collections
+				.Include(collection => collection.AppUsers)    // Join Relationship
+				.ThenInclude(row => row.AppUser)
 				.Include(collection => collection.Movies)
 				.Include(collection => collection.Rankings)
 				.OrderBy(collection => collection.Id)
@@ -93,6 +95,8 @@ namespace HorrorVue.Services.Collection
 		public Data.Models.Collection GetCollectionById(int collectionId)
 		{
 			return _db.Collections
+				.Include(collection => collection.AppUsers)    // Join Relationship
+				.ThenInclude(row => row.AppUser)
 				.Include(collection => collection.Movies)
 				.Include(collection => collection.Rankings)
 				.First(collection => collection.Id == collectionId);

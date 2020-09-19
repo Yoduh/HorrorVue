@@ -1,15 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26124.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30413.136
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HorrorVue.Data", "HorrorVue.Data\HorrorVue.Data.csproj", "{ED186D56-12A2-4F28-A86A-2928E80323DD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HorrorVue.Data", "HorrorVue.Data\HorrorVue.Data.csproj", "{ED186D56-12A2-4F28-A86A-2928E80323DD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HorrorVue.Services", "HorrorVue.Services\HorrorVue.Services.csproj", "{4A15C450-C5E9-4B76-BCE0-94A78AFC17B5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HorrorVue.Services", "HorrorVue.Services\HorrorVue.Services.csproj", "{4A15C450-C5E9-4B76-BCE0-94A78AFC17B5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HorrorVue.Test", "HorrorVue.Test\HorrorVue.Test.csproj", "{FCE1AF9D-D3C9-4A3D-8626-2E9AFEEC9399}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HorrorVue.Test", "HorrorVue.Test\HorrorVue.Test.csproj", "{FCE1AF9D-D3C9-4A3D-8626-2E9AFEEC9399}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HorrorVue.Web", "HorrorVue.Web\HorrorVue.Web.csproj", "{A8C507EA-268D-4472-8D12-6AF66A84C622}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HorrorVue.Web", "HorrorVue.Web\HorrorVue.Web.csproj", "{A8C507EA-268D-4472-8D12-6AF66A84C622}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,9 +19,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{ED186D56-12A2-4F28-A86A-2928E80323DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -72,5 +69,11 @@ Global
 		{A8C507EA-268D-4472-8D12-6AF66A84C622}.Release|x64.Build.0 = Release|Any CPU
 		{A8C507EA-268D-4472-8D12-6AF66A84C622}.Release|x86.ActiveCfg = Release|Any CPU
 		{A8C507EA-268D-4472-8D12-6AF66A84C622}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A0F8B808-5B9C-4CFB-90A4-1FAC4809CCF5}
 	EndGlobalSection
 EndGlobal

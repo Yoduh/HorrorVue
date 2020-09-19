@@ -13,6 +13,6 @@ namespace HorrorVue.Web.ViewModels
 		public string GoogleId { get; set; }
 		public string FirstName { get; set; }
 		public string LastName { get; set; }
-		public virtual List<CollectionVM> Collections { get; set; } = new List<CollectionVM>();
+		public virtual IEnumerable<CollectionVM> Collections { get; set; }
 	}
 }

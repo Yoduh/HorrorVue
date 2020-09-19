@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace HorrorVue.Data.Models
 {
@@ -12,6 +11,6 @@ namespace HorrorVue.Data.Models
 		public string GoogleId { get; set; }
 		public string FirstName { get; set; }
 		public string LastName { get; set; }
-		public virtual List<Collection> Collections { get; set; } = new List<Collection>();
+		public ICollection<AppUserCollection> Collections { get; set; }
 	}
 }

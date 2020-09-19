@@ -13,6 +13,13 @@ export default {
             Movies: [
                 ...collection
             ]
+            // AppUsers: [
+            //     {
+            //         FirstName = "Alex",
+			// 	    LastName = "Handlovits",
+			// 	    GoogleId = store.getters.user.getId(),
+            //     }
+            // ]
         }
         console.log(request);
         axios.post(`${ROOT_URL}/api/collection`, request)

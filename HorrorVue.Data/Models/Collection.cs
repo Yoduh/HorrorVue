@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace HorrorVue.Data.Models
 {
@@ -12,5 +11,6 @@ namespace HorrorVue.Data.Models
 		public string Name { get; set; }
 		public virtual List<Movie> Movies { get; set; } = new List<Movie>();
 		public virtual List<Ranking> Rankings { get; set; } = new List<Ranking>();
+		public ICollection<AppUserCollection> AppUsers { get; set; }
 	}
 }

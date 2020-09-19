@@ -42,13 +42,13 @@ namespace HorrorVue.Services.User
 			}
 		}
 
-		public ServiceResponse<bool> DeleteUser(int id)
+		public ServiceResponse<bool> DeleteUser(string id)
 		{
 			var now = DateTime.UtcNow;
 			try
 			{
-				var customer = _db.AppUsers.Find(id);
-				if (customer == null)
+				var user = _db.AppUsers.Find(id);
+				if (user == null)
 				{
 					return new ServiceResponse<bool>
 					{
@@ -58,7 +58,7 @@ namespace HorrorVue.Services.User
 						Data = false
 					};
 				}
-				_db.Remove(customer);
+				_db.Remove(user);
 				_db.SaveChanges();
 				return new ServiceResponse<bool>
 				{
@@ -83,16 +83,60 @@ namespace HorrorVue.Services.User
 		public List<AppUser> GetAllUsers()
 		{
 			return _db.AppUsers
-				.Include(user => user.Collections)
+				.Include(user => user.Collections)    // Join Relationship
+				.ThenInclude(row => row.Collection)
 				.OrderBy(user => user.LastName)
 				.ToList();
 		}
 
-		public AppUser GetUserById(int userId)
+		public AppUser GetUserByGoogleId(string userId)
 		{
 			return _db.AppUsers
-				.Include(user => user.Collections)
-				.First(user => user.Id == userId);
+				.Include(user => user.Collections)    // Join Relationship
+				.ThenInclude(row => row.Collection)
+				.First(user => user.GoogleId.Equals(userId));
 		}
+
+		//public ServiceResponse<AppUser> AddCollectionForUserId(Data.Models.Collection collection, string userId)
+		//{
+		//	try
+		//	{
+		//		AppUser user = GetUserByGoogleId(userId);
+		//		if (user == null)
+		//		{
+		//			return new ServiceResponse<AppUser>
+		//			{
+		//				Time = DateTime.UtcNow,
+		//				IsSuccess = false,
+		//				Message = "User to delete not found!",
+		//				Data = null
+		//			};
+		//		}
+
+		//		user.AppUserCollections.Add(new AppUserCollection {
+		//			AppUser = user,
+		//			Collection = collection
+		//		});
+		//		_db.AppUsers.Update(user);
+		//		_db.SaveChanges();
+		//		return new ServiceResponse<AppUser>
+		//		{
+		//			Time = DateTime.UtcNow,
+		//			IsSuccess = true,
+		//			Message = "user deleted!",
+		//			Data = user
+		//		};
+		//	}
+		//	catch (Exception e)
+		//	{
+		//		return new ServiceResponse<AppUser>
+		//		{
+		//			Time = DateTime.UtcNow,
+		//			IsSuccess = false,
+		//			Message = e.StackTrace,
+		//			Data = null
+		//		};
+		//	}
+		//}
 	}
 }

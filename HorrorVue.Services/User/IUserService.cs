@@ -8,8 +8,9 @@ namespace HorrorVue.Services.User
 	public interface IUserService
 	{
 		List<AppUser> GetAllUsers();
-		AppUser GetUserById(int userId);
+		AppUser GetUserByGoogleId(string userId);
 		ServiceResponse<AppUser> CreateUser(AppUser user);
-		ServiceResponse<bool> DeleteUser(int userId);
+		ServiceResponse<bool> DeleteUser(string userId);
+		//ServiceResponse<AppUser> AddCollectionForUserId(Data.Models.Collection collectionModel, string userId);
 	}
 }

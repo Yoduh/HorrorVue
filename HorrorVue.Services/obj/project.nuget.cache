@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "7gowxz+PYAmLH1a8ToQ/lWTwHHHgsssHP8ZUm5FMnlFsjpbkDricIopXsXfS+Q0kI/Lzb5JWN+uFTd9vltCKTg==",
+  "dgSpecHash": "3jwCoB4z2yCAVONZF8NXkq+w9GNxF29AX0y3cwuAIGcwTe7zDHyZcHxzt+964La6tEw686P0FoifvPeF6axCJg==",
   "success": true,
   "projectFilePath": "C:\\Users\\ahand\\Desktop\\Coding\\HorrorVue\\HorrorVue.Services\\HorrorVue.Services.csproj",
   "expectedPackageFiles": [
@@ -47,6 +47,7 @@
     "C:\\Users\\ahand\\.nuget\\packages\\microsoft.net.http.headers\\2.2.0\\microsoft.net.http.headers.2.2.0.nupkg.sha512",
     "C:\\Users\\ahand\\.nuget\\packages\\microsoft.netcore.platforms\\2.0.0\\microsoft.netcore.platforms.2.0.0.nupkg.sha512",
     "C:\\Users\\ahand\\.nuget\\packages\\microsoft.win32.registry\\4.5.0\\microsoft.win32.registry.4.5.0.nupkg.sha512",
+    "C:\\Users\\ahand\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512",
     "C:\\Users\\ahand\\.nuget\\packages\\npgsql\\4.1.3.1\\npgsql.4.1.3.1.nupkg.sha512",
     "C:\\Users\\ahand\\.nuget\\packages\\npgsql.entityframeworkcore.postgresql\\3.1.4\\npgsql.entityframeworkcore.postgresql.3.1.4.nupkg.sha512",
     "C:\\Users\\ahand\\.nuget\\packages\\system.buffers\\4.5.0\\system.buffers.4.5.0.nupkg.sha512",

@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HorrorVue.Data.Migrations
 {
     [DbContext(typeof(HorrorDbContext))]
-    [Migration("20200918030137_InitialMigration")]
+    [Migration("20200919044237_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -41,12 +41,32 @@ namespace HorrorVue.Data.Migrations
                     b.Property<string>("LastName")
                         .HasColumnType("text");
 
+                    b.Property<int?>("MovieId")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("UpdatedOn")
                         .HasColumnType("timestamp without time zone");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("MovieId");
+
                     b.ToTable("AppUsers");
+                });
+
+            modelBuilder.Entity("HorrorVue.Data.Models.AppUserCollection", b =>
+                {
+                    b.Property<int>("AppUserId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("CollectionId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("AppUserId", "CollectionId");
+
+                    b.HasIndex("CollectionId");
+
+                    b.ToTable("AppUserCollection");
                 });
 
             modelBuilder.Entity("HorrorVue.Data.Models.Collection", b =>
@@ -55,9 +75,6 @@ namespace HorrorVue.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<int?>("AppUserId")
-                        .HasColumnType("integer");
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("timestamp without time zone");
@@ -69,8 +86,6 @@ namespace HorrorVue.Data.Migrations
                         .HasColumnType("timestamp without time zone");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AppUserId");
 
                     b.ToTable("Collections");
                 });
@@ -336,11 +351,26 @@ namespace HorrorVue.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("HorrorVue.Data.Models.Collection", b =>
+            modelBuilder.Entity("HorrorVue.Data.Models.AppUser", b =>
                 {
-                    b.HasOne("HorrorVue.Data.Models.AppUser", null)
+                    b.HasOne("HorrorVue.Data.Models.Movie", null)
+                        .WithMany("Users")
+                        .HasForeignKey("MovieId");
+                });
+
+            modelBuilder.Entity("HorrorVue.Data.Models.AppUserCollection", b =>
+                {
+                    b.HasOne("HorrorVue.Data.Models.AppUser", "AppUser")
                         .WithMany("Collections")
-                        .HasForeignKey("AppUserId");
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HorrorVue.Data.Models.Collection", "Collection")
+                        .WithMany("AppUsers")
+                        .HasForeignKey("CollectionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("HorrorVue.Data.Models.Movie", b =>

@@ -1,12 +1,12 @@
+C:\Users\ahand\Desktop\Coding\HorrorVue\HorrorVue.Data\obj\Debug\netcoreapp3.1\HorrorVue.Data.csprojAssemblyReference.cache
+C:\Users\ahand\Desktop\Coding\HorrorVue\HorrorVue.Data\obj\Debug\netcoreapp3.1\HorrorVue.Data.AssemblyInfoInputs.cache
+C:\Users\ahand\Desktop\Coding\HorrorVue\HorrorVue.Data\obj\Debug\netcoreapp3.1\HorrorVue.Data.AssemblyInfo.cs
+C:\Users\ahand\Desktop\Coding\HorrorVue\HorrorVue.Data\obj\Debug\netcoreapp3.1\HorrorVue.Data.csproj.CoreCompileInputs.cache
 C:\Users\ahand\Desktop\Coding\HorrorVue\HorrorVue.Data\bin\Debug\netcoreapp3.1\HorrorVue.Data.deps.json
 C:\Users\ahand\Desktop\Coding\HorrorVue\HorrorVue.Data\bin\Debug\netcoreapp3.1\HorrorVue.Data.runtimeconfig.json
 C:\Users\ahand\Desktop\Coding\HorrorVue\HorrorVue.Data\bin\Debug\netcoreapp3.1\HorrorVue.Data.runtimeconfig.dev.json
 C:\Users\ahand\Desktop\Coding\HorrorVue\HorrorVue.Data\bin\Debug\netcoreapp3.1\HorrorVue.Data.dll
 C:\Users\ahand\Desktop\Coding\HorrorVue\HorrorVue.Data\bin\Debug\netcoreapp3.1\HorrorVue.Data.pdb
-C:\Users\ahand\Desktop\Coding\HorrorVue\HorrorVue.Data\obj\Debug\netcoreapp3.1\HorrorVue.Data.AssemblyInfoInputs.cache
-C:\Users\ahand\Desktop\Coding\HorrorVue\HorrorVue.Data\obj\Debug\netcoreapp3.1\HorrorVue.Data.AssemblyInfo.cs
-C:\Users\ahand\Desktop\Coding\HorrorVue\HorrorVue.Data\obj\Debug\netcoreapp3.1\HorrorVue.Data.csproj.CoreCompileInputs.cache
 C:\Users\ahand\Desktop\Coding\HorrorVue\HorrorVue.Data\obj\Debug\netcoreapp3.1\HorrorVue.Data.dll
 C:\Users\ahand\Desktop\Coding\HorrorVue\HorrorVue.Data\obj\Debug\netcoreapp3.1\HorrorVue.Data.pdb
 C:\Users\ahand\Desktop\Coding\HorrorVue\HorrorVue.Data\obj\Debug\netcoreapp3.1\HorrorVue.Data.genruntimeconfig.cache
-C:\Users\ahand\Desktop\Coding\HorrorVue\HorrorVue.Data\obj\Debug\netcoreapp3.1\HorrorVue.Data.csprojAssemblyReference.cache

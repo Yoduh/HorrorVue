@@ -19,7 +19,6 @@
     },
     "HorrorVue.Web": {
       "commandName": "Project",
-      "launchBrowser": true,
       "launchUrl": "api/user",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"

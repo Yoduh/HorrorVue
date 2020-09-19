@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using HorrorVue.Data.Models;
 using HorrorVue.Services;
 using HorrorVue.Services.Collection;
+using HorrorVue.Services.User;
 using HorrorVue.Web.Serialization;
 using HorrorVue.Web.ViewModels;
 using Microsoft.AspNetCore.Identity;
@@ -18,11 +19,14 @@ namespace HorrorVue.Web.Controllers
 	{
 		private readonly ILogger<CollectionController> _logger;
 		private readonly ICollectionService _collectionService;
+		private readonly IUserService _userService;
 
-		public CollectionController(ILogger<CollectionController> logger, ICollectionService collectionService)
+		public CollectionController(ILogger<CollectionController> logger, ICollectionService collectionService,
+			IUserService userService)
 		{
 			_logger = logger;
 			_collectionService = collectionService;
+			_userService = userService;
 		}
 
 		[HttpGet("/api/collection")]
@@ -44,9 +48,12 @@ namespace HorrorVue.Web.Controllers
 			collection.CreatedOn = DateTime.UtcNow;
 			collection.UpdatedOn = DateTime.UtcNow;
 			var collectionModel = CollectionMapper.SerializeCollection(collection);
-			_userService.AddCollection(collection);
+			var user = _userService.GetUserByGoogleId(collection.UserId);
+			var collectionToAdd = new AppUserCollection { AppUserId = user.Id, CollectionId = collectionModel.Id };
+			collectionModel.AppUsers.Add(collectionToAdd);
 			ServiceResponse<Collection> createdCollection = _collectionService.CreateCollection(collectionModel);
-			return Ok(createdCollection);
+			//var result = _userService.AddCollectionForUserId(collectionModel, collection.UserId);
+			return Ok();// (createdCollection);
 		}
 
 		[HttpGet("/api/collection/{id}")]

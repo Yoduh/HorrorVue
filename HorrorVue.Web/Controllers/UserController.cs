@@ -46,15 +46,15 @@ namespace HorrorVue.Web.Controllers
 		}
 
 		[HttpGet("/api/user/{id}")]
-		public ActionResult GetUser(int id)
+		public ActionResult GetUser(string id)
 		{
 			_logger.LogInformation($"Getting user {id}");
-			var response = _userService.GetUserById(id);
+			var response = _userService.GetUserByGoogleId(id);
 			return Ok(response);
 		}
 
 		[HttpDelete("/api/user/{id}")]
-		public ActionResult DeleteUser(int id)
+		public ActionResult DeleteUser(string id)
 		{
 			_logger.LogInformation($"Deleting user {id}");
 			var response = _userService.DeleteUser(id);

@@ -12,6 +12,12 @@ namespace HorrorVue.Data
 
         public HorrorDbContext(DbContextOptions options) : base(options) { }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<AppUserCollection>().HasKey(ac => new { ac.AppUserId, ac.CollectionId });
+        }
+
         public virtual DbSet<AppUser> AppUsers { get; set; }
         public virtual DbSet<Collection> Collections { get; set; }
         public virtual DbSet<Movie> Movies { get; set; }

@@ -23,11 +23,12 @@ namespace HorrorVue.Web.Serialization
 				UpdatedOn = collection.UpdatedOn,
 				Name = collection.Name,
 				Movies = MovieMapper.SerializeMovies(collection.Movies),
-				Rankings = RankingMapper.SerializeRankings(collection.Rankings)
+				Rankings = RankingMapper.SerializeRankings(collection.Rankings),
+				AppUsers = new List<AppUserCollection>()
 			};
 		}
 
-		internal static List<Collection> SerializeCollections(List<CollectionVM> collectionVMs)
+		internal static IEnumerable<Collection> SerializeCollections(IEnumerable<CollectionVM> collectionVMs)
 		{
 			List<Collection> collections = new List<Collection>();
 			foreach (CollectionVM collection in collectionVMs)
@@ -51,11 +52,13 @@ namespace HorrorVue.Web.Serialization
 				UpdatedOn = collection.UpdatedOn,
 				Name = collection.Name,
 				Movies = MovieMapper.SerializeMovies(collection.Movies),
-				Rankings = RankingMapper.SerializeRankings(collection.Rankings)
+				Rankings = RankingMapper.SerializeRankings(collection.Rankings),
+				//collection.AppUsers is a fucking IEnumerable<AppUserCollection>.
+				//AppUsers = UserMapper.SerializeAppUsers(collection.AppUsers)
 			};
 		}
 
-		internal static List<CollectionVM> SerializeCollections(List<Collection> collections)
+		internal static IEnumerable<CollectionVM> SerializeCollections(IEnumerable<Collection> collections)
 		{
 			List<CollectionVM> collectionVMs = new List<CollectionVM>();
 			foreach (Collection collection in collections)

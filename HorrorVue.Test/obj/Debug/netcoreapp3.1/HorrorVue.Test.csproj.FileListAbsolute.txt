@@ -86,7 +86,6 @@ C:\Users\ahand\Desktop\Coding\HorrorVue\HorrorVue.Test\bin\Debug\netcoreapp3.1\z
 C:\Users\ahand\Desktop\Coding\HorrorVue\HorrorVue.Test\bin\Debug\netcoreapp3.1\zh-Hant\Microsoft.TestPlatform.CommunicationUtilities.resources.dll
 C:\Users\ahand\Desktop\Coding\HorrorVue\HorrorVue.Test\bin\Debug\netcoreapp3.1\zh-Hant\Microsoft.TestPlatform.CrossPlatEngine.resources.dll
 C:\Users\ahand\Desktop\Coding\HorrorVue\HorrorVue.Test\bin\Debug\netcoreapp3.1\zh-Hant\Microsoft.VisualStudio.TestPlatform.Common.resources.dll
-C:\Users\ahand\Desktop\Coding\HorrorVue\HorrorVue.Test\obj\Debug\netcoreapp3.1\HorrorVue.Test.csprojAssemblyReference.cache
 C:\Users\ahand\Desktop\Coding\HorrorVue\HorrorVue.Test\obj\Debug\netcoreapp3.1\HorrorVue.Test.AssemblyInfoInputs.cache
 C:\Users\ahand\Desktop\Coding\HorrorVue\HorrorVue.Test\obj\Debug\netcoreapp3.1\HorrorVue.Test.AssemblyInfo.cs
 C:\Users\ahand\Desktop\Coding\HorrorVue\HorrorVue.Test\obj\Debug\netcoreapp3.1\HorrorVue.Test.csproj.CoreCompileInputs.cache
