@@ -53,7 +53,7 @@ namespace HorrorVue.Web.Serialization
 				FirstName = user.FirstName,
 				LastName = user.LastName,
 				GoogleId = user.GoogleId,
-				//Collections = CollectionMapper.SerializeCollections(user.Collections),
+				Collections = new List<CollectionVM>()
 			};
 		}
 

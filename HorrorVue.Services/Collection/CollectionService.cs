@@ -101,5 +101,32 @@ namespace HorrorVue.Services.Collection
 				.Include(collection => collection.Rankings)
 				.First(collection => collection.Id == collectionId);
 		}
+
+		public List<Data.Models.Collection> GetCollectionsForUserId(string userId)
+		{
+			return new List<Data.Models.Collection>();
+			//var collectionIds = _db.AppUserCollections
+			//	.Where(auc => auc.AppUserId.Equals(userId))
+			//	.Select(auc => auc.CollectionId)
+			//	.ToList();
+
+			//return _db.Collections
+			//	.Include(collection => collection.AppUsers)    // Join Relationship
+			//	.ThenInclude(row => row.AppUser)
+			//	.Include(collection => collection.Movies)
+			//	.Include(collection => collection.Rankings)
+			//	.Where(collection => collectionIds.Contains(collection.Id))
+			//	.ToList();
+		}
+
+		public List<Data.Models.Collection> GetCollectionsWithIds(List<int> collectionIds)
+		{
+			List<Data.Models.Collection> collections = new List<Data.Models.Collection>();
+			foreach(int id in collectionIds)
+			{
+				collections.Add(GetCollectionById(id));
+			}
+			return collections;
+		}
 	}
 }

@@ -22,23 +22,25 @@
         </v-tooltip>
     </router-link>
 
-    <v-tooltip bottom>
-    <template v-slot:activator="{ on, attrs }">
-        <v-btn v-if="!isLoggedIn" icon @click="navLogin" v-bind="attrs" v-on="on">
-            <v-icon>mdi-login</v-icon>
-        </v-btn>
-    </template>
-    <span>Login</span>
-    </v-tooltip>
+    <div v-if="!$auth.loading">
+        <v-tooltip bottom>
+        <template v-slot:activator="{ on, attrs }">
+            <v-btn v-if="!$auth.isAuthenticated" icon @click="navLogin" v-bind="attrs" v-on="on">
+                <v-icon>mdi-login</v-icon>
+            </v-btn>
+        </template>
+        <span>Login</span>
+        </v-tooltip>
 
-    <v-tooltip bottom>
-    <template v-slot:activator="{ on, attrs }">
-        <v-btn v-if="isLoggedIn" icon @click="logout" v-bind="attrs" v-on="on">
-            <v-icon>mdi-logout</v-icon>
-        </v-btn>
-    </template>
-    <span>Logout</span>
-    </v-tooltip>
+        <v-tooltip bottom>
+        <template v-slot:activator="{ on, attrs }">
+            <v-btn v-if="$auth.isAuthenticated" icon @click="navLogout" v-bind="attrs" v-on="on">
+                <v-icon>mdi-logout</v-icon>
+            </v-btn>
+        </template>
+        <span>Logout</span>
+        </v-tooltip>
+    </div>
 
 </v-app-bar>
 </template>
@@ -59,15 +61,17 @@ export default {
       }
     },
     computed: {
-        ...mapGetters(['isLoggedIn'])
+        ...mapGetters(['isAuthenticated'])
     },
     methods: {
         ...mapActions(['login', 'logout']),
-        async navLogin() {
-            const guser = await this.$gAuth.signIn();
-            // save to state
-            if (guser)
-                this.login(guser);
+        navLogin() {
+            this.$auth.loginWithRedirect();
+        },
+        navLogout() {
+            this.$auth.logout({
+                returnTo: window.location.origin
+            });
         }
     }
 }

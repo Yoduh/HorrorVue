@@ -4,12 +4,15 @@
     <div v-if="noResults">
       No results found! Try a different search
     </div>
+    <div v-if="$auth.isAuthenticated">
+      
+    </div>
   </div>
 </template>
 
 <script>
 import SearchBar from '@/components/SearchBar';
-import { mapActions } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   name: "Home",
@@ -22,6 +25,7 @@ export default {
     }
   },
   methods: {
+    ...mapGetters(['userCollections']),
     ...mapActions(['setSearchResults']),
 
     addMovies(results) {
@@ -33,6 +37,9 @@ export default {
         this.noResults = true;
       }
     }
+  },
+  mounted() {
+    console.log('asdf', this.userCollections());
   }
 };
 </script>

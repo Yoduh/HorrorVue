@@ -49,7 +49,6 @@ export default {
         async searchMovies() {
             this.setLastSearched(this.search);
             const movies = await api.fetchMovies(this.search);
-            console.log('searchMovies', results);
             const results = {
                 data: movies,
                 searchTerm: this.search

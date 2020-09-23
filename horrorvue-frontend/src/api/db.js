@@ -5,21 +5,13 @@ const ROOT_URL = 'https://localhost:5001'
 export default {
     newCollection(collection, name) {
         console.log('sending collection', collection);
-        console.log('user', store.getters.user.getId());
         const request = {
             id: 0,
-            UserId: store.getters.user.getId(),
+            UserId: store.getters.user.id,
             Name: name,
             Movies: [
                 ...collection
             ]
-            // AppUsers: [
-            //     {
-            //         FirstName = "Alex",
-			// 	    LastName = "Handlovits",
-			// 	    GoogleId = store.getters.user.getId(),
-            //     }
-            // ]
         }
         console.log(request);
         axios.post(`${ROOT_URL}/api/collection`, request)
@@ -34,5 +26,9 @@ export default {
             }
             return;
         });
+    },
+    // userId: google id
+    getUser(userId) {
+        return axios.get(`${ROOT_URL}/api/user/${userId}`);
     }
 }

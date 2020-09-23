@@ -16,6 +16,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
 namespace HorrorVue.Web
@@ -38,6 +39,7 @@ namespace HorrorVue.Web
                 {
                     NamingStrategy = new CamelCaseNamingStrategy()
                 };
+                opts.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
             });
 
             services.AddDbContext<HorrorDbContext>(opts =>

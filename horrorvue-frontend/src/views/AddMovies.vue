@@ -8,37 +8,12 @@
                 :key="result.tmdId"
                 :sm="6" :md="3"
                 >
-                    <v-card 
+                    <add-movie-card 
                     v-if="!containsMovieId(collection, result)" 
-                    >
-                        <v-img
-                        :src="getImagePath(result.poster_path)"
-                        contain
-                        class="white--text align-end"
-                        height="300px"
-                        >
-                        </v-img>
-                        <v-card-title v-text="result.title"></v-card-title>
-                        <v-card-subtitle v-text="result.release_date.substring(0,4)"></v-card-subtitle>
-                        <v-card-actions>
-                            <v-btn v-if="!result.added" text @click="addMovie(result)">Add</v-btn>
-                            <v-btn v-else text @click="removeMovie(result)">Remove</v-btn>
-                            <v-icon class="checkmark" :class="{ selected : result.added }">mdi-checkbox-marked-circle</v-icon>
-                            <v-spacer></v-spacer>
-                            <v-btn
-                                icon
-                                @click="changeResultShow(result)"
-                            >
-                                <v-icon>{{ result.show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
-                            </v-btn>
-                        </v-card-actions>
-                        <v-expand-transition>
-                            <div v-show="result.show">
-                                <v-divider></v-divider>
-                                <v-card-text v-text="result.overview"></v-card-text>
-                            </div>
-                        </v-expand-transition>
-                    </v-card>
+                    :result="result"
+                    @addMovie="addMovie"
+                    @removeMovie="removeMovie"
+                    @changeResultShow="changeResultShow" ></add-movie-card>
                 </v-col>
             </v-row>
             <save-new-modal 
@@ -53,6 +28,7 @@
 <script>
 import SearchBar from '@/components/SearchBar';
 import SaveNewModal from '@/components/modals/SaveNewModal';
+import AddMovieCard from '@/components/cards/AddMovieCard';
 import { mapGetters, mapActions } from 'vuex';
 import api from '@/api/tmdb.js';
 import db from '@/api/db.js';
@@ -61,7 +37,8 @@ export default {
     name: "AddMovies",
     components: {
         SearchBar,
-        SaveNewModal
+        SaveNewModal,
+        AddMovieCard
     },
     props: {
         query: {
@@ -87,9 +64,6 @@ export default {
                 return { ...result, added: false, show: false };
             });
             this.$router.push(`/search?q=${results.searchTerm}`);
-        },
-        getImagePath(apiPath) {
-            return `https://image.tmdb.org/t/p/w500${apiPath}`;
         },
         changeResultShow(selected) {
             this.results.forEach(result => {
@@ -148,16 +122,6 @@ export default {
 </script>
 
 <style scoped>
-.checkmark {
-    opacity: 0.2;
-}
-.selected {
-    opacity: 1;
-    color: green;
-}
-.v-card__title {
-    word-break: normal !important;
-}
 .save-btn {
     bottom: 1rem !important;
 }

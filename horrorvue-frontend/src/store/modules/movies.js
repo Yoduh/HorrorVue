@@ -1,11 +1,13 @@
 const state = {
     lastSearched: "",
-    searchResults: null
+    searchResults: null,
+    userCollections: null
 };
 
 const getters = {
     searchResults: state => state.searchResults,
-    lastSearched: state=> state.lastSearched
+    lastSearched: state => state.lastSearched,
+    userCollections: state => state.userCollections
 };
 
 const actions = {
@@ -14,6 +16,9 @@ const actions = {
     },
     setLastSearched: ({ commit }, term) => {
         commit('setLastSearched', term);
+    },
+    setUserCollections: ({ commit }, collections) => {
+        commit('setUserCollections', collections);
     }
 };
 
@@ -23,6 +28,9 @@ const mutations = {
     },
     setLastSearched: (state, term) => {
         state.lastSearched = term;
+    },
+    setUserCollections: (state, collections) => {
+        state.userCollections = collections;
     }
 };
 
