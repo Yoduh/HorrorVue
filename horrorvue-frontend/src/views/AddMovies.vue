@@ -1,27 +1,26 @@
 <template>
     <div class="add-movies-wrapper">
         <search-bar @search="searchMovies" :placeholder="query"></search-bar>
-        <v-container fluid>
+        <v-container>
             <v-row dense v-if="results.length > 0">
-                <v-col
+                <div
                 v-for="result in results"
                 :key="result.tmdId"
-                :sm="6" :md="3"
                 >
                     <add-movie-card 
                     v-if="!containsMovieId(collection, result)" 
                     :result="result"
+                    class="mx-2"
                     @addMovie="addMovie"
                     @removeMovie="removeMovie"
                     @changeResultShow="changeResultShow" ></add-movie-card>
-                </v-col>
+                </div>
             </v-row>
             <save-new-modal 
                 :show="moviesToAdd.length"
                 @save="save">
             </save-new-modal>
         </v-container>
-        <v-btn @click="save">WTF</v-btn>
     </div>
 </template>
 
@@ -67,7 +66,7 @@ export default {
         },
         changeResultShow(selected) {
             this.results.forEach(result => {
-                if (result.id === selected.id)
+                if (result.tmdId === selected.tmdId)
                 {
                     result.show = !result.show;
                     return;

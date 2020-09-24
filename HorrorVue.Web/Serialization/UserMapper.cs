@@ -66,5 +66,34 @@ namespace HorrorVue.Web.Serialization
 			}
 			return users;
 		}
+
+		/// <summary>
+		/// Serializes AppUserCollection Model => AppUser VM
+		/// </summary>
+		/// <param name="user"></param>
+		/// <returns></returns>
+		public static AppUserVM SerializeAppUserCollection(AppUserCollection user)
+		{
+			return new AppUserVM
+			{
+				Id = user.AppUser.Id,
+				CreatedOn = user.AppUser.CreatedOn,
+				UpdatedOn = user.AppUser.UpdatedOn,
+				FirstName = user.AppUser.FirstName,
+				LastName = user.AppUser.LastName,
+				GoogleId = user.AppUser.GoogleId,
+				Collections = new List<CollectionVM>()
+			};
+		}
+
+		internal static IEnumerable<AppUserVM> SerializeAppUserCollections(IEnumerable<AppUserCollection> appUsers)
+		{
+			List<AppUserVM> users = new List<AppUserVM>();
+			foreach (AppUserCollection user in appUsers)
+			{
+				users.Add(SerializeAppUserCollection(user));
+			}
+			return users;
+		}
 	}
 }

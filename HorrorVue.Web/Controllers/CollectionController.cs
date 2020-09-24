@@ -56,6 +56,17 @@ namespace HorrorVue.Web.Controllers
 			return Ok();// (createdCollection);
 		}
 
+		[HttpPatch("/api/collection/{collectionId}/user/{userId}")]
+		public ActionResult AddUserToCollection(int collectionId, int userId)
+		{
+			_logger.LogInformation("Updating collection with new user");
+			var result = _collectionService.AddUserToCollection(collectionId, userId.ToString());
+			if (result.Data)
+				return Ok();
+			else
+				return NotFound(); // find something better to return
+		}
+
 		[HttpGet("/api/collection/{id}")]
 		public ActionResult GetCollection(int id)
 		{

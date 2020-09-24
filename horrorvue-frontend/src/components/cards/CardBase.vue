@@ -1,13 +1,13 @@
 <template>
-    <v-card>
+    <v-card class="mb-5">
         <v-img
         :src="getImagePath(result.poster_path)"
         contain
         class="white--text align-end"
-        height="300px"
+        max-width=250
         >
         </v-img>
-        <v-card-title v-text="result.title"></v-card-title>
+        <v-card-title v-text="result.title" class="text-subtitle-2"></v-card-title>
         <v-card-subtitle v-text="result.release_date.substring(0,4)"></v-card-subtitle>
 
         <slot></slot>
@@ -27,14 +27,29 @@ export default {
     props: ['result'],
     methods: {
         getImagePath(apiPath) {
-            return `https://image.tmdb.org/t/p/w500${apiPath}`;
+            if (apiPath && apiPath.length > 0)
+                return `https://image.tmdb.org/t/p/w500${apiPath}`;
+            else {
+                return require('@/assets/no-image-found.png');
+            }
         }
     }
 }
 </script>
 
 <style scoped>
+.v-card {
+    max-width: fit-content !important;
+    background-color: transparent !important;
+}
 .v-card__title {
+    background-color: white;
     word-break: normal !important;
+}
+.v-card__subtitle {
+    background-color: white;
+}
+.v-card__text {
+    background-color: white;
 }
 </style>

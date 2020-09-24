@@ -43,6 +43,42 @@ namespace HorrorVue.Services.Collection
 			}
 		}
 
+		public ServiceResponse<bool> AddUserToCollection(int collectionId, string userId)
+		{
+			try
+			{
+				var dbColl = _db.Collections.First(i => i.Id == collectionId);
+				var dbUser = _db.AppUsers.First(i => i.GoogleId.Equals(userId));
+
+				// you can either associate it using ids
+				var appUserCollection = new AppUserCollection
+				{
+					CollectionId = dbColl.Id,
+					AppUserId = dbUser.Id
+				};
+
+				_db.Add(appUserCollection);
+				_db.SaveChanges();
+				return new ServiceResponse<bool>
+				{
+					IsSuccess = true,
+					Message = "Collection user updated",
+					Time = DateTime.UtcNow,
+					Data = true
+				};
+			}
+			catch (Exception e)
+			{
+				return new ServiceResponse<bool>
+				{
+					IsSuccess = false,
+					Message = e.StackTrace,
+					Time = DateTime.UtcNow,
+					Data = false
+				};
+			}
+		}
+
 		public ServiceResponse<bool> DeleteCollection(int collectionId)
 		{
 			var now = DateTime.UtcNow;

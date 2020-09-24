@@ -1,9 +1,6 @@
 <template>
     <card-base :result="result">
         <v-card-actions>
-            <v-btn v-if="!result.added" text @click="addMovie(result)">Add</v-btn>
-            <v-btn v-else text @click="removeMovie(result)">Remove</v-btn>
-            <v-icon class="checkmark" :class="{ selected : result.added }">mdi-checkbox-marked-circle</v-icon>
             <v-spacer></v-spacer>
             <v-btn
                 icon
@@ -19,18 +16,12 @@
 import CardBase from '@/components/cards/CardBase';
 
 export default {
-    name: "AddMovieCard",
+    name: "CollectionMovieCard",
     components: {
         CardBase
     },
     props: ['result'],
     methods: {
-        addMovie(result) {
-            this.$emit('addMovie', result);
-        },
-        removeMovie(result) {
-            this.$emit('removeMovie', result);
-        },
         changeResultShow(result) {
             this.$emit('changeResultShow', result);
         }
@@ -45,8 +36,5 @@ export default {
 .selected {
     opacity: 1;
     color: green;
-}
-.v-card__actions {
-    background-color: white;
 }
 </style>

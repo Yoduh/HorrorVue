@@ -93,3 +93,4 @@ C:\Users\ahand\Desktop\Coding\HorrorVue\HorrorVue.Test\obj\Debug\netcoreapp3.1\H
 C:\Users\ahand\Desktop\Coding\HorrorVue\HorrorVue.Test\obj\Debug\netcoreapp3.1\HorrorVue.Test.dll
 C:\Users\ahand\Desktop\Coding\HorrorVue\HorrorVue.Test\obj\Debug\netcoreapp3.1\HorrorVue.Test.pdb
 C:\Users\ahand\Desktop\Coding\HorrorVue\HorrorVue.Test\obj\Debug\netcoreapp3.1\HorrorVue.Test.genruntimeconfig.cache
+C:\Users\ahand\Desktop\Coding\HorrorVue\HorrorVue.Test\obj\Debug\netcoreapp3.1\HorrorVue.Test.csprojAssemblyReference.cache

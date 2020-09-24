@@ -53,8 +53,7 @@ namespace HorrorVue.Web.Serialization
 				Name = collection.Name,
 				Movies = MovieMapper.SerializeMovies(collection.Movies),
 				Rankings = RankingMapper.SerializeRankings(collection.Rankings),
-				//collection.AppUsers is a fucking IEnumerable<AppUserCollection>.
-				//AppUsers = UserMapper.SerializeAppUsers(collection.AppUsers)
+				AppUsers = UserMapper.SerializeAppUserCollections(collection.AppUsers)
 			};
 		}
 

@@ -2,7 +2,9 @@
   <v-app>
     <v-main>
       <navbar />
+      <v-container fluid>
       <router-view></router-view>
+      </v-container>
     </v-main>
   </v-app>
 </template>
@@ -22,3 +24,10 @@ export default {
   }),
 };
 </script>
+
+<style>
+html, body, .v-main {
+  color: white;
+  background-color: rgb(40, 44, 52);
+}
+</style>

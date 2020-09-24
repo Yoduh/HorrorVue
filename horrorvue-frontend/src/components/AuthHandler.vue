@@ -3,8 +3,11 @@
     <div v-if="$auth.loading">
         Please wait...
     </div>
-    <div v-else>
+    <div v-else-if="!error">
         Loading collections...
+    </div>
+    <div v-else>
+        There was an error logging you in. Please try again later.
     </div>
 </div>
 </template>
@@ -21,12 +24,9 @@ export default {
     },
     data() {
         return {
-            isLoading: this.$auth.loading
+            isLoading: this.$auth.loading,
+            error: null
         }
-    },
-    created() {
-        
-        // this.$router.push('/');
     },
     async updated() {
         if (this.$auth.isAuthenticated) {
