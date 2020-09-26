@@ -31,8 +31,15 @@ export default {
     async updated() {
         if (this.$auth.isAuthenticated) {
             this.finalizeLogin(this.$auth.user);
-            const user = await db.getUser(store.getters.user.id);
-            this.setCollections(user.data.collections);
+            await db.getUser(store.getters.user.id);
+            console.log('push');
+            this.$router.push('/');
+        }
+    },
+    async created() {
+        if (this.$auth.isAuthenticated) {
+            this.finalizeLogin(this.$auth.user);
+            await db.getUser(store.getters.user.id);
             this.$router.push('/');
         }
     }

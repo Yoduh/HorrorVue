@@ -54,6 +54,10 @@ namespace HorrorVue.Web.Controllers
 		{
 			_logger.LogInformation($"Getting user {id}");
 			var user = _userService.GetUserByGoogleId(id);
+			if (user == null)
+			{
+				return NotFound();
+			}
 			var ids = user.Collections.Select(row => row.CollectionId).ToList();
 			var collections = _collectionService.GetCollectionsWithIds(ids);
 			var response = UserMapper.SerializeAppUser(user);

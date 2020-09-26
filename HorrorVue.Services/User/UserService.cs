@@ -91,10 +91,16 @@ namespace HorrorVue.Services.User
 
 		public AppUser GetUserByGoogleId(string userId)
 		{
-			return _db.AppUsers
-				.Include(user => user.Collections)    // Join Relationship
-				.ThenInclude(row => row.Collection)
-				.First(user => user.GoogleId.Equals(userId));
+			try
+			{
+				return _db.AppUsers
+					.Include(user => user.Collections)    // Join Relationship
+					.ThenInclude(row => row.Collection)
+					.First(user => user.GoogleId.Equals(userId));
+			} catch(InvalidOperationException e)
+			{
+				return null;
+			}
 		}
 
 		//public ServiceResponse<AppUser> AddCollectionForUserId(Data.Models.Collection collection, string userId)

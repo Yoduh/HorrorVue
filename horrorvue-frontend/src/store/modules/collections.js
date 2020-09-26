@@ -8,13 +8,11 @@ const getters = {
 
 const actions = {
     setCollections: ({ commit }, collections) => {
-        console.log(collections);
         collections.forEach(c => {
             c.movies = c.movies.map(m => {
                 return { ...m, show: false };
             })
         });
-        console.log(collections);
         commit('setCollections', collections);
     }
 };

@@ -31,13 +31,13 @@ export default {
       isLoading: this.$auth.loading
     }
   },
+  // reset store if user refreshes page
   async updated() {
-    console.log('created');
-    console.log(this.$auth.isAuthenticated);
     if (this.$auth.isAuthenticated) {
         this.finalizeLogin(this.$auth.user);
         const user = await db.getUser(store.getters.user.id);
-        this.setCollections(user.data.collections);
+        if (user.collections)
+          this.setCollections(user.collections);
     }
   }
 };

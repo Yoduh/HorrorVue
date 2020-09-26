@@ -34,6 +34,18 @@
           "lib/netstandard2.0/Microsoft.AspNetCore.Authentication.Abstractions.dll": {}
         }
       },
+      "Microsoft.AspNetCore.Authentication.Certificate/3.1.8": {
+        "type": "package",
+        "compile": {
+          "lib/netcoreapp3.1/Microsoft.AspNetCore.Authentication.Certificate.dll": {}
+        },
+        "runtime": {
+          "lib/netcoreapp3.1/Microsoft.AspNetCore.Authentication.Certificate.dll": {}
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
+      },
       "Microsoft.AspNetCore.Authentication.Cookies/2.2.0": {
         "type": "package",
         "dependencies": {
@@ -881,6 +893,21 @@
         "lib/netstandard2.0/Microsoft.AspNetCore.Authentication.Abstractions.xml",
         "microsoft.aspnetcore.authentication.abstractions.2.2.0.nupkg.sha512",
         "microsoft.aspnetcore.authentication.abstractions.nuspec"
+      ]
+    },
+    "Microsoft.AspNetCore.Authentication.Certificate/3.1.8": {
+      "sha512": "D5kFvrVOqp/9Hd0+adT3jq88VvZFdIzhwkFJaVRrIFM8pUnPxLDY54Ck2VDtYG62Z65NbrI2CxKHZAMcu9VloA==",
+      "type": "package",
+      "path": "microsoft.aspnetcore.authentication.certificate/3.1.8",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/netcoreapp3.1/Microsoft.AspNetCore.Authentication.Certificate.dll",
+        "lib/netcoreapp3.1/Microsoft.AspNetCore.Authentication.Certificate.xml",
+        "microsoft.aspnetcore.authentication.certificate.3.1.8.nupkg.sha512",
+        "microsoft.aspnetcore.authentication.certificate.nuspec"
       ]
     },
     "Microsoft.AspNetCore.Authentication.Cookies/2.2.0": {
@@ -2212,6 +2239,7 @@
     ".NETCoreApp,Version=v3.1": [
       "HorrorVue.Data >= 1.0.0",
       "HorrorVue.Services >= 1.0.0",
+      "Microsoft.AspNetCore.Authentication.Certificate >= 3.1.8",
       "Microsoft.AspNetCore.Mvc.NewtonsoftJson >= 3.1.8",
       "Microsoft.EntityFrameworkCore >= 3.1.8",
       "Microsoft.EntityFrameworkCore.Design >= 3.1.8",
@@ -2220,20 +2248,25 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\ahand\\.nuget\\packages\\": {}
+    "C:\\Users\\Yoduh\\.nuget\\packages\\": {},
+    "C:\\Microsoft\\Xamarin\\NuGet\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\ahand\\Desktop\\Coding\\HorrorVue\\HorrorVue.Web\\HorrorVue.Web.csproj",
+      "projectUniqueName": "C:\\Users\\Yoduh\\Desktop\\coding\\frontend web\\HorrorVue\\HorrorVue.Web\\HorrorVue.Web.csproj",
       "projectName": "HorrorVue.Web",
-      "projectPath": "C:\\Users\\ahand\\Desktop\\Coding\\HorrorVue\\HorrorVue.Web\\HorrorVue.Web.csproj",
-      "packagesPath": "C:\\Users\\ahand\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\ahand\\Desktop\\Coding\\HorrorVue\\HorrorVue.Web\\obj\\",
+      "projectPath": "C:\\Users\\Yoduh\\Desktop\\coding\\frontend web\\HorrorVue\\HorrorVue.Web\\HorrorVue.Web.csproj",
+      "packagesPath": "C:\\Users\\Yoduh\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Yoduh\\Desktop\\coding\\frontend web\\HorrorVue\\HorrorVue.Web\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Microsoft\\Xamarin\\NuGet\\"
+      ],
       "configFilePaths": [
-        "C:\\Users\\ahand\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Users\\Yoduh\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp3.1"
@@ -2245,11 +2278,11 @@
       "frameworks": {
         "netcoreapp3.1": {
           "projectReferences": {
-            "C:\\Users\\ahand\\Desktop\\Coding\\HorrorVue\\HorrorVue.Data\\HorrorVue.Data.csproj": {
-              "projectPath": "C:\\Users\\ahand\\Desktop\\Coding\\HorrorVue\\HorrorVue.Data\\HorrorVue.Data.csproj"
+            "C:\\Users\\Yoduh\\Desktop\\coding\\frontend web\\HorrorVue\\HorrorVue.Data\\HorrorVue.Data.csproj": {
+              "projectPath": "C:\\Users\\Yoduh\\Desktop\\coding\\frontend web\\HorrorVue\\HorrorVue.Data\\HorrorVue.Data.csproj"
             },
-            "C:\\Users\\ahand\\Desktop\\Coding\\HorrorVue\\HorrorVue.Services\\HorrorVue.Services.csproj": {
-              "projectPath": "C:\\Users\\ahand\\Desktop\\Coding\\HorrorVue\\HorrorVue.Services\\HorrorVue.Services.csproj"
+            "C:\\Users\\Yoduh\\Desktop\\coding\\frontend web\\HorrorVue\\HorrorVue.Services\\HorrorVue.Services.csproj": {
+              "projectPath": "C:\\Users\\Yoduh\\Desktop\\coding\\frontend web\\HorrorVue\\HorrorVue.Services\\HorrorVue.Services.csproj"
             }
           }
         }
@@ -2263,6 +2296,10 @@
     "frameworks": {
       "netcoreapp3.1": {
         "dependencies": {
+          "Microsoft.AspNetCore.Authentication.Certificate": {
+            "target": "Package",
+            "version": "[3.1.8, )"
+          },
           "Microsoft.AspNetCore.Mvc.NewtonsoftJson": {
             "target": "Package",
             "version": "[3.1.8, )"
@@ -2306,7 +2343,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.401\\RuntimeIdentifierGraph.json"
       }
     }
   }

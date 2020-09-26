@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HorrorVue.Data.Migrations
 {
     [DbContext(typeof(HorrorDbContext))]
-    [Migration("20200919044237_InitialMigration")]
+    [Migration("20200926194024_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,6 +32,9 @@ namespace HorrorVue.Data.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("timestamp without time zone");
 
+                    b.Property<string>("Email")
+                        .HasColumnType("text");
+
                     b.Property<string>("FirstName")
                         .HasColumnType("text");
 
@@ -41,15 +44,10 @@ namespace HorrorVue.Data.Migrations
                     b.Property<string>("LastName")
                         .HasColumnType("text");
 
-                    b.Property<int?>("MovieId")
-                        .HasColumnType("integer");
-
                     b.Property<DateTime>("UpdatedOn")
                         .HasColumnType("timestamp without time zone");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("MovieId");
 
                     b.ToTable("AppUsers");
                 });
@@ -349,13 +347,6 @@ namespace HorrorVue.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
-                });
-
-            modelBuilder.Entity("HorrorVue.Data.Models.AppUser", b =>
-                {
-                    b.HasOne("HorrorVue.Data.Models.Movie", null)
-                        .WithMany("Users")
-                        .HasForeignKey("MovieId");
                 });
 
             modelBuilder.Entity("HorrorVue.Data.Models.AppUserCollection", b =>

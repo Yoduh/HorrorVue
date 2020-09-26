@@ -24,6 +24,7 @@ namespace HorrorVue.Web.Serialization
 				FirstName = user.FirstName,
 				LastName = user.LastName,
 				GoogleId = user.GoogleId,
+				Email = user.Email
 				//Collections = CollectionMapper.SerializeCollections(user.Collections),
 			};
 		}
@@ -53,6 +54,7 @@ namespace HorrorVue.Web.Serialization
 				FirstName = user.FirstName,
 				LastName = user.LastName,
 				GoogleId = user.GoogleId,
+				Email = user.Email,
 				Collections = new List<CollectionVM>()
 			};
 		}
@@ -82,6 +84,7 @@ namespace HorrorVue.Web.Serialization
 				FirstName = user.AppUser.FirstName,
 				LastName = user.AppUser.LastName,
 				GoogleId = user.AppUser.GoogleId,
+				Email = user.AppUser.Email,
 				Collections = new List<CollectionVM>()
 			};
 		}

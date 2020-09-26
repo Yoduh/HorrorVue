@@ -12,6 +12,7 @@ namespace HorrorVue.Data.Models
 		public string GoogleId { get; set; }
 		public string FirstName { get; set; }
 		public string LastName { get; set; }
+		public string Email { get; set; }
 		public ICollection<AppUserCollection> Collections { get; set; }
 	}
 }

@@ -7,6 +7,7 @@ using HorrorVue.Services.Collection;
 using HorrorVue.Services.Movie;
 using HorrorVue.Services.Ranking;
 using HorrorVue.Services.User;
+using Microsoft.AspNetCore.Authentication.Certificate;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -33,6 +34,7 @@ namespace HorrorVue.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthentication(CertificateAuthenticationDefaults.AuthenticationScheme).AddCertificate();
             services.AddCors();
             services.AddControllers().AddNewtonsoftJson(opts => {
                 opts.SerializerSettings.ContractResolver = new DefaultContractResolver
@@ -61,6 +63,7 @@ namespace HorrorVue.Web
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseAuthentication();
 
             app.UseHttpsRedirection();
 
