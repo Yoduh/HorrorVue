@@ -1,10 +1,10 @@
 <template>
     <card-base :result="result">
-        <v-card-actions>
+        <v-card-actions :class="`rounded-b`">
             <v-spacer></v-spacer>
             <v-btn
                 icon
-                @click="changeResultShow(result)"
+                @click="$emit('expand')"
             >
                 <v-icon>{{ result.show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
             </v-btn>
@@ -22,9 +22,6 @@ export default {
     },
     props: ['result'],
     methods: {
-        changeResultShow(result) {
-            this.$emit('changeResultShow', result);
-        }
     }
 }
 </script>
@@ -36,5 +33,11 @@ export default {
 .selected {
     opacity: 1;
     color: green;
+}
+.v-card__actions {
+    background-color: white;
+}
+.v-icon {
+    color: black !important;
 }
 </style>

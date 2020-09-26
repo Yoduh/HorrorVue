@@ -4,17 +4,25 @@
       Log in to use this site
     </div>
     <div v-else> 
-      <search-bar @search="addMovies"></search-bar>
+      <search-bar @search="searchFranchise"></search-bar>
+      <icon-medal
+        width="50"
+        height="50"
+        icon-name="medal"
+        icon-color1="#ffe27a"
+        icon-color2="#f9cf58"
+      ></icon-medal>
+
       <div v-if="noResults">
         No movies for that franchise were found, try another one?
       </div>
-      <div v-if="collections.length == 0">
+      <div v-if="collectionsView === null || collectionsView.length === 0">
         You have no collections yet, search for a franchise above to add one!
       </div>
       <div v-else>
         <v-expansion-panels dark>
           <v-expansion-panel
-            v-for="collection in collections" :key="collection.id">
+            v-for="collection in collectionsView" :key="collection.id">
             <v-expansion-panel-header>{{ collection.name }}</v-expansion-panel-header>
             <v-expansion-panel-content>
               <franchise-panel :franchise="collection" />
@@ -29,13 +37,15 @@
 <script>
 import SearchBar from '@/components/SearchBar';
 import FranchisePanel from '@/components/FranchisePanel';
+import IconMedal from '@/components/icons/IconMedal';
 import { mapGetters, mapActions } from 'vuex';
 
 export default {
   name: "Home",
   components: {
     SearchBar,
-    FranchisePanel
+    FranchisePanel,
+    IconMedal
   },
   data() {
     return {
@@ -43,15 +53,15 @@ export default {
     }
   },
   computed: {
-    collections() {
-      return this.userCollections();
+    collectionsView() {
+      return this.collections();
     }
   },
   methods: {
-    ...mapGetters(['userCollections']),
-    ...mapActions(['setSearchResults']),
+    ...mapGetters(['collections']),
+    ...mapActions(['setSearchResults', 'setCollections']),
 
-    addMovies(results) {
+    searchFranchise(results) {
       if (results.data.length > 0) {
         this.noResults = false;
         this.setSearchResults(results.data);

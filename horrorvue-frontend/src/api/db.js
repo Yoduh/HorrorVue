@@ -4,7 +4,6 @@ import store from '@/store';
 const ROOT_URL = 'https://localhost:5001'
 export default {
     newCollection(collection, name) {
-        console.log('sending collection', collection);
         const request = {
             id: 0,
             UserId: store.getters.user.id,

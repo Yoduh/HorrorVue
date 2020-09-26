@@ -20,7 +20,7 @@ import { mapActions } from 'vuex';
 export default {
     name: 'AuthHandler',
     methods: {
-        ...mapActions(['finalizeLogin', 'setUserCollections'])
+        ...mapActions(['finalizeLogin', 'setCollections'])
     },
     data() {
         return {
@@ -32,7 +32,7 @@ export default {
         if (this.$auth.isAuthenticated) {
             this.finalizeLogin(this.$auth.user);
             const user = await db.getUser(store.getters.user.id);
-            this.setUserCollections(user.data.collections);
+            this.setCollections(user.data.collections);
             this.$router.push('/');
         }
     }

@@ -1,14 +1,16 @@
   
 import Vuex from 'vuex';
 import Vue from 'vue';
-import auth from './modules/auth';
-import movies from './modules/movies';
+import user from './modules/user';
+import search from './modules/search';
+import collections from './modules/collections';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
     modules: {
-        auth,
-        movies
+        user,
+        search,
+        collections,
     }
 });
