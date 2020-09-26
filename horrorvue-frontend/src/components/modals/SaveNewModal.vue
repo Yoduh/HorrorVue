@@ -31,7 +31,7 @@
           <v-container>
             <v-row>
               <v-col cols="12">
-                <v-text-field label="Name" required v-model="name"></v-text-field>
+                <v-text-field label="Name" v-model="name" autofocus :rules="[rules.required]"></v-text-field>
               </v-col>
             </v-row>
           </v-container>
@@ -54,12 +54,18 @@
     ],
     data: () => ({
         dialog: false,
-        name: ""
+        name: "",
+        rules: {
+          required: value => !!value || 'Required.'
+        }
     }),
     methods: {
         save() {
+            if (this.name === "")
+              return;
             this.dialog = false;
             this.$emit('save', this.name);
+            this.name = "";
         }
     }
   }

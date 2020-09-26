@@ -3,6 +3,7 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import vuetify from "./plugins/vuetify";
+import vuescroll from 'vuescroll';
 // const gauthOption = {
 //   clientId: '959351066294-krib2tgeut36qsakcjd4c7tvivr5bfal.apps.googleusercontent.com',
 //   scope: 'profile email',
@@ -26,6 +27,8 @@ Vue.use(Auth0Plugin, {
     );
   }
 });
+
+Vue.use(vuescroll);
 
 Vue.config.productionTip = false;
 
