@@ -1,6 +1,6 @@
 <template>
     <div class="franchise-panel" :id="'franchise' + franchise.id" @wheel.prevent="scrollHorizontal($event, franchise.id)">
-        <draggable v-model="franchise.movies" group="movies" @start="drag=true" @end="drag=false" class="flex" forceFallback: true>
+        <draggable v-model="franchise.movies" group="movies" @start="drag=true" @end="drag=false" class="flex">
             <div v-for="movie in franchise.movies" :key="movie.id">
                 <collection-movie-card :result="movie" class="mx-2" @expand="expand(movie.id)" />
             </div>
