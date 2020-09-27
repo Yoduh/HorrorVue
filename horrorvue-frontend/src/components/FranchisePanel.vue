@@ -3,18 +3,18 @@
         <!-- <draggable v-model="franchise.movies" group="movies" @start="drag=true" @end="drag=false" class="flex"> -->
             <v-container fluid class="franchise-container">
                 <v-row class="movieRow">
-                    <v-column v-for="movie in franchise.movies" :key="movie.id" align-self="stretch" class="movieColumn justify-space-between">
+                    <v-col v-for="movie in franchise.movies" :key="movie.id" class="movieColumn">
                         <v-row>
                             <collection-movie-card :result="movie" @info="info(movie)" />
                         </v-row>
                         <!-- rankings -->
                         <v-row class="rankingRow">
-                            <v-column>
+                            <v-col>
                                 <div>Alex: #1</div>
                                 <div>Noelle: #2</div>
-                            </v-column>
+                            </v-col>
                         </v-row>
-                    </v-column>
+                    </v-col>
                 </v-row>
             </v-container>
         <!-- </draggable> -->
@@ -71,13 +71,12 @@ export default {
 <style scoped>
 .row {
     margin: 0;
-    flex: inherit;
+}
+.movieColumn {
+    flex-grow: 0;
 }
 .movieRow {
     flex-wrap: nowrap;
-}
-.movieColumn {
-    margin: 0 0.5rem 0 0.5rem;
 }
 .franchise-panel{
     height: 100%;

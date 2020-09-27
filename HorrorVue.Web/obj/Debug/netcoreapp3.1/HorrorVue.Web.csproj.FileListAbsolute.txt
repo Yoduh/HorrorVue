@@ -109,3 +109,4 @@ C:\Users\Yoduh\Desktop\coding\frontend web\HorrorVue\HorrorVue.Web\obj\Debug\net
 C:\Users\Yoduh\Desktop\coding\frontend web\HorrorVue\HorrorVue.Web\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Authentication.Certificate.dll
 C:\Users\Yoduh\Desktop\coding\frontend web\HorrorVue\HorrorVue.Web\obj\Debug\netcoreapp3.1\HorrorVue.Web.csproj.CoreCompileInputs.cache
 C:\Users\Yoduh\Desktop\coding\frontend web\HorrorVue\HorrorVue.Web\obj\Debug\netcoreapp3.1\HorrorVue.Web.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\ahand\Desktop\Coding\HorrorVue\HorrorVue.Web\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Authentication.Certificate.dll

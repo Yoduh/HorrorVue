@@ -1957,25 +1957,20 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Yoduh\\.nuget\\packages\\": {},
-    "C:\\Microsoft\\Xamarin\\NuGet\\": {}
+    "C:\\Users\\ahand\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Yoduh\\Desktop\\coding\\frontend web\\HorrorVue\\HorrorVue.Services\\HorrorVue.Services.csproj",
+      "projectUniqueName": "C:\\Users\\ahand\\Desktop\\Coding\\HorrorVue\\HorrorVue.Services\\HorrorVue.Services.csproj",
       "projectName": "HorrorVue.Services",
-      "projectPath": "C:\\Users\\Yoduh\\Desktop\\coding\\frontend web\\HorrorVue\\HorrorVue.Services\\HorrorVue.Services.csproj",
-      "packagesPath": "C:\\Users\\Yoduh\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Yoduh\\Desktop\\coding\\frontend web\\HorrorVue\\HorrorVue.Services\\obj\\",
+      "projectPath": "C:\\Users\\ahand\\Desktop\\Coding\\HorrorVue\\HorrorVue.Services\\HorrorVue.Services.csproj",
+      "packagesPath": "C:\\Users\\ahand\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\ahand\\Desktop\\Coding\\HorrorVue\\HorrorVue.Services\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Microsoft\\Xamarin\\NuGet\\"
-      ],
       "configFilePaths": [
-        "C:\\Users\\Yoduh\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        "C:\\Users\\ahand\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp3.1"
@@ -1987,8 +1982,8 @@
       "frameworks": {
         "netcoreapp3.1": {
           "projectReferences": {
-            "C:\\Users\\Yoduh\\Desktop\\coding\\frontend web\\HorrorVue\\HorrorVue.Data\\HorrorVue.Data.csproj": {
-              "projectPath": "C:\\Users\\Yoduh\\Desktop\\coding\\frontend web\\HorrorVue\\HorrorVue.Data\\HorrorVue.Data.csproj"
+            "C:\\Users\\ahand\\Desktop\\Coding\\HorrorVue\\HorrorVue.Data\\HorrorVue.Data.csproj": {
+              "projectPath": "C:\\Users\\ahand\\Desktop\\Coding\\HorrorVue\\HorrorVue.Data\\HorrorVue.Data.csproj"
             }
           }
         }
@@ -2016,7 +2011,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.401\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
       }
     }
   }

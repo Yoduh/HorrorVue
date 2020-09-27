@@ -25,7 +25,9 @@
             v-for="collection in collectionsView" :key="collection.id">
             <v-expansion-panel-header>{{ collection.name }}</v-expansion-panel-header>
             <v-expansion-panel-content>
-              <toolbar />
+              <button-bar>
+                <ranking-btn :collection="collection" />
+              </button-bar>
               <franchise-panel :franchise="collection" />
               <!-- columns of rankings.  sort by person puts  -->
             </v-expansion-panel-content>
@@ -39,6 +41,8 @@
 <script>
 import SearchBar from '@/components/SearchBar';
 import FranchisePanel from '@/components/FranchisePanel';
+import ButtonBar from '@/components/ButtonBar';
+import RankingBtn from '@/components/buttons/RankingBtn';
 import { mapGetters, mapActions } from 'vuex';
 
 export default {
@@ -46,7 +50,8 @@ export default {
   components: {
     SearchBar,
     FranchisePanel,
-    
+    ButtonBar,
+    RankingBtn
   },
   data() {
     return {
