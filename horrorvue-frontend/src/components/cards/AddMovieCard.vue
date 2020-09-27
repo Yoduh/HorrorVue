@@ -5,23 +5,24 @@
             <v-btn v-else text @click="removeMovie(result)">Remove</v-btn>
             <v-icon class="checkmark" :class="{ selected : result.added }">mdi-checkbox-marked-circle</v-icon>
             <v-spacer></v-spacer>
-            <v-btn
-                icon
-                @click="changeResultShow(result)"
-            >
-                <v-icon>{{ result.show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
-            </v-btn>
+            <info-modal 
+            :title="result.title" 
+            :subtitle="result.release_date.substring(0,4)"
+            :description="result.overview" 
+            />
         </v-card-actions>
     </card-base>
 </template>
 
 <script>
 import CardBase from '@/components/cards/CardBase';
+import InfoModal from '@/components/modals/InfoModal';
 
 export default {
     name: "AddMovieCard",
     components: {
-        CardBase
+        CardBase,
+        InfoModal
     },
     props: ['result'],
     methods: {
@@ -30,9 +31,6 @@ export default {
         },
         removeMovie(result) {
             this.$emit('removeMovie', result);
-        },
-        changeResultShow(result) {
-            this.$emit('changeResultShow', result);
         }
     }
 }
@@ -48,5 +46,8 @@ export default {
 }
 .v-card__actions {
     background-color: white;
+}
+.v-card__actions > .v-btn.v-btn {
+    padding: 0 2px;
 }
 </style>

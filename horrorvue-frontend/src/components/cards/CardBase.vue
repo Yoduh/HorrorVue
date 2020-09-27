@@ -11,13 +11,6 @@
         <v-card-subtitle v-text="result.release_date.substring(0,4)" class="pb-0"></v-card-subtitle>
 
         <slot></slot>
-        
-        <v-expand-transition>
-            <div v-show="result.show">
-                <v-divider></v-divider>
-                <v-card-text v-text="result.overview"></v-card-text>
-            </div>
-        </v-expand-transition>
     </v-card>
 </template>
 

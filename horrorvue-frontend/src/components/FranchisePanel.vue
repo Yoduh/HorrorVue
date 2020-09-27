@@ -1,16 +1,29 @@
 <template>
     <div class="franchise-panel" :id="'franchise' + franchise.id" @wheel.prevent="scrollHorizontal($event, franchise.id)">
-        <draggable v-model="franchise.movies" group="movies" @start="drag=true" @end="drag=false" class="flex">
-            <div v-for="movie in franchise.movies" :key="movie.id">
-                <collection-movie-card :result="movie" class="mx-2" @expand="expand(movie.id)" />
-            </div>
-        </draggable>
+        <!-- <draggable v-model="franchise.movies" group="movies" @start="drag=true" @end="drag=false" class="flex"> -->
+            <v-container fluid class="franchise-container">
+                <v-row class="movieRow">
+                    <v-column v-for="movie in franchise.movies" :key="movie.id" align-self="stretch" class="movieColumn justify-space-between">
+                        <v-row>
+                            <collection-movie-card :result="movie" @info="info(movie)" />
+                        </v-row>
+                        <!-- rankings -->
+                        <v-row class="rankingRow">
+                            <v-column>
+                                <div>Alex: #1</div>
+                                <div>Noelle: #2</div>
+                            </v-column>
+                        </v-row>
+                    </v-column>
+                </v-row>
+            </v-container>
+        <!-- </draggable> -->
     </div>
 </template>
 
 <script>
 import CollectionMovieCard from '@/components/cards/CollectionMovieCard';
-import draggable from 'vuedraggable'
+// import draggable from 'vuedraggable'
 
 export default {
     name: "FranchisePanel",
@@ -19,7 +32,7 @@ export default {
     ,
     components: {
         CollectionMovieCard,
-        draggable
+        // draggable
     },
     data() {
         return {
@@ -35,8 +48,7 @@ export default {
         }
     },
     methods: {
-        expand(id) {
-            console.log(id);
+        info(id) {
             this.franchise.movies.forEach(movie => {
                 if (movie.id === id)
                 {
@@ -57,15 +69,25 @@ export default {
 </script>
 
 <style scoped>
-.flex {
-    display: flex;
+.row {
+    margin: 0;
+    flex: inherit;
+}
+.movieRow {
+    flex-wrap: nowrap;
+}
+.movieColumn {
+    margin: 0 0.5rem 0 0.5rem;
 }
 .franchise-panel{
     height: 100%;
     width: 100%;
     overflow: auto;
 }
-
+.rankingRow {
+    position: relative;
+    top: -15px;
+}
 /* height (horizontal) */
 ::-webkit-scrollbar {
   height: 10px;

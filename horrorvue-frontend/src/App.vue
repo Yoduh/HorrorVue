@@ -48,4 +48,8 @@ html, body, .v-main {
   color: white;
   background-color: rgb(40, 44, 52);
 }
+v-column {
+  display: flex;
+  flex-direction: column;
+}
 </style>

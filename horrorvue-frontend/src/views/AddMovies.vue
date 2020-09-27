@@ -13,7 +13,7 @@
                     class="mx-2"
                     @addMovie="addMovie"
                     @removeMovie="removeMovie"
-                    @changeResultShow="changeResultShow" ></add-movie-card>
+                    />
                 </div>
             </v-row>
             <save-new-modal 
@@ -63,15 +63,6 @@ export default {
                 return { ...result, added: false, show: false };
             });
             this.$router.push(`/search?q=${results.searchTerm}`);
-        },
-        changeResultShow(selected) {
-            this.results.forEach(result => {
-                if (result.tmdId === selected.tmdId)
-                {
-                    result.show = !result.show;
-                    return;
-                }
-            })
         },
         containsMovieId(movieArray, movie) {
             let ret = false;

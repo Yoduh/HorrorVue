@@ -5,13 +5,13 @@
     </div>
     <div v-else> 
       <search-bar @search="searchFranchise"></search-bar>
-      <icon-medal
+      <!-- <icon-medal
         width="50"
         height="50"
         icon-name="medal"
         icon-color1="#ffe27a"
         icon-color2="#f9cf58"
-      ></icon-medal>
+      ></icon-medal> -->
 
       <div v-if="noResults">
         No movies for that franchise were found, try another one?
@@ -25,7 +25,9 @@
             v-for="collection in collectionsView" :key="collection.id">
             <v-expansion-panel-header>{{ collection.name }}</v-expansion-panel-header>
             <v-expansion-panel-content>
+              <toolbar />
               <franchise-panel :franchise="collection" />
+              <!-- columns of rankings.  sort by person puts  -->
             </v-expansion-panel-content>
           </v-expansion-panel>
         </v-expansion-panels>
@@ -37,7 +39,6 @@
 <script>
 import SearchBar from '@/components/SearchBar';
 import FranchisePanel from '@/components/FranchisePanel';
-import IconMedal from '@/components/icons/IconMedal';
 import { mapGetters, mapActions } from 'vuex';
 
 export default {
@@ -45,7 +46,7 @@ export default {
   components: {
     SearchBar,
     FranchisePanel,
-    IconMedal
+    
   },
   data() {
     return {
