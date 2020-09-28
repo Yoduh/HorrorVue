@@ -4,12 +4,14 @@
 const state = {
     // token: window.localStorage.getItem('google_token'),
     user: null,
-    userId: null
+    userId: null,
+    isLoading: false
 };
 
 const getters = {
     isAuthenticated: state => !!state.user,
-    user: state => state.user
+    user: state => state.user,
+    isLoading: state => state.isLoading
 };
 
 const actions = {
@@ -18,9 +20,6 @@ const actions = {
     },
 
     finalizeLogin: ({ commit }, user) => {
-        const div = user.sub.indexOf('|');
-        const id = user.sub.slice(div + 1);
-        user.id = id;
         commit('setUser', user);
         // commit('setToken', null);
         // window.localStorage.setItem('google_token', query.access_token);
@@ -31,6 +30,10 @@ const actions = {
         commit('setUser', null);
         // window.localStorage.removeItem('google_token');
     },
+
+    setIsLoading: ({ commit }, loading) => {
+        commit('setIsLoading', loading);
+    }
 };
 
 const mutations = {
@@ -39,6 +42,9 @@ const mutations = {
     },
     setUser: (state, user) => {
         state.user = user;
+    },
+    setIsLoading: (state, loading) => {
+        state.isLoading = loading;
     }
 };
 

@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using HorrorVue.Data.Models;
 using HorrorVue.Services;
 using HorrorVue.Services.Ranking;
+using HorrorVue.Web.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -28,6 +30,22 @@ namespace HorrorVue.Web.Controllers
 		{
 			_logger.LogInformation("Getting all rankings...");
 			var rankings = _rankingService.GetAllRankings();
+			return Ok(rankings);
+		}
+
+		[HttpGet("/api/ranking/collections")]
+		public ActionResult GetRankingsForCollections([FromQuery(Name = "collections[]")] List<int> collections)
+		{
+			_logger.LogInformation("Getting rankings for collections");
+			List<Ranking> rankings = new List<Ranking>();
+			foreach(int id in collections)
+			{
+				var ranking = _rankingService.GetRankingByCollectionId(id);
+				if (ranking != null)
+				{
+					rankings.Add(ranking);
+				}
+			}
 			return Ok(rankings);
 		}
 

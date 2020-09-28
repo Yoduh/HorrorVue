@@ -89,6 +89,21 @@ namespace HorrorVue.Services.User
 				.ToList();
 		}
 
+		public AppUser GetUserById(string userId)
+		{
+			try
+			{
+				return _db.AppUsers
+					.Include(user => user.Collections)    // Join Relationship
+					.ThenInclude(row => row.Collection)
+					.First(user => user.Id.Equals(userId));
+			}
+			catch (InvalidOperationException e)
+			{
+				return null;
+			}
+		}
+
 		public AppUser GetUserByGoogleId(string userId)
 		{
 			try

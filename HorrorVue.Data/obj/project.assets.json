@@ -2050,20 +2050,25 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\ahand\\.nuget\\packages\\": {}
+    "C:\\Users\\Yoduh\\.nuget\\packages\\": {},
+    "C:\\Microsoft\\Xamarin\\NuGet\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\ahand\\Desktop\\Coding\\HorrorVue\\HorrorVue.Data\\HorrorVue.Data.csproj",
+      "projectUniqueName": "C:\\Users\\Yoduh\\Desktop\\coding\\frontend web\\HorrorVue\\HorrorVue.Data\\HorrorVue.Data.csproj",
       "projectName": "HorrorVue.Data",
-      "projectPath": "C:\\Users\\ahand\\Desktop\\Coding\\HorrorVue\\HorrorVue.Data\\HorrorVue.Data.csproj",
-      "packagesPath": "C:\\Users\\ahand\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\ahand\\Desktop\\Coding\\HorrorVue\\HorrorVue.Data\\obj\\",
+      "projectPath": "C:\\Users\\Yoduh\\Desktop\\coding\\frontend web\\HorrorVue\\HorrorVue.Data\\HorrorVue.Data.csproj",
+      "packagesPath": "C:\\Users\\Yoduh\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Yoduh\\Desktop\\coding\\frontend web\\HorrorVue\\HorrorVue.Data\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Microsoft\\Xamarin\\NuGet\\"
+      ],
       "configFilePaths": [
-        "C:\\Users\\ahand\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Users\\Yoduh\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp3.1"
@@ -2128,7 +2133,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.201\\RuntimeIdentifierGraph.json"
       }
     }
   }

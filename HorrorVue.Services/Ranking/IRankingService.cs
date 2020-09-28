@@ -8,6 +8,7 @@ namespace HorrorVue.Services.Ranking
 	{
 		List<Data.Models.Ranking> GetAllRankings();
 		Data.Models.Ranking GetRankingById(int rankingId);
+		Data.Models.Ranking GetRankingByCollectionId(int collectionId);
 		ServiceResponse<Data.Models.Ranking> CreateRanking(Data.Models.Ranking ranking);
 		ServiceResponse<bool> DeleteRanking(int rankingId);
 	}

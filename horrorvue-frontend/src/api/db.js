@@ -27,8 +27,12 @@ export default {
     },
     // userId: google id
     async getUser(userId) {
+        console.log('url', `${ROOT_URL}/api/user/${userId}`);
         return axios.get(`${ROOT_URL}/api/user/${userId}`)
         .then(res => {
+            if (res.data.collections && res.data.collections.length > 0) {
+                this.getRankingsForCollections(res.data.collections.map(c => c.id));
+            }
             return res.data;
         })
         .catch(err => {
@@ -56,5 +60,19 @@ export default {
             console.log('create err', err);
             return null;
         });
+    },
+    async getRankingsForCollections(collIds) {
+        console.log('collids', collIds);
+        axios.get(`${ROOT_URL}/api/ranking/collections`, { params: { collections: collIds } })
+        .then(res => {
+            console.log('got rankings for collections', res.data)
+            store.dispatch('setCollectionRankings', res.data);
+        })
+    },
+    createRanking(ranking) {
+        return axios.post(`${ROOT_URL}/api/ranking`, ranking);
+    },
+    updateRanking(ranking) {
+        return axios.patch(`${ROOT_URL}/api/ranking/${ranking.id}`, ranking);
     }
 }

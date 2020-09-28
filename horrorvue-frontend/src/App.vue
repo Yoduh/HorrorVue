@@ -16,7 +16,7 @@
 import Navbar from "@/components/Navbar.vue";
 import db from '@/api/db'
 import store from "@/store";
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
   name: "App",
@@ -24,20 +24,19 @@ export default {
     Navbar
   },
   methods: {
-      ...mapActions(['finalizeLogin', 'setCollections'])
-  },
-  data() {
-    return {
-      isLoading: this.$auth.loading
-    }
+      ...mapActions(['finalizeLogin', 'setCollections']),
+      ...mapGetters(['isLoading'])
   },
   // reset store if user refreshes page
   async updated() {
-    if (this.$auth.isAuthenticated) {
-        this.finalizeLogin(this.$auth.user);
-        const user = await db.getUser(store.getters.user.id);
-        if (user.collections)
-          this.setCollections(user.collections);
+    console.log("APP RELOADED", this.$auth.isAuthenticated, store.getters.user, this.isLoading());
+    if (this.$auth.isAuthenticated && store.getters.user === null && !this.isLoading()) {
+      const div = this.$auth.user.sub.indexOf('|');
+      const id = this.$auth.user.sub.slice(div + 1);
+      const user = await db.getUser(id);
+      this.finalizeLogin(user);
+      if (user.collections)
+        this.setCollections(user.collections);
     }
   }
 };
@@ -48,8 +47,8 @@ html, body, .v-main {
   color: white;
   background-color: rgb(40, 44, 52);
 }
-/* v-col {
+.col {
   display: flex;
   flex-direction: column;
-} */
+}
 </style>

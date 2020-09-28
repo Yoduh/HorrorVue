@@ -85,6 +85,18 @@ namespace HorrorVue.Services.Ranking
 				.ToList();
 		}
 
+		public Data.Models.Ranking GetRankingByCollectionId(int collectionId)
+		{
+			try
+			{
+				return _db.Rankings
+					.First(ranking => ranking.CollectionId == collectionId);
+			} catch (Exception e)
+			{
+				return null;
+			}
+		}
+
 		public Data.Models.Ranking GetRankingById(int rankingId)
 		{
 			return _db.Rankings
