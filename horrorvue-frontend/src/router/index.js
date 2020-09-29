@@ -18,10 +18,10 @@ const routes = [
     component: AddMovies,
     props: route => ({ query: route.query.q })
   },
-  { 
-    path: '/auth/callback',
+  {
+    path: "/auth/callback",
     name: "AuthHandler",
-    component: AuthHandler 
+    component: AuthHandler
   }
 ];
 

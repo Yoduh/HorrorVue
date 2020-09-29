@@ -1,84 +1,89 @@
 <template>
-    <div class="franchise-panel" :id="'franchise' + franchise.id" @wheel.prevent="scrollHorizontal($event, franchise.id)">
-        <!-- <draggable v-model="franchise.movies" group="movies" @start="drag=true" @end="drag=false" class="flex"> -->
-            <v-container fluid class="franchise-container">
-                <v-row class="movieRow">
-                    <v-col v-for="movie in franchise.movies" :key="movie.id" class="movieColumn justify-sm-space-between">
-                        <collection-movie-card :result="movie" @info="info(movie)" />
-                        <!-- rankings -->
-                        <v-spacer />
-                        <div class="rankingRow d-flex flex-column">
-                            <div>Alex: #1</div>
-                            <div>Noelle: #2</div>
-                        </div>
-                    </v-col>
-                </v-row>
-            </v-container>
-        <!-- </draggable> -->
-    </div>
+  <div
+    class="franchise-panel"
+    :id="'franchise' + franchise.id"
+    @wheel.prevent="scrollHorizontal($event, franchise.id)"
+  >
+    <!-- <draggable v-model="franchise.movies" group="movies" @start="drag=true" @end="drag=false" class="flex"> -->
+    <v-container fluid class="franchise-container">
+      <v-row class="movieRow">
+        <v-col
+          v-for="movie in franchise.movies"
+          :key="movie.id"
+          class="movieColumn justify-sm-space-between"
+        >
+          <collection-movie-card :result="movie" @info="info(movie)" />
+          <!-- rankings -->
+          <v-spacer />
+          <div class="rankingRow d-flex flex-column">
+            <div>Alex: #1</div>
+            <div>Noelle: #2</div>
+          </div>
+        </v-col>
+      </v-row>
+    </v-container>
+    <!-- </draggable> -->
+  </div>
 </template>
 
 <script>
-import CollectionMovieCard from '@/components/cards/CollectionMovieCard';
+import CollectionMovieCard from "@/components/cards/CollectionMovieCard";
 // import draggable from 'vuedraggable'
 
 export default {
-    name: "FranchisePanel",
-    props:
-        ['franchise']
-    ,
-    components: {
-        CollectionMovieCard,
-        // draggable
-    },
-    data() {
-        return {
-            ops: {
-                vuescroll: {
-                    sizeStrategy:"number"
-                },
-                bar: {
-                    keepShow: true,
-                    size: "10px"
-                }
-            }
-        }
-    },
-    methods: {
-        info(id) {
-            this.franchise.movies.forEach(movie => {
-                if (movie.id === id)
-                {
-                    movie.show = !movie.show;
-                    return;
-                }
-            })
+  name: "FranchisePanel",
+  props: ["franchise"],
+  components: {
+    CollectionMovieCard
+    // draggable
+  },
+  data() {
+    return {
+      ops: {
+        vuescroll: {
+          sizeStrategy: "number"
         },
-        scrollHorizontal(e, id) {
-            var el = document.getElementById('franchise' + id);
-            e = window.event || e;
-            var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
-            el.scrollLeft -= (delta * 80); // Multiplied by 80
-            e.preventDefault();
+        bar: {
+          keepShow: true,
+          size: "10px"
         }
+      }
+    };
+  },
+  methods: {
+    info(id) {
+      this.franchise.movies.forEach(movie => {
+        if (movie.id === id) {
+          movie.show = !movie.show;
+          return;
+        }
+      });
+    },
+    scrollHorizontal(e, id) {
+      var el = document.getElementById("franchise" + id);
+      e = window.event || e;
+      var delta = Math.max(-1, Math.min(1, e.wheelDelta || -e.detail));
+      el.scrollLeft -= delta * 80; // Multiplied by 80
+      e.preventDefault();
     }
-}
+  }
+};
 </script>
 
 <style scoped>
 .row {
-    margin: 0;
+  margin: 0;
 }
 .movieRow {
-    flex-wrap: nowrap;
+  flex-wrap: nowrap;
 }
-.franchise-panel{
-    width: 100%;
-    overflow: auto;
+.franchise-panel {
+  width: 100%;
+  overflow: auto;
 }
 .rankingRow {
-    position: relative;
-    top: -15px;
+  position: relative;
+  top: -15px;
 }
 /* height (horizontal) */
 ::-webkit-scrollbar {
@@ -103,4 +108,3 @@ export default {
   background: #555;
 }
 </style>
-

@@ -60,7 +60,10 @@ namespace HorrorVue.Web.Controllers
 			ranking.CreatedOn = DateTime.UtcNow;
 			ranking.UpdatedOn = DateTime.UtcNow;
 			ServiceResponse<Ranking> createdRanking = _rankingService.CreateRanking(ranking);
-			return Ok(createdRanking);
+			if (createdRanking.IsSuccess)
+				return Ok(createdRanking.Data);
+			else
+				return BadRequest(createdRanking);
 		}
 
 		[HttpGet("/api/ranking/{id}")]
@@ -68,6 +71,25 @@ namespace HorrorVue.Web.Controllers
 		{
 			_logger.LogInformation($"Getting ranking {id}");
 			var response = _rankingService.GetRankingById(id);
+			return Ok(response);
+		}
+
+		[HttpPatch("/api/ranking/{id}")]
+		public ActionResult UpdateRanking([FromBody] Ranking ranking, int id)
+		{
+			_logger.LogInformation($"Getting ranking {id}");
+			var dbRanking = _rankingService.GetRankingById(id);
+			if (dbRanking == null)
+				return BadRequest(new ServiceResponse<bool>
+				{
+					IsSuccess = false,
+					Message = "Ranking ID not found",
+					Time = DateTime.UtcNow,
+					Data = false
+				});
+			dbRanking.Order = ranking.Order;
+			dbRanking.UpdatedOn = DateTime.UtcNow;
+			var response = _rankingService.UpdateRanking(dbRanking);
 			return Ok(response);
 		}
 

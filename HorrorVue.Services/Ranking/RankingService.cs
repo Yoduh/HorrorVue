@@ -99,8 +99,22 @@ namespace HorrorVue.Services.Ranking
 
 		public Data.Models.Ranking GetRankingById(int rankingId)
 		{
-			return _db.Rankings
-				.First(ranking => ranking.Id == rankingId);
+			try
+			{
+				return _db.Rankings
+					.First(ranking => ranking.Id == rankingId);
+			}
+			catch (Exception e)
+			{
+				return null;
+			}
+		}
+
+		public Data.Models.Ranking UpdateRanking(Data.Models.Ranking ranking)
+		{
+			var res = _db.Rankings.Update(ranking).Entity;
+			_db.SaveChanges();
+			return res;
 		}
 	}
 }
