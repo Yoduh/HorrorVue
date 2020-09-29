@@ -76,6 +76,7 @@ export default {
 }
 .movieRow {
   flex-wrap: nowrap;
+  width: fit-content;
 }
 .franchise-panel {
   width: 100%;

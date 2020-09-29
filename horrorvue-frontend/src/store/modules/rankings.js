@@ -18,6 +18,21 @@ const actions = {
       return ranking.userId === rootState.user.user.id;
     });
     commit("setUserRankings", userRankings);
+  },
+  addOrUpdateRankings: ({ dispatch }, ranking) => {
+    let updated = false;
+    const newRankings = state.collectionRankings.map(r => {
+      if (r.id === ranking.id) {
+        updated = true;
+        return ranking;
+      } else {
+        return r;
+      }
+    });
+    if (!updated) {
+      newRankings.push(ranking);
+    }
+    dispatch("setCollectionRankings", newRankings);
   }
 };
 

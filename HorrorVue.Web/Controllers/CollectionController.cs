@@ -48,7 +48,7 @@ namespace HorrorVue.Web.Controllers
 			collection.CreatedOn = DateTime.UtcNow;
 			collection.UpdatedOn = DateTime.UtcNow;
 			var collectionModel = CollectionMapper.SerializeCollection(collection);
-			var user = _userService.GetUserByGoogleId(collection.UserId);
+			var user = _userService.GetUserById(collection.UserId);
 			var collectionToAdd = new AppUserCollection { AppUserId = user.Id, CollectionId = collectionModel.Id };
 			collectionModel.AppUsers.Add(collectionToAdd);
 			ServiceResponse<Collection> createdCollection = _collectionService.CreateCollection(collectionModel);

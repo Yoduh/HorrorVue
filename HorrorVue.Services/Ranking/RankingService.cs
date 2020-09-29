@@ -110,11 +110,30 @@ namespace HorrorVue.Services.Ranking
 			}
 		}
 
-		public Data.Models.Ranking UpdateRanking(Data.Models.Ranking ranking)
+		public ServiceResponse<Data.Models.Ranking> UpdateRanking(Data.Models.Ranking ranking)
 		{
-			var res = _db.Rankings.Update(ranking).Entity;
-			_db.SaveChanges();
-			return res;
+			try
+			{
+				_db.Rankings.Update(ranking);
+				_db.SaveChanges();
+				return new ServiceResponse<Data.Models.Ranking>
+				{
+					Time = DateTime.UtcNow,
+					IsSuccess = true,
+					Message = "Ranking updated",
+					Data = ranking
+				};
+			}
+			catch (Exception e)
+			{
+				return new ServiceResponse<Data.Models.Ranking>
+				{
+					Time = DateTime.UtcNow,
+					IsSuccess = false,
+					Message = e.StackTrace,
+					Data = ranking
+				};
+			}
 		}
 	}
 }

@@ -11,6 +11,6 @@ namespace HorrorVue.Services.Ranking
 		Data.Models.Ranking GetRankingByCollectionId(int collectionId);
 		ServiceResponse<Data.Models.Ranking> CreateRanking(Data.Models.Ranking ranking);
 		ServiceResponse<bool> DeleteRanking(int rankingId);
-		Data.Models.Ranking UpdateRanking(Data.Models.Ranking id);
+		ServiceResponse<Data.Models.Ranking> UpdateRanking(Data.Models.Ranking id);
 	}
 }

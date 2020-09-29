@@ -96,7 +96,7 @@ namespace HorrorVue.Services.User
 				return _db.AppUsers
 					.Include(user => user.Collections)    // Join Relationship
 					.ThenInclude(row => row.Collection)
-					.First(user => user.Id.Equals(userId));
+					.First(user => user.Id == int.Parse(userId));
 			}
 			catch (InvalidOperationException e)
 			{

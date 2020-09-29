@@ -1,8 +1,4 @@
 <template>
-  <!-- <li class="list-group-item" v-for="(movie, index) in collection.movies" :key="movie.id">
-            {{ movie.title }}
-            <span class="badge">{{ index }}</span>
-          </li> -->
   <v-list dense class="blue-grey darken-4">
     <v-list-item-group v-model="movies">
       <p class="font-italic text-caption grey--text text--lighten-1 mb-1 ml-3">
@@ -64,11 +60,14 @@ export default {
     return {
       isDragging: false,
       delayedDragging: false,
-      movies: this.collection.movies
+      movies: this.collection.movies,
+      userRanking: this.userRankings().find(
+        ranking => ranking.collectionId === this.collection.id
+      )
     };
   },
   methods: {
-    ...mapActions(["setUserRankings"]),
+    ...mapActions(["setUserRankings", "addOrUpdateRankings"]),
     ...mapGetters(["userRankings"]),
     orderList() {
       this.list = this.list.sort((one, two) => {
@@ -82,18 +81,21 @@ export default {
         (!relatedElement || !relatedElement.fixed) && !draggedElement.fixed
       );
     },
-    saveRankings() {
+    async saveRankings() {
       // update existing ranking
-      const existing = this.userRankings.filter(
-        ranking => ranking.collectionId === this.collection.id
-      );
-      if (existing.length > 0) {
-        db.updateRanking(existing, this.movies);
+      console.log("updating ranking");
+      if (this.userRanking !== undefined) {
+        const res = await db.updateRanking(this.userRanking, this.movies);
+        if (res.data.isSuccess) this.addOrUpdateRankings(res.data.data);
+        else console.log("error updating ranking", res.data.message);
       }
       // create new ranking
       else {
-        db.createRanking(this.collection, this.movies);
+        const res = await db.createRanking(this.collection, this.movies);
+        if (res.data.isSuccess) this.addOrUpdateRankings(res.data);
+        else console.log("error creating ranking", res.data.message);
       }
+      this.$emit("close");
     }
   },
   computed: {
@@ -113,6 +115,21 @@ export default {
       }
       this.$nextTick(() => {
         this.delayedDragging = false;
+      });
+    }
+  },
+  created() {
+    const userRanking = this.userRankings().find(
+      ranking => ranking.collectionId === this.collection.id
+    );
+    const movs = this.movies;
+    if (userRanking !== undefined) {
+      this.movies.sort(function(a, b) {
+        console.log("a.id", a.id, "b", b);
+        return (
+          userRanking.order[movs.indexOf(a)] -
+          userRanking.order[movs.indexOf(b)]
+        );
       });
     }
   }

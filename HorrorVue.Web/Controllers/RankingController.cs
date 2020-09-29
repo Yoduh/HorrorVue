@@ -59,11 +59,8 @@ namespace HorrorVue.Web.Controllers
 			_logger.LogInformation("Creating ranking...");
 			ranking.CreatedOn = DateTime.UtcNow;
 			ranking.UpdatedOn = DateTime.UtcNow;
-			ServiceResponse<Ranking> createdRanking = _rankingService.CreateRanking(ranking);
-			if (createdRanking.IsSuccess)
-				return Ok(createdRanking.Data);
-			else
-				return BadRequest(createdRanking);
+			var createdRanking = _rankingService.CreateRanking(ranking);
+			return Ok(createdRanking);
 		}
 
 		[HttpGet("/api/ranking/{id}")]

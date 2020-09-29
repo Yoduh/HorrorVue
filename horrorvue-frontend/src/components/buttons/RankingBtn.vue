@@ -4,7 +4,7 @@
       <template v-slot:activator="{ on, attrs }">
         <v-btn v-bind="attrs" v-on="on">Set Ranking</v-btn>
       </template>
-      <ranking-modal :collection="collection" />
+      <ranking-modal :collection="collection" @close="dialog = false" />
     </v-dialog>
   </div>
 </template>
