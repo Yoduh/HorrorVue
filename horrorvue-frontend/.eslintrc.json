@@ -1,17 +1,14 @@
 {
-  "extends": ["prettier"],
+  "root": true,
+  "extends": [
+    "plugin:vue/essential",
+    "plugin:prettier/recommended",
+    "eslint:recommended"
+  ],
   "plugins": ["prettier"],
   "rules": {
     "prettier/prettier": ["error"],
     "arrow-parens": 0
   },
-  "parser": "babel-eslint",
-  "parserOptions": {
-    "sourceType": "module",
-    "allowImportExportEverywhere": true,
-    "ecmaVersion": 2017
-  },
-  "env": {
-    "es6": true
-  }
+  "parser": "vue-eslint-parser"
 }
