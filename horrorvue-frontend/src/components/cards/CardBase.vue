@@ -6,8 +6,13 @@
       class="white--text align-end"
       max-width="150"
     ></v-img>
-    <v-card-title v-text="result.title" class="text-subtitle-2"></v-card-title>
-    <v-card-subtitle v-text="result.release_date.substring(0, 4)" class="pb-0"></v-card-subtitle>
+    <v-card-title
+      v-text="result.title"
+      class="text-subtitle-2 px-2 py-2"
+    ></v-card-title>
+    <v-card-subtitle class="px-2 py-0">
+      {{ result.release_date.substring(0, 4) }} <slot name="info"></slot>
+    </v-card-subtitle>
 
     <slot></slot>
   </v-card>
@@ -22,6 +27,7 @@ export default {
       if (apiPath && apiPath.length > 0)
         return `https://image.tmdb.org/t/p/w500${apiPath}`;
       else {
+        // eslint-disable-next-line no-undef
         return require("@/assets/no-image-found.png");
       }
     }
@@ -42,6 +48,8 @@ export default {
 .v-card__subtitle {
   color: black !important;
   background-color: white;
+  display: flex;
+  align-items: center;
 }
 .v-card__text {
   color: black !important;

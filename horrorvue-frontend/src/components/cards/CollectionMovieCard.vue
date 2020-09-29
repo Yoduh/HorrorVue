@@ -1,13 +1,13 @@
 <template>
   <card-base :result="result">
-    <v-card-actions :class="`rounded-b`">
+    <template v-slot:info>
       <v-spacer></v-spacer>
       <info-modal
         :title="result.title"
         :subtitle="result.release_date.substring(0, 4)"
         :description="result.overview"
       />
-    </v-card-actions>
+    </template>
   </card-base>
 </template>
 
@@ -29,5 +29,9 @@ export default {
 <style scoped>
 .v-card__actions {
   background-color: white;
+  padding: 0;
+}
+.v-card__title {
+  background-color: red !important;
 }
 </style>

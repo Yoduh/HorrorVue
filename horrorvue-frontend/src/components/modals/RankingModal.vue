@@ -122,13 +122,10 @@ export default {
     const userRanking = this.userRankings().find(
       ranking => ranking.collectionId === this.collection.id
     );
-    const movs = this.movies;
     if (userRanking !== undefined) {
       this.movies.sort(function(a, b) {
-        console.log("a.id", a.id, "b", b);
         return (
-          userRanking.order[movs.indexOf(a)] -
-          userRanking.order[movs.indexOf(b)]
+          userRanking.order.indexOf(a.id) - userRanking.order.indexOf(b.id)
         );
       });
     }

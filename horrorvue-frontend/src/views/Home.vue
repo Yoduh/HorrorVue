@@ -3,7 +3,7 @@
     <div v-if="!$auth.isAuthenticated">
       Log in to use this site
     </div>
-    <div v-else> 
+    <div v-else>
       <search-bar @search="searchFranchise"></search-bar>
       <!-- <icon-medal
         width="50"
@@ -22,8 +22,12 @@
       <div v-else>
         <v-expansion-panels dark>
           <v-expansion-panel
-            v-for="collection in collectionsView" :key="collection.id">
-            <v-expansion-panel-header>{{ collection.name }}</v-expansion-panel-header>
+            v-for="collection in collectionsView"
+            :key="collection.id"
+          >
+            <v-expansion-panel-header>{{
+              collection.name
+            }}</v-expansion-panel-header>
             <v-expansion-panel-content>
               <button-bar>
                 <ranking-btn :collection="collection" />
@@ -39,11 +43,11 @@
 </template>
 
 <script>
-import SearchBar from '@/components/SearchBar';
-import FranchisePanel from '@/components/FranchisePanel';
-import ButtonBar from '@/components/ButtonBar';
-import RankingBtn from '@/components/buttons/RankingBtn';
-import { mapGetters, mapActions } from 'vuex';
+import SearchBar from "@/components/SearchBar";
+import FranchisePanel from "@/components/FranchisePanel";
+import ButtonBar from "@/components/ButtonBar";
+import RankingBtn from "@/components/buttons/RankingBtn";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "Home",
@@ -56,7 +60,7 @@ export default {
   data() {
     return {
       noResults: false
-    }
+    };
   },
   computed: {
     collectionsView() {
@@ -64,8 +68,8 @@ export default {
     }
   },
   methods: {
-    ...mapGetters(['collections']),
-    ...mapActions(['setSearchResults', 'setCollections']),
+    ...mapGetters(["collections"]),
+    ...mapActions(["setSearchResults", "setCollections"]),
 
     searchFranchise(results) {
       if (results.data.length > 0) {
@@ -77,5 +81,5 @@ export default {
       }
     }
   }
-}
+};
 </script>
