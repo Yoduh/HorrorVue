@@ -3,7 +3,9 @@
     <v-card-actions :class="`rounded-b-xl`">
       <v-btn v-if="!result.added" text @click="addMovie(result)">Add</v-btn>
       <v-btn v-else text @click="removeMovie(result)">Remove</v-btn>
-      <v-icon class="checkmark" :class="{ selected: result.added }">mdi-checkbox-marked-circle</v-icon>
+      <v-icon class="checkmark" :class="{ selected: result.added }"
+        >mdi-checkbox-marked-circle</v-icon
+      >
       <v-spacer></v-spacer>
       <info-modal
         :title="result.title"

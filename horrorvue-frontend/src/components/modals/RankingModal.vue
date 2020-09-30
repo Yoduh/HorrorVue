@@ -83,16 +83,18 @@ export default {
     },
     async saveRankings() {
       // update existing ranking
-      console.log("updating ranking");
+      console.log("userRanking", this.userRanking);
       if (this.userRanking !== undefined) {
+        console.log("updating ranking");
         const res = await db.updateRanking(this.userRanking, this.movies);
         if (res.data.isSuccess) this.addOrUpdateRankings(res.data.data);
         else console.log("error updating ranking", res.data.message);
       }
       // create new ranking
       else {
+        console.log("creating ranking");
         const res = await db.createRanking(this.collection, this.movies);
-        if (res.data.isSuccess) this.addOrUpdateRankings(res.data);
+        if (res.data.isSuccess) this.addOrUpdateRankings(res.data.data);
         else console.log("error creating ranking", res.data.message);
       }
       this.$emit("close");

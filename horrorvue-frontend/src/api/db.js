@@ -69,6 +69,7 @@ export default {
       });
   },
   createRanking(collection, movies) {
+    console.log("ok im sending to CREATE endpoint...");
     const ranking = {
       userId: store.getters.user.id,
       collectionId: collection.id,
@@ -77,6 +78,7 @@ export default {
     return axios.post(`${ROOT_URL}/api/ranking`, ranking);
   },
   updateRanking(ranking, movies) {
+    console.log("ok im sending to update endpoint...");
     ranking = { ...ranking, order: movies.map(m => m.id) };
     return axios.patch(`${ROOT_URL}/api/ranking/${ranking.id}`, ranking);
   }

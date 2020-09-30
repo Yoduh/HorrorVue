@@ -4,52 +4,47 @@
     :id="'franchise' + franchise.id"
     @wheel.prevent="scrollHorizontal($event, franchise.id)"
   >
-    <!-- <draggable v-model="franchise.movies" group="movies" @start="drag=true" @end="drag=false" class="flex"> -->
     <v-container fluid class="franchise-container">
-      <v-row>
-        <v-menu transition="fab-transition">
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn
-              elevation="2"
-              fab
-              @click="toggleRankings"
-              v-bind="attrs"
-              v-on="on"
-              ><v-icon>{{ showRankings }}</v-icon>
-            </v-btn>
-          </template>
-        </v-menu>
+      <v-row align="center">
+        <v-btn elevation="2" class="mr-2" fab small @click="expand = !expand"
+          ><v-icon>{{ showRankings }}</v-icon>
+        </v-btn>
         Toggle Rankings
       </v-row>
       <v-row class="movieRow">
-        <v-col
-          v-for="movie in franchise.movies"
-          :key="movie.id"
-          class="movieColumn justify-sm-start"
-        >
-          <ranking-table></ranking-table>
-          <collection-movie-card :result="movie" @info="info(movie)" />
-          <!-- rankings -->
-          <!-- <v-spacer /> -->
-        </v-col>
+        <transition-group name="flip-movies" tag="div">
+          <v-col
+            v-for="movie in franchise.movies"
+            :key="movie.id"
+            class="movieColumn justify-sm-start"
+          >
+            <collapse-transition>
+              <ranking-table
+                v-show="expand"
+                :franchise="franchise"
+                :movieId="movie.id"
+              ></ranking-table>
+            </collapse-transition>
+            <collection-movie-card :result="movie" @info="info(movie)" />
+          </v-col>
+        </transition-group>
       </v-row>
     </v-container>
-    <!-- </draggable> -->
   </div>
 </template>
 
 <script>
 import CollectionMovieCard from "@/components/cards/CollectionMovieCard";
 import RankingTable from "@/components/RankingTable";
-// import draggable from 'vuedraggable'
+import { CollapseTransition } from "@ivanv/vue-collapse-transition";
 
 export default {
   name: "FranchisePanel",
   props: ["franchise"],
   components: {
     CollectionMovieCard,
-    RankingTable
-    // draggable
+    RankingTable,
+    CollapseTransition
   },
   data() {
     return {
@@ -62,12 +57,13 @@ export default {
           size: "10px"
         }
       },
-      expanded: false
+      expand: false,
+      isOpenA: false
     };
   },
   computed: {
     showRankings() {
-      if (this.expanded) return "mdi-chevron-up";
+      if (this.expand) return "mdi-chevron-up";
       else return "mdi-chevron-down";
     }
   },
@@ -102,6 +98,11 @@ export default {
   flex-wrap: nowrap;
   width: fit-content;
 }
+.movieRow > div {
+  display: flex;
+  flex-wrap: nowrap;
+  width: fit-content;
+}
 .franchise-panel {
   width: 100%;
   overflow: auto;
@@ -110,12 +111,14 @@ export default {
   position: relative;
   top: -15px;
 }
+.flip-movies-move {
+  transition: transform 0.8s ease;
+}
 /* height (horizontal) */
 ::-webkit-scrollbar {
   height: 10px;
   cursor: pointer;
 }
-
 /* Track */
 ::-webkit-scrollbar-track {
   background: transparent;

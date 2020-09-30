@@ -20,7 +20,13 @@
     <div v-if="!$auth.loading">
       <v-tooltip bottom>
         <template v-slot:activator="{ on, attrs }">
-          <v-btn v-if="!$auth.isAuthenticated" icon @click="navLogin" v-bind="attrs" v-on="on">
+          <v-btn
+            v-if="!$auth.isAuthenticated"
+            icon
+            @click="navLogin"
+            v-bind="attrs"
+            v-on="on"
+          >
             <v-icon>mdi-login</v-icon>
           </v-btn>
         </template>
@@ -29,7 +35,13 @@
 
       <v-tooltip bottom>
         <template v-slot:activator="{ on, attrs }">
-          <v-btn v-if="$auth.isAuthenticated" icon @click="navLogout" v-bind="attrs" v-on="on">
+          <v-btn
+            v-if="$auth.isAuthenticated"
+            icon
+            @click="navLogout"
+            v-bind="attrs"
+            v-on="on"
+          >
             <v-icon>mdi-logout</v-icon>
           </v-btn>
         </template>

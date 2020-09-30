@@ -3,7 +3,7 @@
     <v-main v-if="!this.$auth.loading">
       <navbar />
       <v-container fluid>
-      <router-view></router-view>
+        <router-view></router-view>
       </v-container>
     </v-main>
     <div v-else>
@@ -14,9 +14,9 @@
 
 <script>
 import Navbar from "@/components/Navbar.vue";
-import db from '@/api/db'
+import db from "@/api/db";
 import store from "@/store";
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "App",
@@ -24,26 +24,36 @@ export default {
     Navbar
   },
   methods: {
-      ...mapActions(['finalizeLogin', 'setCollections']),
-      ...mapGetters(['isLoading'])
+    ...mapActions(["finalizeLogin", "setCollections"]),
+    ...mapGetters(["isLoading"])
   },
   // reset store if user refreshes page
   async updated() {
-    console.log("APP RELOADED", this.$auth.isAuthenticated, store.getters.user, this.isLoading());
-    if (this.$auth.isAuthenticated && store.getters.user === null && !this.isLoading()) {
-      const div = this.$auth.user.sub.indexOf('|');
+    console.log(
+      "APP RELOADED",
+      this.$auth.isAuthenticated,
+      store.getters.user,
+      this.isLoading()
+    );
+    if (
+      this.$auth.isAuthenticated &&
+      store.getters.user === null &&
+      !this.isLoading()
+    ) {
+      const div = this.$auth.user.sub.indexOf("|");
       const id = this.$auth.user.sub.slice(div + 1);
       const user = await db.getUser(id);
       this.finalizeLogin(user);
-      if (user.collections)
-        this.setCollections(user.collections);
+      if (user.collections) this.setCollections(user.collections);
     }
   }
 };
 </script>
 
 <style>
-html, body, .v-main {
+html,
+body,
+.v-main {
   color: white;
   background-color: rgb(40, 44, 52);
 }

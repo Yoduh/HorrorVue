@@ -12,9 +12,9 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(rank, i) in mockData" :key="i">
-          <td>{{ rank.name }}</td>
-          <td>{{ rank.rank }}</td>
+        <tr v-for="(user, i) in users" :key="i">
+          <td>{{ user.name }}</td>
+          <td>{{ rankForMovie(movieId, user.rankings) }}</td>
         </tr>
       </tbody>
     </template>
@@ -24,9 +24,10 @@
 <script>
 export default {
   name: "RankingTable",
-  props: ["rankings", "collections"],
+  props: ["franchise", "movieId"],
   data() {
     return {
+      users: [],
       mockData: [
         {
           name: "Alex",
@@ -38,6 +39,26 @@ export default {
         }
       ]
     };
+  },
+  methods: {
+    rankForMovie(movieId, rankings) {
+      return rankings.indexOf(movieId) + 1;
+    }
+  },
+  created() {
+    if (this.franchise.rankings.length > 0) {
+      this.users = this.franchise.rankings.map(r => {
+        let appUser = this.franchise.appUsers.find(u => u.id == r.userId);
+        return {
+          name: appUser.firstName + " " + appUser.lastName,
+          rankings: r.order
+        };
+      });
+    }
+    this.users.forEach(user => {
+      console.log("name", user.name);
+      console.log("rankings", user.rankings);
+    });
   }
 };
 </script>
