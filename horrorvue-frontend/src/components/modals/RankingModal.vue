@@ -1,13 +1,14 @@
 <template>
   <v-list dense class="blue-grey darken-4">
-    <v-list-item-group :value="comp">
+    <v-list-item-group :value="movies">
+      <h1>Your Rankings</h1>
       <p class="font-italic text-caption grey--text text--lighten-1 mb-1 ml-3">
         Drag and drop to set rankings
       </p>
       <draggable
         class="list-group"
         tag="ul"
-        v-model="comp"
+        v-model="movies"
         v-bind="dragOptions"
         :move="onMove"
         @start="isDragging = true"
@@ -15,7 +16,7 @@
       >
         <transition-group type="transition" :name="'flip-list'">
           <v-list-item
-            v-for="(movie, index) in comp"
+            v-for="(movie, index) in movies"
             :key="movie.id"
             class="pl-2 py-2"
           >
@@ -57,8 +58,6 @@ export default {
   },
   data() {
     return {
-      userRanking: undefined,
-      displayRanking: [],
       isDragging: false,
       delayedDragging: false
     };
@@ -81,7 +80,6 @@ export default {
       this.$emit("close");
       let res = null;
       // update existing ranking
-      console.log("sc", this.selectedCollection());
       const userRanking = this.selectedCollection().rankings.find(
         r => r.userId === this.user().id
       );
@@ -98,15 +96,12 @@ export default {
 
       if (res.data.isSuccess) {
         this.updateCollectionRanking(res.data.data);
-        // this.addOrUpdateRankings(res.data.data);
-        // this.userRanking = res.data.data;
-        // only do this if user is the selected sort!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        // this.sort(this.userRanking);
+        this.$emit("ranking-saved");
       }
     }
   },
   computed: {
-    comp: {
+    movies: {
       get() {
         return this.tempRanking();
       },

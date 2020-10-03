@@ -47,7 +47,6 @@ export default {
           (a, b) => new Date(a.release_date) - new Date(b.release_date)
         );
       } else {
-        console.log("sorting display to match ", this.selectedCollection());
         const order = this.selectedCollection().rankings.find(
           r => r.userId === userId
         ).order;

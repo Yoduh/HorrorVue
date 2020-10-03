@@ -24,7 +24,7 @@
 <script>
 export default {
   name: "RankingTable",
-  props: ["franchise", "movieId"],
+  props: ["collection", "movieId"],
   data() {
     return {
       users: [],
@@ -46,9 +46,9 @@ export default {
     }
   },
   created() {
-    if (this.franchise.rankings.length > 0) {
-      this.users = this.franchise.rankings.map(r => {
-        let appUser = this.franchise.appUsers.find(u => u.id == r.userId);
+    if (this.collection.rankings.length > 0) {
+      this.users = this.collection.rankings.map(r => {
+        let appUser = this.collection.appUsers.find(u => u.id == r.userId);
         return {
           name: appUser.firstName + " " + appUser.lastName.charAt(0) + ".",
           rankings: r.order

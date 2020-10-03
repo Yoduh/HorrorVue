@@ -62,6 +62,7 @@ const actions = {
     if (userRanking === undefined) {
       // no ranking, sort by default
       commit("setRankOrderMovies", state.selectedCollection.movies);
+      return;
     }
     const sorted = [...state.selectedCollection.movies].sort(function(a, b) {
       return userRanking.order.indexOf(a.id) - userRanking.order.indexOf(b.id);

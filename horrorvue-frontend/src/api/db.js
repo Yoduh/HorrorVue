@@ -61,13 +61,9 @@ export default {
       });
   },
   async getRankingsForCollections(collIds) {
-    axios
-      .get(`${ROOT_URL}/api/ranking/collections`, {
-        params: { collections: collIds }
-      })
-      .then(res => {
-        store.dispatch("setCollectionRankings", res.data);
-      });
+    axios.get(`${ROOT_URL}/api/ranking/collections`, {
+      params: { collections: collIds }
+    });
   },
   createRanking(collection, movies) {
     const ranking = {

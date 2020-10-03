@@ -1,21 +1,22 @@
 <template>
   <div
+    v-if="collection"
     class="franchise-panel"
-    :id="'franchise' + franchise.id"
-    @wheel="scrollHorizontal($event, franchise.id)"
+    :id="'franchise' + collection.id"
+    @wheel="scrollHorizontal($event, collection.id)"
   >
     <v-container fluid class="franchise-container pt-0">
       <v-row class="movieRow">
         <transition-group name="flip-movies" tag="div">
           <v-col
-            v-for="movie in franchise.movies"
+            v-for="movie in this.$store.getters.selectedCollection.movies"
             :key="movie.id"
             class="movieColumn justify-sm-start pt-1"
           >
             <collapse-transition>
               <ranking-table
                 v-show="expandRankings"
-                :franchise="franchise"
+                :collection="collection"
                 :movieId="movie.id"
               ></ranking-table>
             </collapse-transition>
@@ -31,10 +32,11 @@
 import CollectionMovieCard from "@/components/cards/CollectionMovieCard";
 import RankingTable from "@/components/RankingTable";
 import { CollapseTransition } from "@ivanv/vue-collapse-transition";
+import { mapGetters } from "vuex";
 
 export default {
   name: "FranchisePanel",
-  props: ["franchise", "expandRankings"],
+  props: ["expandRankings"],
   components: {
     CollectionMovieCard,
     RankingTable,
@@ -50,12 +52,14 @@ export default {
           keepShow: true,
           size: "10px"
         }
-      }
+      },
+      collection: this.selectedCollection()
     };
   },
   methods: {
+    ...mapGetters(["selectedCollection"]),
     info(id) {
-      this.franchise.movies.forEach(movie => {
+      this.collection.movies.forEach(movie => {
         if (movie.id === id) {
           movie.show = !movie.show;
           return;

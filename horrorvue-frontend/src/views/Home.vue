@@ -32,10 +32,10 @@
             <v-expansion-panel-content>
               <button-bar>
                 <v-col cols="12" md="auto" class="pb-3 pb-md-0">
-                  <ranking-btn />
+                  <ranking-btn @ranking-saved="rankingSaved" />
                 </v-col>
                 <v-col cols="12" md="4" class="pb-0 pl-0">
-                  <sort-select />
+                  <sort-select ref="sorting" />
                 </v-col>
               </button-bar>
               <v-btn
@@ -47,10 +47,7 @@
                 ><v-icon>{{ showRankings }}</v-icon>
               </v-btn>
               Toggle Rankings
-              <franchise-panel
-                :franchise="collection"
-                :expandRankings="expand"
-              />
+              <franchise-panel :expandRankings="expand" />
               <!-- columns of rankings.  sort by person puts  -->
             </v-expansion-panel-content>
           </v-expansion-panel>
@@ -117,13 +114,12 @@ export default {
     },
     select(id) {
       this.selectCollectionById(id);
+    },
+    rankingSaved() {
+      // force a resort in case franchise is sorted by user ranking and user updates their ranking
+      const input = this.$refs.sorting[0].$children[0];
+      input.setValue(input.value);
     }
-  },
-  updated() {
-    console.log(
-      "colls",
-      this.$store.getters.collections.map(c => c.name)
-    );
   }
 };
 </script>
