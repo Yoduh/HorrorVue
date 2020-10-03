@@ -31,7 +31,4 @@ export default {
   background-color: white;
   padding: 0;
 }
-.v-card__title {
-  background-color: red !important;
-}
 </style>

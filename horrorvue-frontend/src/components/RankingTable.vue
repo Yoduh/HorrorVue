@@ -50,15 +50,11 @@ export default {
       this.users = this.franchise.rankings.map(r => {
         let appUser = this.franchise.appUsers.find(u => u.id == r.userId);
         return {
-          name: appUser.firstName + " " + appUser.lastName,
+          name: appUser.firstName + " " + appUser.lastName.charAt(0) + ".",
           rankings: r.order
         };
       });
     }
-    this.users.forEach(user => {
-      console.log("name", user.name);
-      console.log("rankings", user.rankings);
-    });
   }
 };
 </script>

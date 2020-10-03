@@ -1,10 +1,10 @@
 <template>
   <div>
-    <v-dialog v-model="dialog" max-width="600px">
+    <v-dialog v-model="dialog" max-width="600px" @click:outside="resetSort">
       <template v-slot:activator="{ on, attrs }">
         <v-btn v-bind="attrs" v-on="on">Set Ranking</v-btn>
       </template>
-      <ranking-modal :collection="collection" @close="dialog = false" />
+      <ranking-modal @close="dialog = false" />
     </v-dialog>
   </div>
 </template>
@@ -16,11 +16,15 @@ export default {
   components: {
     RankingModal
   },
-  props: ["collection"],
   data() {
     return {
       dialog: false
     };
+  },
+  methods: {
+    resetSort() {
+      this.$store.dispatch("resetTempRanking");
+    }
   }
 };
 </script>

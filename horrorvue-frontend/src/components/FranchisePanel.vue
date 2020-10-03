@@ -2,25 +2,19 @@
   <div
     class="franchise-panel"
     :id="'franchise' + franchise.id"
-    @wheel.prevent="scrollHorizontal($event, franchise.id)"
+    @wheel="scrollHorizontal($event, franchise.id)"
   >
-    <v-container fluid class="franchise-container">
-      <v-row align="center">
-        <v-btn elevation="2" class="mr-2" fab small @click="expand = !expand"
-          ><v-icon>{{ showRankings }}</v-icon>
-        </v-btn>
-        Toggle Rankings
-      </v-row>
+    <v-container fluid class="franchise-container pt-0">
       <v-row class="movieRow">
         <transition-group name="flip-movies" tag="div">
           <v-col
             v-for="movie in franchise.movies"
             :key="movie.id"
-            class="movieColumn justify-sm-start"
+            class="movieColumn justify-sm-start pt-1"
           >
             <collapse-transition>
               <ranking-table
-                v-show="expand"
+                v-show="expandRankings"
                 :franchise="franchise"
                 :movieId="movie.id"
               ></ranking-table>
@@ -40,7 +34,7 @@ import { CollapseTransition } from "@ivanv/vue-collapse-transition";
 
 export default {
   name: "FranchisePanel",
-  props: ["franchise"],
+  props: ["franchise", "expandRankings"],
   components: {
     CollectionMovieCard,
     RankingTable,
@@ -56,16 +50,8 @@ export default {
           keepShow: true,
           size: "10px"
         }
-      },
-      expand: false,
-      isOpenA: false
+      }
     };
-  },
-  computed: {
-    showRankings() {
-      if (this.expand) return "mdi-chevron-up";
-      else return "mdi-chevron-down";
-    }
   },
   methods: {
     info(id) {
@@ -80,11 +66,15 @@ export default {
       var el = document.getElementById("franchise" + id);
       e = window.event || e;
       var delta = Math.max(-1, Math.min(1, e.wheelDelta || -e.detail));
-      el.scrollLeft -= delta * 80; // Multiplied by 80
+      // if cant horizontal scroll anymore, return to vertical scrolling
+      if (
+        (el.scrollWidth - el.clientWidth === el.scrollLeft && delta < 0) ||
+        (el.scrollLeft === 0 && delta >= 0)
+      )
+        return;
+
+      el.scrollLeft -= delta * 40; // Multiplication factor changes speed of scroll
       e.preventDefault();
-    },
-    toggleRankings() {
-      this.expanded = !this.expanded;
     }
   }
 };

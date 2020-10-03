@@ -36,6 +36,7 @@ namespace HorrorVue.Web.Serialization
 			{
 				movies.Add(SerializeMovie(movie));
 			}
+			movies.Sort((x, y) => DateTime.Compare(DateTime.Parse(x.ReleaseDate), DateTime.Parse(y.ReleaseDate)));
 			return movies;
 		}
 

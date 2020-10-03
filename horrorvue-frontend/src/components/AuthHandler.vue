@@ -2,7 +2,9 @@
   <div>
     <div v-if="$auth.loading">Please wait...</div>
     <div v-else-if="!error">Loading collections...</div>
-    <div v-else>There was an error logging you in. Please try again later.</div>
+    <div v-else>
+      {{ error }}
+    </div>
   </div>
 </template>
 
@@ -39,6 +41,10 @@ export default {
       const div = this.$auth.user.sub.indexOf("|");
       const id = this.$auth.user.sub.slice(div + 1);
       const user = await db.getUser(id);
+      if (user === null) {
+        this.error =
+          "Our servers are down right now. Sorry! Please try again later.";
+      }
       if (user.collections) this.setCollections(user.collections);
       this.finalizeLogin(user);
       this.$router.push("/");

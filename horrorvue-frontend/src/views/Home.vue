@@ -24,15 +24,33 @@
           <v-expansion-panel
             v-for="collection in collectionsView"
             :key="collection.id"
+            @click="select(collection.id)"
           >
             <v-expansion-panel-header>{{
               collection.name
             }}</v-expansion-panel-header>
             <v-expansion-panel-content>
               <button-bar>
-                <ranking-btn :collection="collection" />
+                <v-col cols="12" md="auto" class="pb-3 pb-md-0">
+                  <ranking-btn />
+                </v-col>
+                <v-col cols="12" md="4" class="pb-0 pl-0">
+                  <sort-select />
+                </v-col>
               </button-bar>
-              <franchise-panel :franchise="collection" />
+              <v-btn
+                elevation="2"
+                class="mr-2"
+                fab
+                small
+                @click="expand = !expand"
+                ><v-icon>{{ showRankings }}</v-icon>
+              </v-btn>
+              Toggle Rankings
+              <franchise-panel
+                :franchise="collection"
+                :expandRankings="expand"
+              />
               <!-- columns of rankings.  sort by person puts  -->
             </v-expansion-panel-content>
           </v-expansion-panel>
@@ -47,6 +65,7 @@ import SearchBar from "@/components/SearchBar";
 import FranchisePanel from "@/components/FranchisePanel";
 import ButtonBar from "@/components/ButtonBar";
 import RankingBtn from "@/components/buttons/RankingBtn";
+import SortSelect from "@/components/buttons/SortSelect";
 import { mapGetters, mapActions } from "vuex";
 
 export default {
@@ -55,21 +74,37 @@ export default {
     SearchBar,
     FranchisePanel,
     ButtonBar,
-    RankingBtn
+    RankingBtn,
+    SortSelect
   },
   data() {
     return {
-      noResults: false
+      noResults: false,
+      expand: false,
+      date: null
     };
   },
   computed: {
     collectionsView() {
-      return this.collections();
+      try {
+        return this.$store.getters.collections.slice();
+      } catch (e) {
+        return [];
+      }
+    },
+    showRankings() {
+      if (this.expand) return "mdi-chevron-up";
+      else return "mdi-chevron-down";
     }
   },
   methods: {
-    ...mapGetters(["collections"]),
-    ...mapActions(["setSearchResults", "setCollections"]),
+    ...mapGetters(["collections", "selectedCollection", "user"]),
+    ...mapActions([
+      "setSearchResults",
+      "setCollections",
+      "selectCollectionById",
+      "setTempRanking"
+    ]),
 
     searchFranchise(results) {
       if (results.data.length > 0) {
@@ -79,7 +114,16 @@ export default {
       } else {
         this.noResults = true;
       }
+    },
+    select(id) {
+      this.selectCollectionById(id);
     }
+  },
+  updated() {
+    console.log(
+      "colls",
+      this.$store.getters.collections.map(c => c.name)
+    );
   }
 };
 </script>

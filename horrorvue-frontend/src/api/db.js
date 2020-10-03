@@ -23,7 +23,6 @@ export default {
   },
   // userId: google id
   async getUser(userId) {
-    console.log("url", `${ROOT_URL}/api/user/${userId}`);
     return axios
       .get(`${ROOT_URL}/api/user/${userId}`)
       .then(res => {
@@ -33,7 +32,9 @@ export default {
         return res.data;
       })
       .catch(err => {
-        if (err.response.status === 404) {
+        if (err.response === undefined) {
+          return null;
+        } else if (err.response.status === 404) {
           return this.createUser(store.getters.user);
         } else {
           console.log("err", err.response);
@@ -69,16 +70,14 @@ export default {
       });
   },
   createRanking(collection, movies) {
-    console.log("ok im sending to CREATE endpoint...");
     const ranking = {
-      userId: store.getters.user.id,
+      userId: store.getters.user.user.id,
       collectionId: collection.id,
       order: movies.map(m => m.id)
     };
     return axios.post(`${ROOT_URL}/api/ranking`, ranking);
   },
   updateRanking(ranking, movies) {
-    console.log("ok im sending to update endpoint...");
     ranking = { ...ranking, order: movies.map(m => m.id) };
     return axios.patch(`${ROOT_URL}/api/ranking/${ranking.id}`, ranking);
   }

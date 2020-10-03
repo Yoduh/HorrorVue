@@ -48,7 +48,7 @@ namespace HorrorVue.Services.Collection
 			try
 			{
 				var dbColl = _db.Collections.First(i => i.Id == collectionId);
-				var dbUser = _db.AppUsers.First(i => i.GoogleId.Equals(userId));
+				var dbUser = _db.AppUsers.First(user => user.Id == int.Parse(userId));
 
 				// you can either associate it using ids
 				var appUserCollection = new AppUserCollection

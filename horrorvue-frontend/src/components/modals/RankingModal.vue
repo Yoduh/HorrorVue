@@ -1,13 +1,13 @@
 <template>
   <v-list dense class="blue-grey darken-4">
-    <v-list-item-group v-model="movies">
+    <v-list-item-group :value="comp">
       <p class="font-italic text-caption grey--text text--lighten-1 mb-1 ml-3">
         Drag and drop to set rankings
       </p>
       <draggable
         class="list-group"
         tag="ul"
-        v-model="movies"
+        v-model="comp"
         v-bind="dragOptions"
         :move="onMove"
         @start="isDragging = true"
@@ -15,7 +15,7 @@
       >
         <transition-group type="transition" :name="'flip-list'">
           <v-list-item
-            v-for="(movie, index) in movies"
+            v-for="(movie, index) in comp"
             :key="movie.id"
             class="pl-2 py-2"
           >
@@ -55,25 +55,21 @@ export default {
   components: {
     draggable
   },
-  props: ["collection"],
   data() {
     return {
+      userRanking: undefined,
+      displayRanking: [],
       isDragging: false,
-      delayedDragging: false,
-      movies: this.collection.movies,
-      userRanking: this.userRankings().find(
-        ranking => ranking.collectionId === this.collection.id
-      )
+      delayedDragging: false
     };
   },
   methods: {
-    ...mapActions(["setUserRankings", "addOrUpdateRankings"]),
-    ...mapGetters(["userRankings"]),
-    orderList() {
-      this.list = this.list.sort((one, two) => {
-        return one.order - two.order;
-      });
-    },
+    ...mapActions([
+      "sortSelected",
+      "setTempRanking",
+      "updateCollectionRanking"
+    ]),
+    ...mapGetters(["selectedCollection", "user", "tempRanking"]),
     onMove({ relatedContext, draggedContext }) {
       const relatedElement = relatedContext.element;
       const draggedElement = draggedContext.element;
@@ -82,25 +78,42 @@ export default {
       );
     },
     async saveRankings() {
+      this.$emit("close");
+      let res = null;
       // update existing ranking
-      console.log("userRanking", this.userRanking);
-      if (this.userRanking !== undefined) {
-        console.log("updating ranking");
-        const res = await db.updateRanking(this.userRanking, this.movies);
-        if (res.data.isSuccess) this.addOrUpdateRankings(res.data.data);
-        else console.log("error updating ranking", res.data.message);
+      console.log("sc", this.selectedCollection());
+      const userRanking = this.selectedCollection().rankings.find(
+        r => r.userId === this.user().id
+      );
+      if (userRanking !== undefined) {
+        res = await db.updateRanking(userRanking, this.tempRanking());
       }
       // create new ranking
       else {
-        console.log("creating ranking");
-        const res = await db.createRanking(this.collection, this.movies);
-        if (res.data.isSuccess) this.addOrUpdateRankings(res.data.data);
-        else console.log("error creating ranking", res.data.message);
+        res = await db.createRanking(
+          this.selectedCollection(),
+          this.tempRanking()
+        );
       }
-      this.$emit("close");
+
+      if (res.data.isSuccess) {
+        this.updateCollectionRanking(res.data.data);
+        // this.addOrUpdateRankings(res.data.data);
+        // this.userRanking = res.data.data;
+        // only do this if user is the selected sort!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        // this.sort(this.userRanking);
+      }
     }
   },
   computed: {
+    comp: {
+      get() {
+        return this.tempRanking();
+      },
+      set(value) {
+        this.setTempRanking(value);
+      }
+    },
     dragOptions() {
       return {
         animation: 0,
@@ -117,18 +130,6 @@ export default {
       }
       this.$nextTick(() => {
         this.delayedDragging = false;
-      });
-    }
-  },
-  created() {
-    const userRanking = this.userRankings().find(
-      ranking => ranking.collectionId === this.collection.id
-    );
-    if (userRanking !== undefined) {
-      this.movies.sort(function(a, b) {
-        return (
-          userRanking.order.indexOf(a.id) - userRanking.order.indexOf(b.id)
-        );
       });
     }
   }

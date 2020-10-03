@@ -29,12 +29,6 @@ export default {
   },
   // reset store if user refreshes page
   async updated() {
-    console.log(
-      "APP RELOADED",
-      this.$auth.isAuthenticated,
-      store.getters.user,
-      this.isLoading()
-    );
     if (
       this.$auth.isAuthenticated &&
       store.getters.user === null &&
