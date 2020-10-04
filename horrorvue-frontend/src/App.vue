@@ -55,4 +55,7 @@ body,
   display: flex;
   flex-direction: column;
 }
+.v-expansion-panel-header__icon {
+  margin-left: 0 !important;
+}
 </style>

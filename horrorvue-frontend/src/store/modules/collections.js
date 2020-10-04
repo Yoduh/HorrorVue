@@ -16,12 +16,10 @@ const getters = {
 
 const actions = {
   setCollections: ({ commit }, collections) => {
-    collections.forEach(c => {
-      c.movies = c.movies.map(m => {
-        return { ...m, show: false };
-      });
-    });
     commit("setCollections", collections);
+  },
+  addCollection: ({ commit }, collection) => {
+    commit("addCollection", collection);
   },
   selectCollectionById: ({ commit, dispatch }, id) => {
     commit(
@@ -89,6 +87,9 @@ const mutations = {
   },
   updateCollections: (state, collection, idx) => {
     state.collections[idx] = collection;
+  },
+  addCollection: (state, collection) => {
+    state.collections.push(collection);
   }
 };
 

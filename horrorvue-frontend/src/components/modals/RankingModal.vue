@@ -1,10 +1,13 @@
 <template>
   <v-list dense class="blue-grey darken-4">
     <v-list-item-group :value="movies">
-      <h1>Your Rankings</h1>
-      <p class="font-italic text-caption grey--text text--lighten-1 mb-1 ml-3">
-        Drag and drop to set rankings
-      </p>
+      <v-container class="modal-header white--text">
+        <h1 v-if="hasRankings">Edit Your Rankings!</h1>
+        <h1 v-else>Create Your Rankings!</h1>
+        <p class="font-italic grey--text text--lighten-1  text-caption mb-1">
+          Drag and drop to set rankings
+        </p>
+      </v-container>
       <draggable
         class="list-group"
         tag="ul"
@@ -108,6 +111,12 @@ export default {
       set(value) {
         this.setTempRanking(value);
       }
+    },
+    hasRankings() {
+      const user = this.selectedCollection().rankings.find(
+        r => r.userId === this.user().id
+      );
+      return !!user;
     },
     dragOptions() {
       return {

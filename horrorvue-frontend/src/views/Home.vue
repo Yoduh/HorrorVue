@@ -4,7 +4,7 @@
       Log in to use this site
     </div>
     <div v-else>
-      <search-bar @search="searchFranchise"></search-bar>
+      <search-bar @search="searchFranchise" @scroll-to="scrollTo"></search-bar>
       <!-- <icon-medal
         width="50"
         height="50"
@@ -16,20 +16,28 @@
       <div v-if="noResults">
         No movies for that franchise were found, try another one?
       </div>
-      <div v-if="collectionsView === null || collectionsView.length === 0">
+      <div v-if="collections() === null || collections().length === 0">
         You have no collections yet, search for a franchise above to add one!
       </div>
       <div v-else>
-        <v-expansion-panels dark>
+        <v-expansion-panels dark v-model="panel">
           <v-expansion-panel
-            v-for="collection in collectionsView"
+            v-for="(collection, index) in collections()"
             :key="collection.id"
             @click="select(collection.id)"
           >
-            <v-expansion-panel-header>{{
-              collection.name
-            }}</v-expansion-panel-header>
-            <v-expansion-panel-content>
+            <v-expansion-panel-header :id="collection.id">
+              <strong>{{ collection.name }}</strong>
+              <span
+                v-if="panel === index"
+                class="ml-auto"
+                :class="'btns' + collection.id"
+              >
+                <edit-btn></edit-btn>
+                <delete-btn></delete-btn>
+              </span>
+            </v-expansion-panel-header>
+            <v-expansion-panel-content v-if="selectedCollection()">
               <button-bar>
                 <v-col cols="12" md="auto" class="pb-3 pb-md-0">
                   <ranking-btn @ranking-saved="rankingSaved" />
@@ -38,17 +46,18 @@
                   <sort-select ref="sorting" />
                 </v-col>
               </button-bar>
-              <v-btn
-                elevation="2"
-                class="mr-2"
-                fab
-                small
-                @click="expand = !expand"
-                ><v-icon>{{ showRankings }}</v-icon>
-              </v-btn>
-              Toggle Rankings
+              <div v-if="selectedCollection().rankings.length > 0">
+                <v-btn
+                  elevation="2"
+                  class="mr-2"
+                  fab
+                  small
+                  @click="expand = !expand"
+                  ><v-icon>{{ showRankings }}</v-icon>
+                </v-btn>
+                Toggle Rankings
+              </div>
               <franchise-panel :expandRankings="expand" />
-              <!-- columns of rankings.  sort by person puts  -->
             </v-expansion-panel-content>
           </v-expansion-panel>
         </v-expansion-panels>
@@ -63,6 +72,8 @@ import FranchisePanel from "@/components/FranchisePanel";
 import ButtonBar from "@/components/ButtonBar";
 import RankingBtn from "@/components/buttons/RankingBtn";
 import SortSelect from "@/components/buttons/SortSelect";
+import EditBtn from "@/components/buttons/EditBtn";
+import DeleteBtn from "@/components/buttons/DeleteBtn";
 import { mapGetters, mapActions } from "vuex";
 
 export default {
@@ -72,23 +83,19 @@ export default {
     FranchisePanel,
     ButtonBar,
     RankingBtn,
-    SortSelect
+    SortSelect,
+    EditBtn,
+    DeleteBtn
   },
   data() {
     return {
       noResults: false,
       expand: false,
-      date: null
+      date: null,
+      panel: []
     };
   },
   computed: {
-    collectionsView() {
-      try {
-        return this.$store.getters.collections.slice();
-      } catch (e) {
-        return [];
-      }
-    },
     showRankings() {
       if (this.expand) return "mdi-chevron-up";
       else return "mdi-chevron-down";
@@ -112,14 +119,36 @@ export default {
         this.noResults = true;
       }
     },
+    scrollTo(e) {
+      const el = document.getElementById(e);
+      el.scrollIntoView();
+      el.click();
+    },
     select(id) {
       this.selectCollectionById(id);
     },
     rankingSaved() {
       // force a resort in case franchise is sorted by user ranking and user updates their ranking
-      const input = this.$refs.sorting[0].$children[0];
+      console.log("sorting", this.$refs.sorting);
+      const input = this.$refs.sorting.find(
+        s => s.collectionMovies.name === this.selectedCollection().name
+      ).$children[0];
       input.setValue(input.value);
+    }
+  },
+  watch: {
+    panel(value) {
+      console.log("panel", value);
     }
   }
 };
 </script>
+
+<style scoped>
+.v-expansion-panel-header {
+  justify-content: space-between;
+}
+.v-expansion-panel-header > *:not(.v-expansion-panel-header__icon) {
+  flex: none;
+}
+</style>

@@ -6,19 +6,18 @@ export default {
   newCollection(collection, name) {
     const request = {
       id: 0,
-      UserId: store.getters.user.id,
+      CreatedBy: store.getters.user.id,
       Name: name,
       Movies: [...collection]
     };
-    axios.post(`${ROOT_URL}/api/collection`, request).then(res => {
-      if (res.status == 200) {
-        console.log("save success");
-        console.log(res);
+    return axios.post(`${ROOT_URL}/api/collection`, request).then(res => {
+      if (res.data.isSuccess) {
+        return res.data.data;
       } else {
         console.log("save error");
-        console.log(res);
+        console.log(res.data.message);
+        return null;
       }
-      return;
     });
   },
   // userId: google id

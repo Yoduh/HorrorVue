@@ -22,6 +22,7 @@ namespace HorrorVue.Web.Serialization
 				CreatedOn = collection.CreatedOn,
 				UpdatedOn = collection.UpdatedOn,
 				Name = collection.Name,
+				CreatedBy = collection.CreatedBy,
 				// will sort movies by release_date
 				Movies = MovieMapper.SerializeMovies(collection.Movies),
 				Rankings = RankingMapper.SerializeRankings(collection.Rankings),
@@ -52,6 +53,7 @@ namespace HorrorVue.Web.Serialization
 				CreatedOn = collection.CreatedOn,
 				UpdatedOn = collection.UpdatedOn,
 				Name = collection.Name,
+				CreatedBy = collection.CreatedBy,
 				Movies = MovieMapper.SerializeMovies(collection.Movies),
 				Rankings = RankingMapper.SerializeRankings(collection.Rankings),
 				AppUsers = UserMapper.SerializeAppUserCollections(collection.AppUsers)

@@ -9,6 +9,7 @@ namespace HorrorVue.Data.Models
 		public DateTime CreatedOn { get; set; }
 		public DateTime UpdatedOn { get; set; }
 		public string Name { get; set; }
+		public int CreatedBy { get; set; }
 		public virtual List<Movie> Movies { get; set; } = new List<Movie>();
 		public virtual List<Ranking> Rankings { get; set; } = new List<Ranking>();
 		public ICollection<AppUserCollection> AppUsers { get; set; }

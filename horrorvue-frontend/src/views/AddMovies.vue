@@ -51,8 +51,8 @@ export default {
     };
   },
   methods: {
-    ...mapGetters(["searchResults"]),
-    ...mapActions(["setSearchResults"]),
+    ...mapGetters(["searchResults", "collections"]),
+    ...mapActions(["setSearchResults", "setCollections", "addCollection"]),
     async searchMovies(results) {
       this.setSearchResults(results.data);
       this.results = results.data.map(result => {
@@ -79,14 +79,18 @@ export default {
       });
       movie.added = false;
     },
-    save(name) {
-      if (this.collection.length === 0)
-        db.newCollection(this.moviesToAdd, name);
+    async save(name) {
+      let retCollection = null;
+      if (this.collection.length === 0) {
+        retCollection = await db.newCollection(this.moviesToAdd, name);
+      }
       // else
       //     db.updateCollection()
-
+      if (retCollection !== null) {
+        this.addCollection(retCollection);
+      }
       // go back home after save
-      // this.$router.push("/");
+      this.$router.push("/");
     }
   },
   async created() {

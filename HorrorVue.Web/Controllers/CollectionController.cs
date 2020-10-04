@@ -48,12 +48,18 @@ namespace HorrorVue.Web.Controllers
 			collection.CreatedOn = DateTime.UtcNow;
 			collection.UpdatedOn = DateTime.UtcNow;
 			var collectionModel = CollectionMapper.SerializeCollection(collection);
-			var user = _userService.GetUserById(collection.UserId);
+			var user = _userService.GetUserById(collection.CreatedBy.ToString());
 			var collectionToAdd = new AppUserCollection { AppUserId = user.Id, CollectionId = collectionModel.Id };
 			collectionModel.AppUsers.Add(collectionToAdd);
 			ServiceResponse<Collection> createdCollection = _collectionService.CreateCollection(collectionModel);
-			//var result = _userService.AddCollectionForUserId(collectionModel, collection.UserId);
-			return Ok();// (createdCollection);
+			var response = new ServiceResponse<CollectionVM>
+			{
+				IsSuccess = createdCollection.IsSuccess,
+				Message = createdCollection.Message,
+				Time = createdCollection.Time,
+				Data = CollectionMapper.SerializeCollection(createdCollection.Data)
+			};
+			return Ok(response);
 		}
 
 		[HttpPatch("/api/collection/{collectionId}/user/{userId}")]
