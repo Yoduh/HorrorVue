@@ -32,9 +32,12 @@
                 v-if="panel === index"
                 class="ml-auto"
                 :class="'btns' + collection.id"
+                @click.stop=""
               >
                 <edit-btn></edit-btn>
-                <delete-btn></delete-btn>
+                <delete-btn
+                  @delete="deleteCollection(collection.id)"
+                ></delete-btn>
               </span>
             </v-expansion-panel-header>
             <v-expansion-panel-content v-if="selectedCollection()">
@@ -67,6 +70,7 @@
 </template>
 
 <script>
+import db from "@/api/db";
 import SearchBar from "@/components/SearchBar";
 import FranchisePanel from "@/components/FranchisePanel";
 import ButtonBar from "@/components/ButtonBar";
@@ -107,7 +111,9 @@ export default {
       "setSearchResults",
       "setCollections",
       "selectCollectionById",
-      "setTempRanking"
+      "setTempRanking",
+      "removeCollection",
+      "removeUserCollection"
     ]),
 
     searchFranchise(results) {
@@ -134,6 +140,13 @@ export default {
         s => s.collectionMovies.name === this.selectedCollection().name
       ).$children[0];
       input.setValue(input.value);
+    },
+    async deleteCollection(id) {
+      const res = await db.deleteCollection(id);
+      if (res.data.isSuccess) {
+        this.removeCollection(id);
+        this.removeUserCollection(id);
+      }
     }
   },
   watch: {

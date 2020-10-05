@@ -21,6 +21,11 @@ const actions = {
   addCollection: ({ commit }, collection) => {
     commit("addCollection", collection);
   },
+  removeCollection: ({ commit }, id) => {
+    const collections = state.collections.filter(c => c.id !== id);
+    commit("setCollections", collections);
+    commit("setSelectedCollection", null);
+  },
   selectCollectionById: ({ commit, dispatch }, id) => {
     commit(
       "setSelectedCollection",

@@ -20,6 +20,9 @@ export default {
       }
     });
   },
+  deleteCollection(id) {
+    return axios.delete(`${ROOT_URL}/api/collection/${id}`);
+  },
   // userId: google id
   async getUser(userId) {
     return axios

@@ -23,7 +23,7 @@
       </template>
       <span>Save selection</span>
     </v-tooltip>
-    <v-dialog v-model="dialog" max-width="600px">
+    <v-dialog v-model="dialog" max-width="600px" dark>
       <v-card>
         <v-card-title>
           <span class="headline">Name this franchise before saving</span>

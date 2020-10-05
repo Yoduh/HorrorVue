@@ -16,6 +16,11 @@ namespace HorrorVue.Data
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<AppUserCollection>().HasKey(ac => new { ac.AppUserId, ac.CollectionId });
+
+            modelBuilder.Entity<Movie>()
+                .HasOne(m => m.Collection)
+                .WithMany(c => c.Movies)
+                .OnDelete(DeleteBehavior.Cascade);
         }
 
         public virtual DbSet<AppUser> AppUsers { get; set; }

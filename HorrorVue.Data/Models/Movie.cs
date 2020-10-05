@@ -14,5 +14,6 @@ namespace HorrorVue.Data.Models
 		public string Description { get; set; }
 		public string ReleaseDate { get; set; }
 		public string PosterImage { get; set; }
+		public Collection Collection { get; set; }
 	}
 }

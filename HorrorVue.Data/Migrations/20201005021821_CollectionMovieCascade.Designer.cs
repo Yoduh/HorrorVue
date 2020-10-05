@@ -4,15 +4,17 @@ using System.Collections.Generic;
 using HorrorVue.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace HorrorVue.Data.Migrations
 {
     [DbContext(typeof(HorrorDbContext))]
-    partial class HorrorDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201005021821_CollectionMovieCascade")]
+    partial class CollectionMovieCascade
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

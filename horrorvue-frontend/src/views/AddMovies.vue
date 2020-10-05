@@ -13,7 +13,8 @@
           />
         </div>
       </v-row>
-      <save-new-modal :show="moviesToAdd.length" @save="save"> </save-new-modal>
+      <save-new-modal :show="moviesToAdd.length > 0" @save="save">
+      </save-new-modal>
     </v-container>
   </div>
 </template>
@@ -75,7 +76,7 @@ export default {
     },
     removeMovie(movie) {
       this.moviesToAdd = this.moviesToAdd.filter(m => {
-        m.id !== movie.id;
+        return m.tmdId !== movie.tmdId;
       });
       movie.added = false;
     },
