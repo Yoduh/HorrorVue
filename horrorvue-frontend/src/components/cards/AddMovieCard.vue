@@ -13,7 +13,7 @@
       <v-btn v-else text @click="removeMovie(result)">Remove</v-btn>
 
       <v-spacer></v-spacer>
-      <v-icon class="checkmark" :class="{ selected: result.added }"
+      <v-icon class="checkmark" :class="{ selected: !!result.added }"
         >mdi-checkbox-marked-circle</v-icon
       >
     </v-card-actions>

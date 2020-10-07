@@ -88,5 +88,21 @@ namespace HorrorVue.Web.Controllers
 			var response = _collectionService.DeleteCollection(id);
 			return Ok(response);
 		}
+
+		[HttpPatch("/api/collection/{id}")]
+		public ActionResult UpdateCollection([FromBody] List<MovieVM> movies, int id)
+		{
+			_logger.LogInformation($"Updating collection {id}");
+			var movieModels = MovieMapper.SerializeMovies(movies);
+			var updatedCollection = _collectionService.UpdateCollection(movieModels, id);
+			var response = new ServiceResponse<CollectionVM>
+			{
+				IsSuccess = updatedCollection.IsSuccess,
+				Message = updatedCollection.Message,
+				Time = updatedCollection.Time,
+				Data = CollectionMapper.SerializeCollection(updatedCollection.Data)
+			};
+			return Ok(response);
+		}
 	}
 }

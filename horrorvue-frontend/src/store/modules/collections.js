@@ -2,6 +2,7 @@ const state = {
   collections: null,
   selectedCollection: null,
   tempRanking: null,
+  tempMovies: [],
   rankOrderMovies: null
 };
 
@@ -11,7 +12,8 @@ const getters = {
     return state.collections.find(c => c.id === id);
   },
   selectedCollection: state => state.selectedCollection,
-  tempRanking: state => state.tempRanking
+  tempRanking: state => state.tempRanking,
+  tempMovies: state => state.tempMovies
 };
 
 const actions = {
@@ -26,13 +28,11 @@ const actions = {
     commit("setCollections", collections);
     commit("setSelectedCollection", null);
   },
-  selectCollectionById: ({ commit, dispatch }, id) => {
+  selectCollectionById: ({ commit }, id) => {
     commit(
       "setSelectedCollection",
       state.collections.find(c => c.id === id)
     );
-    dispatch("setRankOrderMovies");
-    dispatch("setTempRanking", state.rankOrderMovies);
   },
   updateCollectionRanking: ({ commit, dispatch }, ranking) => {
     const collection = { ...state.selectedCollection };
@@ -42,6 +42,9 @@ const actions = {
     commit("updateCollections", collection, idx);
     dispatch("selectCollectionById", collection.id);
   },
+  updateCollectionMovies: ({ commit }, movies) => {
+    commit("setMovies", movies);
+  },
   sortSelected: ({ commit }, order) => {
     // arrays sort in-place! sort using a copy to not mutate
     const sortedMovies = [...state.selectedCollection.movies].sort(function(
@@ -50,7 +53,7 @@ const actions = {
     ) {
       return order.indexOf(a.id) - order.indexOf(b.id);
     });
-    commit("setSort", sortedMovies);
+    commit("setMovies", sortedMovies);
   },
   setTempRanking: ({ commit }, ranking) => {
     commit("setTempRanking", ranking);
@@ -71,6 +74,23 @@ const actions = {
       return userRanking.order.indexOf(a.id) - userRanking.order.indexOf(b.id);
     });
     commit("setRankOrderMovies", sorted);
+  },
+  setTempMovies: ({ commit }, movies) => {
+    commit("setTempMovies", movies);
+  },
+  addToTempMovies: ({ commit }, movie) => {
+    if (state.tempMovies && state.tempMovies.length > 0)
+      commit("setTempMovies", [...state.tempMovies, movie]);
+    else commit("setTempMovies", [movie]);
+  },
+  removeFromTempMovies: ({ commit }, movie) => {
+    commit(
+      "setTempMovies",
+      state.tempMovies.filter(m => m.tmdId !== movie.tmdId)
+    );
+  },
+  resetTempMovies: ({ commit }) => {
+    commit("setTempMovies", null);
   }
 };
 
@@ -81,7 +101,7 @@ const mutations = {
   setSelectedCollection: (state, collection) => {
     state.selectedCollection = collection;
   },
-  setSort: (state, movies) => {
+  setMovies: (state, movies) => {
     state.selectedCollection.movies = movies;
   },
   setTempRanking: (state, ranking) => {
@@ -95,6 +115,9 @@ const mutations = {
   },
   addCollection: (state, collection) => {
     state.collections.push(collection);
+  },
+  setTempMovies: (state, movies) => {
+    state.tempMovies = movies;
   }
 };
 

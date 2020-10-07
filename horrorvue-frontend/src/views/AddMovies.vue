@@ -13,7 +13,10 @@
           />
         </div>
       </v-row>
-      <save-new-modal :show="moviesToAdd.length > 0" @save="save">
+      <save-new-modal
+        :show="tempMovies() && tempMovies().length > 0"
+        @save="save"
+      >
       </save-new-modal>
     </v-container>
   </div>
@@ -47,19 +50,38 @@ export default {
   },
   data() {
     return {
-      results: [],
-      moviesToAdd: []
+      results: []
     };
   },
   methods: {
-    ...mapGetters(["searchResults", "collections"]),
-    ...mapActions(["setSearchResults", "setCollections", "addCollection"]),
-    async searchMovies(results) {
-      this.setSearchResults(results.data);
-      this.results = results.data.map(result => {
-        return { ...result, added: false, show: false };
+    ...mapGetters([
+      "searchResults",
+      "collections",
+      "selectedCollection",
+      "user",
+      "tempMovies"
+    ]),
+    ...mapActions([
+      "setSearchResults",
+      "setCollections",
+      "addCollection",
+      "selectCollectionById",
+      "setTempMovies",
+      "addToTempMovies",
+      "removeFromTempMovies",
+      "resetTempMovies"
+    ]),
+    async searchMovies(searchResults) {
+      this.setSearchResults(searchResults.data);
+      if (this.tempMovies()) {
+        this.results = this.tempMovies().slice();
+      }
+      searchResults.data.forEach(result => {
+        if (this.results.find(r => r.tmdId === result.tmdId) !== undefined) {
+          return;
+        } else this.results.push({ ...result, added: false, show: false });
       });
-      this.$router.push(`/search?q=${results.searchTerm}`);
+      // this.$router.push(`/search?q=${results.searchTerm}`);
     },
     containsMovieId(movieArray, movie) {
       let ret = false;
@@ -71,36 +93,64 @@ export default {
       return ret;
     },
     addMovie(movie) {
-      this.moviesToAdd.push(movie);
       movie.added = true;
+      this.addToTempMovies(movie);
     },
     removeMovie(movie) {
-      this.moviesToAdd = this.moviesToAdd.filter(m => {
-        return m.tmdId !== movie.tmdId;
-      });
       movie.added = false;
+      this.removeFromTempMovies(movie);
     },
     async save(name) {
-      let retCollection = null;
-      if (this.collection.length === 0) {
-        retCollection = await db.newCollection(this.moviesToAdd, name);
-      }
-      // else
-      //     db.updateCollection()
-      if (retCollection !== null) {
-        this.addCollection(retCollection);
+      if (!this.selectedCollection()) {
+        const retCollection = await db.newCollection(this.tempMovies(), name);
+        if (retCollection !== null) {
+          this.addCollection(retCollection);
+        }
+      } else {
+        await db.updateCollection(
+          this.tempMovies(),
+          this.selectedCollection().id
+        );
       }
       // go back home after save
       this.$router.push("/");
     }
   },
   async created() {
-    // user has refreshed the page and we need to reset search results
+    this.resetTempMovies();
+    const id = window.localStorage.getItem("selectedCollection");
+    if (id !== null) {
+      // ideally figure out how to reset selectedCollection on refresh but for now if refresh
+      // detected send user back home
+      window.localStorage.removeItem("selectedCollection");
+      this.$router.push("/");
+      return;
+      // await this.collections();
+      // console.log("collections", this.collections());
+      // this.selectCollectionById(id);
+    }
     if (this.results.length === 0) {
       const movies = await api.fetchMovies(this.query);
+      // user is editing pre-existing collection
+      if (this.selectedCollection()) {
+        this.setTempMovies(
+          this.selectedCollection().movies.map(m => {
+            return { ...m, added: true };
+          })
+        );
+        window.localStorage.setItem(
+          "selectedCollection",
+          this.selectedCollection().id
+        );
+        this.tempMovies().forEach(m => {
+          this.results.push(m);
+        });
+      }
       this.setSearchResults(this.results);
-      this.results = movies.map(result => {
-        return { ...result, added: false, show: false };
+      movies.forEach(result => {
+        if (this.results.find(r => r.tmdId === result.tmdId) !== undefined) {
+          return;
+        } else this.results.push({ ...result, added: false, show: false });
       });
     } else {
       this.results = this.searchResults().map(result => {

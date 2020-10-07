@@ -111,12 +111,14 @@ export default {
       "setSearchResults",
       "setCollections",
       "selectCollectionById",
-      "setTempRanking",
       "removeCollection",
-      "removeUserCollection"
+      "removeUserCollection",
+      "setRankOrderMovies",
+      "resetTempRanking"
     ]),
 
     searchFranchise(results) {
+      window.localStorage.removeItem("selectedCollection");
       if (results.data.length > 0) {
         this.noResults = false;
         this.setSearchResults(results.data);
@@ -132,10 +134,11 @@ export default {
     },
     select(id) {
       this.selectCollectionById(id);
+      this.setRankOrderMovies();
+      this.resetTempRanking();
     },
     rankingSaved() {
       // force a resort in case franchise is sorted by user ranking and user updates their ranking
-      console.log("sorting", this.$refs.sorting);
       const input = this.$refs.sorting.find(
         s => s.collectionMovies.name === this.selectedCollection().name
       ).$children[0];
@@ -147,11 +150,6 @@ export default {
         this.removeCollection(id);
         this.removeUserCollection(id);
       }
-    }
-  },
-  watch: {
-    panel(value) {
-      console.log("panel", value);
     }
   }
 };

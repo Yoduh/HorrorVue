@@ -20,8 +20,20 @@ export default {
       }
     });
   },
-  deleteCollection(id) {
+  async deleteCollection(id) {
     return axios.delete(`${ROOT_URL}/api/collection/${id}`);
+  },
+  async updateCollection(movies, id) {
+    return axios.patch(`${ROOT_URL}/api/collection/${id}`, movies).then(res => {
+      if (res.data.isSuccess) {
+        store.dispatch("updateCollectionMovies", res.data.data.movies);
+        return res.data.data;
+      } else {
+        console.log("save error");
+        console.log(res.data.message);
+        return null;
+      }
+    });
   },
   // userId: google id
   async getUser(userId) {

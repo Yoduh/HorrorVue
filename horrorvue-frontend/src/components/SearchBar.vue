@@ -61,8 +61,6 @@ export default {
     ...mapActions(["setLastSearched"]),
     ...mapGetters(["collections"]),
     async searchMovies() {
-      console.log("model", this.model);
-      console.log("search", this.search);
       if (!this.model && !this.search) return;
       this.setLastSearched(this.search);
       const existing = this.collections().find(c => c.name === this.model);

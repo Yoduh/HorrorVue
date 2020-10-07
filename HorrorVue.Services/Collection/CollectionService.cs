@@ -117,6 +117,34 @@ namespace HorrorVue.Services.Collection
 			}
 		}
 
+		public ServiceResponse<Data.Models.Collection> UpdateCollection(List<Data.Models.Movie> movies, int id)
+		{
+			try
+			{
+				Data.Models.Collection collection = GetCollectionById(id);
+				collection.UpdatedOn = DateTime.UtcNow;
+				collection.Movies = movies;
+				_db.Update(collection);
+				_db.SaveChanges();
+				return new ServiceResponse<Data.Models.Collection>
+				{
+					Time = DateTime.UtcNow,
+					IsSuccess = true,
+					Message = "Collection updated",
+					Data = collection
+				};
+			} catch(Exception e)
+			{
+				return new ServiceResponse<Data.Models.Collection>
+				{
+					Time = DateTime.UtcNow,
+					IsSuccess = false,
+					Message = e.StackTrace,
+					Data = null
+				};
+			}
+		}
+
 		public List<Data.Models.Collection> GetAllCollections()
 		{
 			return _db.Collections
