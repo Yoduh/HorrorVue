@@ -15,6 +15,7 @@
       </v-row>
       <save-new-modal
         :show="tempMovies() && tempMovies().length > 0"
+        :name="query"
         @save="save"
       >
       </save-new-modal>

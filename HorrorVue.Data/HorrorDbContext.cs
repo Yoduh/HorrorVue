@@ -21,12 +21,25 @@ namespace HorrorVue.Data
                 .HasOne(m => m.Collection)
                 .WithMany(c => c.Movies)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Invite>()
+                .HasOne(i => i.ToUser)
+                .WithMany(a => a.SentInvites)
+                .HasForeignKey(i => i.ToUserId);
+            modelBuilder.Entity<Invite>()
+                .HasOne(i => i.FromUser)
+                .WithMany(a => a.ReceivedInvites)
+                .HasForeignKey(i => i.FromUserId);
+            modelBuilder.Entity<Collection>()
+                .HasMany(c => c.Invites)
+                .WithOne(i => i.Collection)
+                .HasForeignKey(i => i.CollectionId);
         }
 
         public virtual DbSet<AppUser> AppUsers { get; set; }
         public virtual DbSet<Collection> Collections { get; set; }
         public virtual DbSet<Movie> Movies { get; set; }
         public virtual DbSet<Ranking> Rankings { get; set; }
-
+        public virtual DbSet<Invite> Invite { get; set; }
     }
 }

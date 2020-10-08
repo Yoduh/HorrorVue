@@ -13,6 +13,8 @@ namespace HorrorVue.Data.Models
 		public string FirstName { get; set; }
 		public string LastName { get; set; }
 		public string Email { get; set; }
+		public ICollection<Invite> SentInvites { get; set; }
+		public ICollection<Invite> ReceivedInvites { get; set; }
 		public ICollection<AppUserCollection> Collections { get; set; }
 	}
 }

@@ -151,6 +151,9 @@ export default {
         this.removeUserCollection(id);
       }
     }
+  },
+  created() {
+    this.selectCollectionById(-1);
   }
 };
 </script>

@@ -12,6 +12,7 @@ namespace HorrorVue.Data.Models
 		public int CreatedBy { get; set; }
 		public virtual List<Movie> Movies { get; set; } = new List<Movie>();
 		public virtual List<Ranking> Rankings { get; set; } = new List<Ranking>();
+		public virtual List<Invite> Invites { get; set; } = new List<Invite>();
 		public ICollection<AppUserCollection> AppUsers { get; set; }
 	}
 }

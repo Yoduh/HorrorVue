@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using HorrorVue.Data.Models;
 using HorrorVue.Services;
@@ -10,6 +11,7 @@ using HorrorVue.Web.Serialization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using NETCore.MailKit.Core;
 
 namespace HorrorVue.Web.Controllers
 {
@@ -19,12 +21,15 @@ namespace HorrorVue.Web.Controllers
 		private readonly ILogger<UserController> _logger;
 		private readonly IUserService _userService;
 		private readonly ICollectionService _collectionService;
+		private readonly IEmailService _emailService;
 
-		public UserController(ILogger<UserController> logger, IUserService userService, ICollectionService collectionService)
+		public UserController(ILogger<UserController> logger, IUserService userService, 
+			ICollectionService collectionService, IEmailService emailService)
 		{
 			_logger = logger;
 			_userService = userService;
 			_collectionService = collectionService;
+			_emailService = emailService;
 		}
 
 		[HttpGet("/api/user")]
@@ -71,6 +76,14 @@ namespace HorrorVue.Web.Controllers
 			_logger.LogInformation($"Deleting user {id}");
 			var response = _userService.DeleteUser(id);
 			return Ok(response);
+		}
+
+		[HttpPost("/api/user/mail/")]
+		public ActionResult EmailUser([FromBody] Email email)
+		{
+			_logger.LogInformation("Sending email");
+			_emailService.Send(email.To, email.Subject, email.Body);
+			return Ok();
 		}
 	}
 }

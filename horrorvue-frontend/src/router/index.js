@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import AddMovies from "@/views/AddMovies";
 import AuthHandler from "@/components/AuthHandler";
+import Profile from "@/views/Profile";
 
 Vue.use(VueRouter);
 
@@ -22,6 +23,11 @@ const routes = [
     path: "/auth/callback",
     name: "AuthHandler",
     component: AuthHandler
+  },
+  {
+    path: "/profile",
+    name: "Profile",
+    component: Profile
   }
 ];
 

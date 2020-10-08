@@ -26,7 +26,7 @@
     <v-dialog v-model="dialog" max-width="600px" dark>
       <v-card>
         <v-card-title>
-          <span class="headline">Name this franchise before saving</span>
+          <span class="headline">{{ title }}</span>
         </v-card-title>
         <v-card-text>
           <v-container>
@@ -55,22 +55,33 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   name: "SaveNewModal",
-  props: ["show"],
+  props: ["show", "name"],
   data: () => ({
     dialog: false,
-    name: "",
     rules: {
       required: value => !!value || "Required."
     }
   }),
   methods: {
+    ...mapGetters(["selectedCollection"]),
     save() {
       if (this.name === "") return;
       this.dialog = false;
       this.$emit("save", this.name);
       this.name = "";
+    }
+  },
+  computed: {
+    title() {
+      if (this.selectedCollection() && this.selectedCollection().name) {
+        return "You may rename the collection if you wish";
+      } else {
+        return "Name this franchise before saving";
+      }
     }
   }
 };

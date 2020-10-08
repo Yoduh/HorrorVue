@@ -29,6 +29,10 @@ const actions = {
     commit("setSelectedCollection", null);
   },
   selectCollectionById: ({ commit }, id) => {
+    if (id === -1) {
+      commit("setSelectedCollection", null);
+      return;
+    }
     commit(
       "setSelectedCollection",
       state.collections.find(c => c.id === id)
@@ -37,7 +41,11 @@ const actions = {
   updateCollectionRanking: ({ commit, dispatch }, ranking) => {
     const collection = { ...state.selectedCollection };
     let idx = collection.rankings.findIndex(r => r.id === ranking.id);
-    collection.rankings[idx] = ranking;
+    if (idx === -1) {
+      collection.rankings.push(ranking);
+    } else {
+      collection.rankings[idx] = ranking;
+    }
     idx = state.collections.findIndex(c => c.id === state.selectedCollection);
     commit("updateCollections", collection, idx);
     dispatch("selectCollectionById", collection.id);

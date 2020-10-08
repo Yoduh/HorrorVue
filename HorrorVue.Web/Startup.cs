@@ -17,6 +17,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using NETCore.MailKit.Extensions;
+using NETCore.MailKit.Infrastructure.Internal;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
@@ -54,6 +56,24 @@ namespace HorrorVue.Web
             services.AddTransient<ICollectionService, CollectionService>();
             services.AddTransient<IMovieService, MovieService>();
             services.AddTransient<IRankingService, RankingService>();
+
+            services.AddMailKit(optionBuilder =>
+            {
+                optionBuilder.UseMailKit(new MailKitOptions()
+                {
+                    //get options from sercets.json
+                    Server = Configuration["Server"],
+                    Port = Convert.ToInt32(Configuration["Port"]),
+                    SenderName = Configuration["SenderName"],
+                    SenderEmail = Configuration["SenderEmail"],
+
+                    // can be optional with no authentication 
+                    Account = Configuration["Account"],
+                    Password = Configuration["Password"],
+                    // enable ssl or tls
+                    Security = true
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -81,7 +81,7 @@ export default {
   },
   createRanking(collection, movies) {
     const ranking = {
-      userId: store.getters.user.user.id,
+      userId: store.getters.user.id,
       collectionId: collection.id,
       order: movies.map(m => m.id)
     };

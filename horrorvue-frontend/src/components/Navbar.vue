@@ -21,6 +21,21 @@
       <v-tooltip bottom>
         <template v-slot:activator="{ on, attrs }">
           <v-btn
+            v-if="$auth.isAuthenticated"
+            icon
+            @click="profile"
+            v-bind="attrs"
+            v-on="on"
+          >
+            <v-icon>mdi-account</v-icon>
+          </v-btn>
+        </template>
+        <span>Profile</span>
+      </v-tooltip>
+
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
             v-if="!$auth.isAuthenticated"
             icon
             @click="navLogin"
@@ -61,6 +76,7 @@ export default {
       drawer: true,
       items: [
         { title: "Dashboard", icon: "mdi-view-dashboard" },
+        { title: "Profile", icon: "mdi-account" },
         { title: "Login", icon: "mdi-login" },
         { title: "Logout", icon: "mdi-logout" }
       ]
@@ -78,6 +94,9 @@ export default {
       this.$auth.logout({
         returnTo: window.location.origin
       });
+    },
+    profile() {
+      this.$router.push(`/profile`);
     }
   }
 };
