@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container v-if="user()">
     <v-row>
       <v-form>
         <v-row>Your Information</v-row>
@@ -31,7 +31,8 @@
         </v-row>
       </v-form>
     </v-row>
-    <v-row>
+    <v-row align="end">
+      <h3>Select collections and invite your friends to rank them!</h3>
       <v-btn class="ml-auto" @click="selectToggle">{{ selectAll }}</v-btn>
     </v-row>
     <v-row>
@@ -52,7 +53,7 @@
               <v-list-item-action>
                 <v-checkbox
                   v-model="selected"
-                  :value="collection.id"
+                  :value="{ id: collection.id, name: collection.name }"
                 ></v-checkbox>
               </v-list-item-action>
             </v-list-item>
@@ -60,17 +61,32 @@
         </v-list>
       </v-col>
     </v-row>
+    <v-row class="mt-3">
+      <v-btn class="ml-auto" @click="dialog = true">
+        <v-icon class="mr-2">mdi-email-outline</v-icon> E-mail Invites
+      </v-btn>
+      <email-modal
+        :dialog="dialog"
+        @close="dialog = false"
+        :collections="selected.slice()"
+      ></email-modal>
+    </v-row>
   </v-container>
 </template>
 
 <script>
+import EmailModal from "@/components/modals/EmailModal";
 import { mapGetters } from "vuex";
 
 export default {
   name: "Profile",
+  components: {
+    EmailModal
+  },
   data() {
     return {
-      selected: []
+      selected: [],
+      dialog: false
     };
   },
   methods: {
@@ -92,7 +108,9 @@ export default {
     },
     selectToggle() {
       if (this.selected.length < this.user().collections.length) {
-        this.selected = this.user().collections.map(c => c.id);
+        this.selected = this.user().collections.map(c => {
+          return { id: c.id, name: c.name };
+        });
       } else {
         this.selected = [];
       }

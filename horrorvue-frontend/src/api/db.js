@@ -91,4 +91,7 @@ export default {
     ranking = { ...ranking, order: movies.map(m => m.id) };
     return axios.patch(`${ROOT_URL}/api/ranking/${ranking.id}`, ranking);
   }
+  // email(userId, to, collectionIds) {
+  //   console.log("email");
+  // }
 };
