@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using HorrorVue.Data.Models;
 using HorrorVue.Services;
 using HorrorVue.Services.Collection;
+using HorrorVue.Services.InviteService;
 using HorrorVue.Services.User;
 using HorrorVue.Web.Serialization;
 using Microsoft.AspNetCore.Identity;
@@ -22,14 +23,16 @@ namespace HorrorVue.Web.Controllers
 		private readonly IUserService _userService;
 		private readonly ICollectionService _collectionService;
 		private readonly IEmailService _emailService;
+		private readonly IInviteService _inviteService;
 
 		public UserController(ILogger<UserController> logger, IUserService userService, 
-			ICollectionService collectionService, IEmailService emailService)
+			ICollectionService collectionService, IEmailService emailService, IInviteService inviteService)
 		{
 			_logger = logger;
 			_userService = userService;
 			_collectionService = collectionService;
 			_emailService = emailService;
+			_inviteService = inviteService;
 		}
 
 		[HttpGet("/api/user")]
@@ -65,8 +68,10 @@ namespace HorrorVue.Web.Controllers
 			}
 			var ids = user.Collections.Select(row => row.CollectionId).ToList();
 			var collections = _collectionService.GetCollectionsWithIds(ids);
+			var invites = _inviteService.GetInvitesForUserId(user.Id);
 			var response = UserMapper.SerializeAppUser(user);
 			response.Collections = CollectionMapper.SerializeCollections(collections);
+			response.Invites = InviteMapper.SerializeInvites(invites);
 			return Ok(response);
 		}
 
@@ -76,14 +81,6 @@ namespace HorrorVue.Web.Controllers
 			_logger.LogInformation($"Deleting user {id}");
 			var response = _userService.DeleteUser(id);
 			return Ok(response);
-		}
-
-		[HttpPost("/api/user/mail/")]
-		public ActionResult EmailUser([FromBody] Email email)
-		{
-			_logger.LogInformation("Sending email");
-			_emailService.Send(email.To, email.Subject, email.Body);
-			return Ok();
 		}
 	}
 }

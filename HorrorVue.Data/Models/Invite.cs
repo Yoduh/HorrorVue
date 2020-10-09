@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace HorrorVue.Data.Models
@@ -12,6 +13,8 @@ namespace HorrorVue.Data.Models
 		public AppUser FromUser { get; set; }
 		public int ToUserId { get; set; }
 		public AppUser ToUser { get; set; }
+		[NotMapped]
+		public string ToUserEmail { get; set; }
 		public Collection Collection { get; set; }
 		public int CollectionId { get; set; }
 	}

@@ -18,26 +18,26 @@ const actions = {
   login: ({ commit }, user) => {
     commit("setUser", user);
   },
-
   finalizeLogin: ({ commit }, user) => {
     commit("setUser", user);
     // commit('setToken', null);
     // window.localStorage.setItem('google_token', query.access_token);
   },
-
   logout: ({ commit }) => {
     // commit('setToken', null);
     commit("setUser", null);
     // window.localStorage.removeItem('google_token');
   },
-
   setIsLoading: ({ commit }, loading) => {
     commit("setIsLoading", loading);
   },
-
   removeUserCollection: ({ commit }, id) => {
     const userColls = state.user.collections.filter(c => c.id !== id);
     commit("setUserCollections", userColls);
+  },
+  removeInvite: ({ commit }, inviteId) => {
+    const invites = state.user.invites.filter(i => i.id !== inviteId);
+    commit("setInvites", invites);
   }
 };
 
@@ -53,6 +53,9 @@ const mutations = {
   },
   setUserCollections: (state, collections) => {
     state.user.collections = collections;
+  },
+  setInvites: (state, invites) => {
+    state.user.invites = invites;
   }
 };
 

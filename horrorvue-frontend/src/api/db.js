@@ -36,20 +36,17 @@ export default {
     });
   },
   // userId: google id
-  async getUser(userId) {
+  getUser(userId) {
     return axios
       .get(`${ROOT_URL}/api/user/${userId}`)
       .then(res => {
-        if (res.data.collections && res.data.collections.length > 0) {
-          this.getRankingsForCollections(res.data.collections.map(c => c.id));
-        }
         return res.data;
       })
       .catch(err => {
         if (err.response === undefined) {
           return null;
         } else if (err.response.status === 404) {
-          return this.createUser(store.getters.user);
+          return undefined;
         } else {
           console.log("err", err.response);
         }
@@ -74,11 +71,6 @@ export default {
         return null;
       });
   },
-  async getRankingsForCollections(collIds) {
-    axios.get(`${ROOT_URL}/api/ranking/collections`, {
-      params: { collections: collIds }
-    });
-  },
   createRanking(collection, movies) {
     const ranking = {
       userId: store.getters.user.id,
@@ -90,8 +82,51 @@ export default {
   updateRanking(ranking, movies) {
     ranking = { ...ranking, order: movies.map(m => m.id) };
     return axios.patch(`${ROOT_URL}/api/ranking/${ranking.id}`, ranking);
+  },
+  sendInvite(userId, emails, collectionIds) {
+    const reqs = [];
+    emails.forEach(email => {
+      collectionIds.forEach(collectionId => {
+        reqs.push({
+          FromUserId: userId,
+          ToUserEmail: email,
+          CollectionId: collectionId
+        });
+      });
+    });
+    console.log("reqs", reqs);
+    return axios.post(`${ROOT_URL}/api/invite/`, reqs).then(res => {
+      if (res.data.isSuccess) {
+        return res.data;
+      } else {
+        console.log("error", res.data.message);
+        return res.data;
+      }
+    });
+  },
+  rejectInvite(inviteId) {
+    return axios.delete(`${ROOT_URL}/api/invite/${inviteId}`).then(res => {
+      if (res.data.isSuccess) {
+        return true;
+      } else {
+        console.log("error", res.data.message);
+        return false;
+      }
+    });
+  },
+  acceptInvite(invite) {
+    return axios
+      .patch(
+        `${ROOT_URL}/api/collection/${invite.collectionId}/user/${invite.toUserId}`,
+        invite
+      )
+      .then(res => {
+        if (res.data.isSuccess) {
+          return res.data.data;
+        } else {
+          console.log("error", res.data.message);
+          return false;
+        }
+      });
   }
-  // email(userId, to, collectionIds) {
-  //   console.log("email");
-  // }
 };

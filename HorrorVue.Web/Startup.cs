@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using HorrorVue.Data;
 using HorrorVue.Services.Collection;
+using HorrorVue.Services.InviteService;
 using HorrorVue.Services.Movie;
 using HorrorVue.Services.Ranking;
 using HorrorVue.Services.User;
@@ -56,6 +57,7 @@ namespace HorrorVue.Web
             services.AddTransient<ICollectionService, CollectionService>();
             services.AddTransient<IMovieService, MovieService>();
             services.AddTransient<IRankingService, RankingService>();
+            services.AddTransient<IInviteService, InviteService>();
 
             services.AddMailKit(optionBuilder =>
             {

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using HorrorVue.Data.Models;
 using HorrorVue.Services;
 using HorrorVue.Services.Collection;
+using HorrorVue.Services.InviteService;
 using HorrorVue.Services.User;
 using HorrorVue.Web.Serialization;
 using HorrorVue.Web.ViewModels;
@@ -20,13 +21,15 @@ namespace HorrorVue.Web.Controllers
 		private readonly ILogger<CollectionController> _logger;
 		private readonly ICollectionService _collectionService;
 		private readonly IUserService _userService;
+		private readonly IInviteService _inviteService;
 
 		public CollectionController(ILogger<CollectionController> logger, ICollectionService collectionService,
-			IUserService userService)
+			IUserService userService, IInviteService inviteService)
 		{
 			_logger = logger;
 			_collectionService = collectionService;
 			_userService = userService;
+			_inviteService = inviteService;
 		}
 
 		[HttpGet("/api/collection")]
@@ -63,14 +66,20 @@ namespace HorrorVue.Web.Controllers
 		}
 
 		[HttpPatch("/api/collection/{collectionId}/user/{userId}")]
-		public ActionResult AddUserToCollection(int collectionId, int userId)
+		public ActionResult AddUserToCollection([FromBody] Invite invite, int collectionId, int userId)
 		{
 			_logger.LogInformation("Updating collection with new user");
 			var result = _collectionService.AddUserToCollection(collectionId, userId.ToString());
-			if (result.Data)
-				return Ok();
+			if (result.IsSuccess)
+			{
+				var delResult = _inviteService.DeleteInviteById(invite.Id);
+				if (delResult.IsSuccess)
+					return Ok(result);
+				else
+					return Ok(delResult);
+			}
 			else
-				return NotFound(); // find something better to return
+				return Ok(result);
 		}
 
 		[HttpGet("/api/collection/{id}")]

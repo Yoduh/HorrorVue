@@ -38,9 +38,13 @@ export default {
   async created() {
     if (this.$auth.isAuthenticated) {
       this.setIsLoading(true);
+      console.log("auth", this.$auth);
       const div = this.$auth.user.sub.indexOf("|");
       const id = this.$auth.user.sub.slice(div + 1);
-      const user = await db.getUser(id);
+      let user = await db.getUser(id);
+      if (user === undefined) {
+        user = await db.createUser(this.$auth.user);
+      }
       if (user === null) {
         this.error =
           "Our servers are down right now. Sorry! Please try again later.";

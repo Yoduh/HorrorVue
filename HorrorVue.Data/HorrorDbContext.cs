@@ -30,9 +30,9 @@ namespace HorrorVue.Data
                 .HasOne(i => i.FromUser)
                 .WithMany(a => a.ReceivedInvites)
                 .HasForeignKey(i => i.FromUserId);
-            modelBuilder.Entity<Collection>()
-                .HasMany(c => c.Invites)
-                .WithOne(i => i.Collection)
+            modelBuilder.Entity<Invite>()
+                .HasOne(i => i.Collection)
+                .WithMany(c => c.Invites)
                 .HasForeignKey(i => i.CollectionId);
         }
 

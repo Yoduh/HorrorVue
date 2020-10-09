@@ -72,7 +72,6 @@ export default {
       if (this.name === "") return;
       this.dialog = false;
       this.$emit("save", this.name);
-      this.name = "";
     }
   },
   computed: {

@@ -1,20 +1,39 @@
 <template>
-  <v-dialog v-model="dialog" max-width="600px" @click:outside="$emit('close')">
+  <v-dialog
+    v-model="dialog"
+    max-width="600px"
+    @click:outside="close"
+    @keydown.esc="close"
+  >
     <v-card>
-      <v-card-title>
-        <span class="headline">Enter e-mail addresses</span>
-      </v-card-title>
       <v-card-text class="pb-0">
         <v-container>
-          <v-list>
-            <v-list-item v-for="(email, i) in emails" :key="i">
+          <h3>
+            Enter the e-mail address of each user you want to send an invite to
+          </h3>
+          <v-list dense class="py-0">
+            <v-list-item
+              v-for="(email, i) in emails"
+              :key="i"
+              class="item mb-1"
+            >
               {{ email }}
+              <v-btn
+                icon
+                color="red"
+                x-small
+                class="ml-1 remove"
+                @click="remove(i)"
+              >
+                <v-icon>mdi-close</v-icon>
+              </v-btn>
             </v-list-item>
           </v-list>
           <v-text-field
             label="E-mail"
             v-model="value"
             :rules="rules"
+            hint="Press enter to add another address"
             clearable
             @change="addToList"
           ></v-text-field>
@@ -30,7 +49,7 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="blue darken-1" text @click="$emit('close')">
+        <v-btn color="blue darken-1" text @click="close">
           Cancel
         </v-btn>
         <v-btn color="green" text @click="email">
@@ -42,6 +61,9 @@
 </template>
 
 <script>
+import db from "@/api/db";
+import { mapGetters } from "vuex";
+
 export default {
   name: "EmailModal",
   props: ["dialog", "collections"],
@@ -56,16 +78,50 @@ export default {
     emails: []
   }),
   methods: {
-    email() {
-      console.log("email");
+    ...mapGetters(["user"]),
+    async email() {
+      if (this.emails.length === 0) {
+        console.log("no emails given");
+        return;
+      }
+      const res = await db.sendInvite(
+        this.user().id,
+        this.emails,
+        this.collections.map(c => c.id)
+      );
+      console.log("res returned", res);
+      if (res.isSuccess) {
+        console.log("make a success snackbar here");
+      }
+      this.close();
     },
     addToList(email) {
       if (email === "" || email === null) return;
       this.emails.push(email);
       this.value = null;
+    },
+    close() {
+      this.value = null;
+      this.emails = [];
+      this.$emit("close");
+    },
+    remove(index) {
+      this.emails.splice(index, 1);
     }
+  },
+  created() {
+    console.log("created colls", this.collections);
   }
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.remove {
+  height: auto;
+  margin: 0;
+}
+.item {
+  height: auto;
+  min-height: auto;
+}
+</style>

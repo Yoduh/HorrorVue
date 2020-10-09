@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar color="deep-grey accent-4" dense dark>
+  <v-app-bar color="deep-grey accent-4" dense dark app>
     <v-app-bar-nav-icon></v-app-bar-nav-icon>
 
     <v-toolbar-title>Franchise Rankings</v-toolbar-title>

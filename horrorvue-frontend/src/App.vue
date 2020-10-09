@@ -37,8 +37,8 @@ export default {
       const div = this.$auth.user.sub.indexOf("|");
       const id = this.$auth.user.sub.slice(div + 1);
       const user = await db.getUser(id);
-      this.finalizeLogin(user);
-      if (user.collections) this.setCollections(user.collections);
+      await this.finalizeLogin(user);
+      if (user.collections) await this.setCollections(user.collections);
     }
   }
 };

@@ -1,8 +1,9 @@
 <template>
   <v-container v-if="user()">
+    <!-- user info -->
     <v-row>
       <v-form>
-        <v-row>Your Information</v-row>
+        <v-row><div class="text-h3">My Profile</div></v-row>
         <v-row>
           <v-col cols="12" sm="6">
             <v-text-field
@@ -31,16 +32,44 @@
         </v-row>
       </v-form>
     </v-row>
+    <v-row v-if="user().invites.length > 0">
+      <div class="text-h4">You've been invited to rank another collection!</div>
+      <v-list dense class="mb-5" dark>
+        <template v-for="(invite, index) in user().invites">
+          <v-divider v-if="index != 0" :key="`divider-${index}`"></v-divider>
+          <v-list-item two-line class="pr-0" :key="invite.id">
+            <v-list-item-content>
+              <v-list-item-title>
+                {{ invite.collection.name }}
+              </v-list-item-title>
+              <v-list-item-subtitle>
+                Invited by: {{ invite.fromUser.firstName }}
+                {{ invite.fromUser.lastName }}
+              </v-list-item-subtitle>
+            </v-list-item-content>
+            <v-list-item-action class="flex-row">
+              <v-btn class="ml-3" color="success" @click="subscribe(invite)"
+                >Accept</v-btn
+              >
+              <v-btn class="mx-3" color="error" @click="reject(invite)"
+                >Reject</v-btn
+              >
+            </v-list-item-action>
+          </v-list-item>
+        </template>
+      </v-list>
+    </v-row>
+    <!-- user collections -->
     <v-row align="end">
-      <h3>Select collections and invite your friends to rank them!</h3>
+      <div class="text-h4">Subscribed collections</div>
       <v-btn class="ml-auto" @click="selectToggle">{{ selectAll }}</v-btn>
     </v-row>
     <v-row>
       <v-col cols="12" class="mt-3 pa-0">
         <v-list dark>
-          <template v-for="(collection, index) in user().collections">
+          <template v-for="(collection, index) in collections">
             <v-divider v-if="index != 0" :key="`divider-${index}`"></v-divider>
-            <v-list-item two-line :key="collection.id">
+            <v-list-item three-line :key="collection.id">
               <v-list-item-content>
                 <v-list-item-title>{{ collection.name }}</v-list-item-title>
                 <v-list-item-subtitle>
@@ -49,12 +78,12 @@
                     isRanked(index, collection.id)
                   }}</span>
                 </v-list-item-subtitle>
+                <v-list-item-subtitle>
+                  Created by {{ createdBy(collection) }}
+                </v-list-item-subtitle>
               </v-list-item-content>
               <v-list-item-action>
-                <v-checkbox
-                  v-model="selected"
-                  :value="{ id: collection.id, name: collection.name }"
-                ></v-checkbox>
+                <v-checkbox v-model="selected" :value="collection"></v-checkbox>
               </v-list-item-action>
             </v-list-item>
           </template>
@@ -62,13 +91,13 @@
       </v-col>
     </v-row>
     <v-row class="mt-3">
-      <v-btn class="ml-auto" @click="dialog = true">
-        <v-icon class="mr-2">mdi-email-outline</v-icon> E-mail Invites
+      <v-btn class="ml-auto" @click.stop="dialog = true">
+        <v-icon class="mr-2">mdi-email-outline</v-icon> Send Invites
       </v-btn>
       <email-modal
         :dialog="dialog"
         @close="dialog = false"
-        :collections="selected.slice()"
+        :collections="selected"
       ></email-modal>
     </v-row>
   </v-container>
@@ -76,7 +105,8 @@
 
 <script>
 import EmailModal from "@/components/modals/EmailModal";
-import { mapGetters } from "vuex";
+import db from "@/api/db";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "Profile",
@@ -86,11 +116,20 @@ export default {
   data() {
     return {
       selected: [],
-      dialog: false
+      dialog: false,
+      collections: [],
+      isLoading: true,
+      isNotLoading: false
     };
   },
   methods: {
     ...mapGetters(["user"]),
+    ...mapActions([
+      "removeInvite",
+      "addUserCollection",
+      "setCollections",
+      "removeInvite"
+    ]),
     isRanked(index, id) {
       const ranking = this.user().collections[index].rankings.find(
         r => r.collectionId === id
@@ -108,11 +147,35 @@ export default {
     },
     selectToggle() {
       if (this.selected.length < this.user().collections.length) {
-        this.selected = this.user().collections.map(c => {
-          return { id: c.id, name: c.name };
-        });
+        this.selected = this.collectionIdNames;
       } else {
         this.selected = [];
+      }
+    },
+    createdBy(collection) {
+      console.log("coll", collection);
+      if (collection.createdBy === this.user().id) {
+        return "you!";
+      } else {
+        const user = collection.appUsers.find(
+          u => u.id === collection.createdBy
+        );
+        return `${user.firstName} ${user.lastName}`;
+      }
+    },
+    async subscribe(invite) {
+      // returns collection
+      const res = await db.acceptInvite(invite);
+      if (res) {
+        await this.addUserCollection(res);
+        this.setCollections(this.user().collections);
+        this.removeInvite(invite.id);
+      }
+    },
+    async reject(invite) {
+      const res = await db.rejectInvite(invite.id);
+      if (res) {
+        this.removeInvite(invite.id);
       }
     }
   },
@@ -123,6 +186,18 @@ export default {
       } else {
         return "Deselect All";
       }
+    }
+  },
+  updated() {
+    if (this.user() && this.isLoading) {
+      this.collections = this.user().collections;
+      this.isLoading = false;
+    }
+  },
+  created() {
+    if (this.user() && this.isLoading) {
+      this.collections = this.user().collections;
+      this.isLoading = false;
     }
   }
 };
@@ -136,5 +211,16 @@ export default {
 }
 .Incomplete {
   color: yellow !important;
+}
+.v-list {
+  width: 100%;
+  background-color: rgb(51, 57, 65);
+}
+.v-list-item__title {
+  color: white;
+}
+.v-list-item__subtitle {
+  color: grey !important;
+  font-style: italic;
 }
 </style>
