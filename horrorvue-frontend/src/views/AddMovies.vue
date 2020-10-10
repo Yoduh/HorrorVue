@@ -148,7 +148,11 @@ export default {
       }
       this.setSearchResults(this.results);
       movies.forEach(result => {
-        if (this.results.find(r => r.tmdId === result.tmdId) !== undefined) {
+        if (
+          this.results.find(r => {
+            return r.tmdId === result.tmdId;
+          }) !== undefined
+        ) {
           return;
         } else this.results.push({ ...result, added: false, show: false });
       });

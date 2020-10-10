@@ -86,6 +86,13 @@ namespace HorrorVue.Web.Controllers
 			else
 				return Ok(result);
 		}
+		[HttpDelete("/api/collection/{collectionId}/user/{userId}")]
+		public ActionResult removeUserFromCollection(int collectionId, int userId)
+		{
+			_logger.LogInformation("Updating collection with new user");
+			var result = _collectionService.RemoveUserFromCollection(collectionId, userId);
+			return Ok(result);
+		}
 
 		[HttpGet("/api/collection/{id}")]
 		public ActionResult GetCollection(int id)

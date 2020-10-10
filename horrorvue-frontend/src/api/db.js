@@ -23,6 +23,11 @@ export default {
   async deleteCollection(id) {
     return axios.delete(`${ROOT_URL}/api/collection/${id}`);
   },
+  async unsubCollection(collectionId, userId) {
+    return axios.delete(
+      `${ROOT_URL}/api/collection/${collectionId}/user/${userId}`
+    );
+  },
   async updateCollection(movies, id) {
     return axios.patch(`${ROOT_URL}/api/collection/${id}`, movies).then(res => {
       if (res.data.isSuccess) {

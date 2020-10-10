@@ -43,7 +43,17 @@ export default {
 .v-card__title {
   color: black;
   background-color: white;
+  margin-bottom: 1rem;
+  max-width: 150px;
+  height: 5em;
+  line-height: 1.5em;
   word-break: normal !important;
+  /* white-space: nowrap; */
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
 }
 .v-card__subtitle {
   color: black !important;

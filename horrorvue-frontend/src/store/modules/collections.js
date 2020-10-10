@@ -24,8 +24,8 @@ const actions = {
     commit("addCollection", collection);
   },
   removeCollection: ({ commit }, id) => {
-    const collections = state.collections.filter(c => c.id !== id);
-    commit("setCollections", collections);
+    const index = state.collections.findIndex(c => c.id === id);
+    commit("removeCollection", index);
     commit("setSelectedCollection", null);
   },
   selectCollectionById: ({ commit }, id) => {
@@ -123,6 +123,9 @@ const mutations = {
   },
   addCollection: (state, collection) => {
     state.collections.push(collection);
+  },
+  removeCollection: (state, index) => {
+    state.collections.splice(index, 1);
   },
   setTempMovies: (state, movies) => {
     state.tempMovies = movies;

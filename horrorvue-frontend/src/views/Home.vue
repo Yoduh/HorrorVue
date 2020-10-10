@@ -5,18 +5,15 @@
     </div>
     <div v-else>
       <search-bar @search="searchFranchise" @scroll-to="scrollTo"></search-bar>
-      <!-- <icon-medal
-        width="50"
-        height="50"
-        icon-name="medal"
-        icon-color1="#ffe27a"
-        icon-color2="#f9cf58"
-      ></icon-medal> -->
-
       <div v-if="noResults">
         No movies for that franchise were found, try another one?
       </div>
-      <div v-if="collections() === null || collections().length === 0">
+      <div v-if="isLoading()">Loading...</div>
+      <div
+        v-else-if="
+          !isLoading() && (collections() === null || collections().length === 0)
+        "
+      >
         You have no collections yet, search for a franchise above to add one!
       </div>
       <div v-else>
@@ -27,16 +24,38 @@
             @click="select(collection.id)"
           >
             <v-expansion-panel-header :id="collection.id">
-              <strong>{{ collection.name }}</strong>
+              <span>
+                <v-tooltip top v-if="createdByOther(collection.createdBy)">
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-icon
+                      color="primary"
+                      class="mr-2 ml-n5"
+                      v-bind="attrs"
+                      v-on="on"
+                    >
+                      mdi-account-multiple
+                    </v-icon>
+                  </template>
+                  <span>Subscribed Collection</span>
+                </v-tooltip>
+                <span v-else class="ml-3" />
+                <strong>{{ collection.name }}</strong>
+              </span>
               <span
                 v-if="panel === index"
                 class="ml-auto"
                 :class="'btns' + collection.id"
                 @click.stop=""
               >
-                <edit-btn></edit-btn>
+                <edit-btn
+                  :disabled="!canDeleteOrEdit(collection.createdBy)"
+                ></edit-btn>
                 <delete-btn
+                  :canDelete="canDeleteOrEdit(collection.createdBy)"
+                  :collection="collection"
+                  :userId="user().id"
                   @delete="deleteCollection(collection.id)"
+                  @unsubscribe="unsubCollection(collection.id)"
                 ></delete-btn>
               </span>
             </v-expansion-panel-header>
@@ -106,7 +125,7 @@ export default {
     }
   },
   methods: {
-    ...mapGetters(["collections", "selectedCollection", "user"]),
+    ...mapGetters(["collections", "selectedCollection", "user", "isLoading"]),
     ...mapActions([
       "setSearchResults",
       "setCollections",
@@ -115,7 +134,9 @@ export default {
       "setRankOrderMovies",
       "resetTempRanking"
     ]),
-
+    createdByOther(createdById) {
+      return this.user().id !== createdById;
+    },
     searchFranchise(results) {
       window.localStorage.removeItem("selectedCollection");
       if (results.data.length > 0) {
@@ -148,6 +169,17 @@ export default {
       if (res.data.isSuccess) {
         this.removeCollection(id);
       }
+    },
+    async unsubCollection(id) {
+      const res = await db.unsubCollection(id, this.user().id);
+      if (res.data.isSuccess) {
+        this.removeCollection(id);
+      } else {
+        console.log("error", res.data.message);
+      }
+    },
+    canDeleteOrEdit(createdBy) {
+      return this.user().id === createdBy;
     }
   },
   created() {

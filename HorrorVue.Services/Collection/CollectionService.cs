@@ -79,6 +79,46 @@ namespace HorrorVue.Services.Collection
 			}
 		}
 
+		public ServiceResponse<bool> RemoveUserFromCollection(int collectionId, int userId)
+		{
+			try
+			{
+				var dbColl = _db.Collections.First(i => i.Id == collectionId);
+				var dbUser = _db.AppUsers.First(user => user.Id == userId);
+				var dbRanking = _db.Rankings
+					.FirstOrDefault(r => r.CollectionId == collectionId && r.UserId == userId);
+				var appUserCollection = new AppUserCollection
+				{
+					CollectionId = dbColl.Id,
+					AppUserId = dbUser.Id
+				};
+				_db.Remove(appUserCollection);
+				if (dbRanking != null)
+				{
+					_db.Remove(dbRanking);
+				}
+				_db.SaveChanges();
+				return new ServiceResponse<bool>
+				{
+					IsSuccess = true,
+					Message = "Removed AppUser collection",
+					Time = DateTime.UtcNow,
+					Data = true
+				};
+			}
+			catch (Exception e)
+			{
+				return new ServiceResponse<bool>
+				{
+					IsSuccess = false,
+					Message = e.StackTrace,
+					Time = DateTime.UtcNow,
+					Data = false
+				};
+			}
+		}
+
+
 		public ServiceResponse<bool> DeleteCollection(int collectionId)
 		{
 			var now = DateTime.UtcNow;

@@ -8,7 +8,7 @@
         :description="result.overview"
       />
     </template>
-    <v-card-actions :class="`rounded-b-xl`">
+    <v-card-actions>
       <v-btn v-if="!result.added" text @click="addMovie(result)">Add</v-btn>
       <v-btn v-else text @click="removeMovie(result)">Remove</v-btn>
 

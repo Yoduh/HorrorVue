@@ -5,6 +5,7 @@
       <v-container fluid>
         <router-view></router-view>
       </v-container>
+      <snackbar :show="snackbar()" :message="snackbarText" />
     </v-main>
     <div v-else>
       Loading...
@@ -17,15 +18,21 @@ import Navbar from "@/components/Navbar.vue";
 import db from "@/api/db";
 import store from "@/store";
 import { mapActions, mapGetters } from "vuex";
+import eventBus from "./eventBus";
 
 export default {
   name: "App",
+  data() {
+    return {
+      snackbarText: ""
+    };
+  },
   components: {
     Navbar
   },
   methods: {
-    ...mapActions(["finalizeLogin", "setCollections"]),
-    ...mapGetters(["isLoading"])
+    ...mapActions(["finalizeLogin", "setCollections", "toggleSnackbar"]),
+    ...mapGetters(["isLoading", "snackbar"])
   },
   // reset store if user refreshes page
   async updated() {
@@ -40,6 +47,15 @@ export default {
       await this.finalizeLogin(user);
       if (user.collections) await this.setCollections(user.collections);
     }
+  },
+  created() {
+    eventBus.$on("close-snackbar", () => {
+      this.toggleSnackbar();
+    });
+    eventBus.$on("open-snackbar", text => {
+      this.snackbarText = text;
+      this.toggleSnackbar();
+    });
   }
 };
 </script>

@@ -10,6 +10,7 @@ namespace HorrorVue.Services.Collection
 		Data.Models.Collection GetCollectionById(int collectionId);
 		ServiceResponse<Data.Models.Collection> CreateCollection(Data.Models.Collection collection);
 		ServiceResponse<bool> AddUserToCollection(int collectionId, string userId);
+		ServiceResponse<bool> RemoveUserFromCollection(int collectionId, int userId);
 		ServiceResponse<bool> DeleteCollection(int collectionId);
 		ServiceResponse<Data.Models.Collection> UpdateCollection(List<Data.Models.Movie> movies, int id);
 		List<Data.Models.Collection> GetCollectionsForUserId(string userId);

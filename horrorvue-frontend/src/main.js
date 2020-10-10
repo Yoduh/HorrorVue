@@ -3,6 +3,7 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import vuetify from "./plugins/vuetify";
+import snackbar from "@/components/Snackbar";
 // const gauthOption = {
 //   clientId: '959351066294-krib2tgeut36qsakcjd4c7tvivr5bfal.apps.googleusercontent.com',
 //   scope: 'profile email',
@@ -29,9 +30,13 @@ Vue.use(Auth0Plugin, {
 
 Vue.config.productionTip = false;
 
+Vue.component("snackbar", snackbar);
+let snack = false;
+
 new Vue({
   router,
   store,
   vuetify,
+  snack,
   render: h => h(App)
 }).$mount("#app");

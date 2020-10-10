@@ -61,14 +61,14 @@
     </v-row>
     <!-- user collections -->
     <v-row align="end">
-      <div class="text-h4">Subscribed collections</div>
+      <div class="text-h4">Your collections</div>
       <v-btn class="ml-auto" @click="selectToggle">{{ selectAll }}</v-btn>
     </v-row>
     <v-row>
       <v-icon color="primary">
         mdi-account-multiple
       </v-icon>
-      = created by someone else
+      = collection you're subscribed to
     </v-row>
     <v-row>
       <v-col cols="12" class="mt-3 pa-0">
@@ -118,6 +118,7 @@
 import EmailModal from "@/components/modals/EmailModal";
 import db from "@/api/db";
 import { mapGetters, mapActions } from "vuex";
+import eventBus from "@/eventBus";
 
 export default {
   name: "Profile",
@@ -135,10 +136,15 @@ export default {
   },
   methods: {
     ...mapGetters(["user"]),
-    ...mapActions(["removeInvite", "addCollection", "removeInvite"]),
+    ...mapActions([
+      "removeInvite",
+      "addCollection",
+      "removeInvite",
+      "toggleSnackbar"
+    ]),
     isRanked(index, id) {
       const ranking = this.user().collections[index].rankings.find(
-        r => r.collectionId === id
+        r => r.collectionId === id && r.userId === this.user().id
       );
       if (
         ranking &&
@@ -204,6 +210,7 @@ export default {
       this.collections = this.user().collections;
       this.isLoading = false;
     }
+    eventBus.$emit("open-snackbar", "from Profile!");
   }
 };
 </script>
