@@ -64,7 +64,6 @@ export default {
     ]),
     ...mapActions([
       "setSearchResults",
-      "setCollections",
       "addCollection",
       "selectCollectionById",
       "setTempMovies",

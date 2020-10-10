@@ -27,7 +27,6 @@ export default {
   props: ["collection", "movieId"],
   data() {
     return {
-      users: [],
       mockData: [
         {
           name: "Alex",
@@ -45,15 +44,19 @@ export default {
       return rankings.indexOf(movieId) + 1;
     }
   },
-  created() {
-    if (this.collection.rankings.length > 0) {
-      this.users = this.collection.rankings.map(r => {
-        let appUser = this.collection.appUsers.find(u => u.id == r.userId);
-        return {
-          name: appUser.firstName + " " + appUser.lastName.charAt(0) + ".",
-          rankings: r.order
-        };
-      });
+  computed: {
+    users() {
+      let users = [];
+      if (this.collection.rankings.length > 0) {
+        users = this.collection.rankings.map(r => {
+          let appUser = this.collection.appUsers.find(u => u.id == r.userId);
+          return {
+            name: appUser.firstName + " " + appUser.lastName.charAt(0) + ".",
+            rankings: r.order
+          };
+        });
+      }
+      return users;
     }
   }
 };

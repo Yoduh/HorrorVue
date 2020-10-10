@@ -84,6 +84,7 @@ namespace HorrorVue.Services.InviteService
 				.Include(invite => invite.FromUser)
 				.Include(invite => invite.Collection)
 				.ThenInclude(c => c.AppUsers)
+				.ThenInclude(row => row.AppUser)
 				.Where(invite => invite.ToUserId == id)
 				.ToList();
 		}

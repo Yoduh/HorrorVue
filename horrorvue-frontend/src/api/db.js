@@ -94,7 +94,6 @@ export default {
         });
       });
     });
-    console.log("reqs", reqs);
     return axios.post(`${ROOT_URL}/api/invite/`, reqs).then(res => {
       if (res.data.isSuccess) {
         return res.data;

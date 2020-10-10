@@ -65,13 +65,24 @@
       <v-btn class="ml-auto" @click="selectToggle">{{ selectAll }}</v-btn>
     </v-row>
     <v-row>
+      <v-icon color="primary">
+        mdi-account-multiple
+      </v-icon>
+      = created by someone else
+    </v-row>
+    <v-row>
       <v-col cols="12" class="mt-3 pa-0">
         <v-list dark>
           <template v-for="(collection, index) in collections">
             <v-divider v-if="index != 0" :key="`divider-${index}`"></v-divider>
             <v-list-item three-line :key="collection.id">
               <v-list-item-content>
-                <v-list-item-title>{{ collection.name }}</v-list-item-title>
+                <v-list-item-title>
+                  <v-icon v-if="collection.useGroupIcon" color="primary">
+                    mdi-account-multiple
+                  </v-icon>
+                  {{ collection.name }}
+                </v-list-item-title>
                 <v-list-item-subtitle>
                   Ranked:
                   <span :class="isRanked(index, collection.id)">{{
@@ -124,12 +135,7 @@ export default {
   },
   methods: {
     ...mapGetters(["user"]),
-    ...mapActions([
-      "removeInvite",
-      "addUserCollection",
-      "setCollections",
-      "removeInvite"
-    ]),
+    ...mapActions(["removeInvite", "addCollection", "removeInvite"]),
     isRanked(index, id) {
       const ranking = this.user().collections[index].rankings.find(
         r => r.collectionId === id
@@ -153,10 +159,10 @@ export default {
       }
     },
     createdBy(collection) {
-      console.log("coll", collection);
       if (collection.createdBy === this.user().id) {
         return "you!";
       } else {
+        this.$set(collection, "useGroupIcon", true);
         const user = collection.appUsers.find(
           u => u.id === collection.createdBy
         );
@@ -167,8 +173,7 @@ export default {
       // returns collection
       const res = await db.acceptInvite(invite);
       if (res) {
-        await this.addUserCollection(res);
-        this.setCollections(this.user().collections);
+        this.addCollection(res);
         this.removeInvite(invite.id);
       }
     },
@@ -221,6 +226,5 @@ export default {
 }
 .v-list-item__subtitle {
   color: grey !important;
-  font-style: italic;
 }
 </style>

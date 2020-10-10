@@ -89,7 +89,6 @@ export default {
         this.emails,
         this.collections.map(c => c.id)
       );
-      console.log("res returned", res);
       if (res.isSuccess) {
         console.log("make a success snackbar here");
       }
@@ -108,9 +107,6 @@ export default {
     remove(index) {
       this.emails.splice(index, 1);
     }
-  },
-  created() {
-    console.log("created colls", this.collections);
   }
 };
 </script>

@@ -72,11 +72,16 @@ namespace HorrorVue.Web.Controllers
 			var result = _collectionService.AddUserToCollection(collectionId, userId.ToString());
 			if (result.IsSuccess)
 			{
-				var delResult = _inviteService.DeleteInviteById(invite.Id);
-				if (delResult.IsSuccess)
-					return Ok(result);
-				else
-					return Ok(delResult);
+				_inviteService.DeleteInviteById(invite.Id);
+				var collection = _collectionService.GetCollectionById(collectionId);
+				var res = new ServiceResponse<CollectionVM>
+				{
+					IsSuccess = result.IsSuccess,
+					Message = result.Message,
+					Time = result.Time,
+					Data = CollectionMapper.SerializeCollection(collection)
+				};
+				return Ok(res);
 			}
 			else
 				return Ok(result);

@@ -112,7 +112,6 @@ export default {
       "setCollections",
       "selectCollectionById",
       "removeCollection",
-      "removeUserCollection",
       "setRankOrderMovies",
       "resetTempRanking"
     ]),
@@ -148,7 +147,6 @@ export default {
       const res = await db.deleteCollection(id);
       if (res.data.isSuccess) {
         this.removeCollection(id);
-        this.removeUserCollection(id);
       }
     }
   },

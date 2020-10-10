@@ -31,10 +31,6 @@ const actions = {
   setIsLoading: ({ commit }, loading) => {
     commit("setIsLoading", loading);
   },
-  removeUserCollection: ({ commit }, id) => {
-    const userColls = state.user.collections.filter(c => c.id !== id);
-    commit("setUserCollections", userColls);
-  },
   removeInvite: ({ commit }, inviteId) => {
     const invites = state.user.invites.filter(i => i.id !== inviteId);
     commit("setInvites", invites);
@@ -50,9 +46,6 @@ const mutations = {
   },
   setIsLoading: (state, loading) => {
     state.isLoading = loading;
-  },
-  setUserCollections: (state, collections) => {
-    state.user.collections = collections;
   },
   setInvites: (state, invites) => {
     state.user.invites = invites;
