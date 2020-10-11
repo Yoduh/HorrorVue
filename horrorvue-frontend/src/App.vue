@@ -5,7 +5,11 @@
       <v-container fluid>
         <router-view></router-view>
       </v-container>
-      <snackbar :show="snackbar()" :message="snackbarText" />
+      <snackbar
+        :show="snackbar()"
+        :message="snackbarText"
+        :color="snackbarColor"
+      />
     </v-main>
     <div v-else>
       Loading...
@@ -18,13 +22,13 @@ import Navbar from "@/components/Navbar.vue";
 import db from "@/api/db";
 import store from "@/store";
 import { mapActions, mapGetters } from "vuex";
-import eventBus from "./eventBus";
 
 export default {
   name: "App",
   data() {
     return {
-      snackbarText: ""
+      snackbarText: "",
+      snackbarColor: ""
     };
   },
   components: {
@@ -49,11 +53,12 @@ export default {
     }
   },
   created() {
-    eventBus.$on("close-snackbar", () => {
+    this.$eventBus.$on("close-snackbar", () => {
       this.toggleSnackbar();
     });
-    eventBus.$on("open-snackbar", text => {
+    this.$eventBus.$on("open-snackbar", (text, color) => {
       this.snackbarText = text;
+      this.snackbarColor = color;
       this.toggleSnackbar();
     });
   }

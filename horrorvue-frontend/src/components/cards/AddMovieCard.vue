@@ -4,7 +4,9 @@
       <v-spacer></v-spacer>
       <info-modal
         :title="result.title"
-        :subtitle="result.release_date.substring(0, 4)"
+        :subtitle="
+          result.release_date ? result.release_date.substring(0, 4) : 'Unknown'
+        "
         :description="result.overview"
       />
     </template>

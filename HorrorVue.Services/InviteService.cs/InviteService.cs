@@ -26,7 +26,23 @@ namespace HorrorVue.Services.InviteService
 				foreach (Invite invite in invites)
 				{
 					invite.FromUserId = fromUser.Id;
-					var toUser = _db.AppUsers.First(user => user.Email.Equals(invite.ToUserEmail));
+					var toUser = _db.AppUsers
+						.Include(u => u.Collections)
+						.First(user => user.Email.Equals(invite.ToUserEmail));
+					// skip if user already has collection
+					if (toUser.Collections.FirstOrDefault(au => au.CollectionId == invite.CollectionId) != null)
+					{
+						continue;
+					}
+					// update invite if already exists
+					var existingInvite = _db.Invite.FirstOrDefault(i => i.ToUserId == toUser.Id && i.CollectionId == invite.CollectionId);
+					if (existingInvite != null)
+					{
+						existingInvite.CreatedOn = DateTime.UtcNow;
+						_db.Invite.Update(existingInvite);
+						continue;
+					}
+
 					invite.ToUserId = toUser.Id;
 					invite.CreatedOn = DateTime.UtcNow;
 

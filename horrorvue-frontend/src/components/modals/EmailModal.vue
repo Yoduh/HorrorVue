@@ -91,8 +91,15 @@ export default {
   methods: {
     ...mapGetters(["user"]),
     async sendInvite() {
+      if (this.email !== "") {
+        if (!this.addToList()) return;
+      }
       if (this.emails.length === 0) {
-        console.log("no emails given");
+        this.$eventBus.$emit(
+          "open-snackbar",
+          "You need to add at least 1 e-mail",
+          "error"
+        );
         return;
       }
       const res = await db.sendInvite(
@@ -101,14 +108,19 @@ export default {
         this.collections.map(c => c.id)
       );
       if (res.isSuccess) {
-        console.log("make a success snackbar here");
+        this.$eventBus.$emit("open-snackbar", "Invites sent!", "success");
+      } else {
+        if (res.message === "Sequence contains no elements")
+          this.$eventBus.$emit("open-snackbar", "Could not find user", "error");
+        else this.$eventBus.$emit("open-snackbar", res.message, "error");
       }
       this.close();
     },
     addToList() {
-      if (!this.valid || this.email === "" || this.email === null) return;
+      if (!this.valid || this.email === "" || this.email === null) return false;
       this.emails.push(this.email);
       this.email = "";
+      return true;
     },
     close() {
       this.value = null;

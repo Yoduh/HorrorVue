@@ -69,7 +69,8 @@ export default {
       "setTempMovies",
       "addToTempMovies",
       "removeFromTempMovies",
-      "resetTempMovies"
+      "resetTempMovies",
+      "updateCollectionMovies"
     ]),
     async searchMovies(searchResults) {
       this.setSearchResults(searchResults.data);
@@ -101,16 +102,42 @@ export default {
       this.removeFromTempMovies(movie);
     },
     async save(name) {
+      let res = null;
       if (!this.selectedCollection()) {
-        const retCollection = await db.newCollection(this.tempMovies(), name);
-        if (retCollection !== null) {
-          this.addCollection(retCollection);
+        if (this.collections().find(c => c.name === name) !== undefined) {
+          this.$eventBus.$emit(
+            "open-snackbar",
+            "Error: Collection with that name already exists",
+            "error"
+          );
+          return;
+        }
+        res = await db.newCollection(this.tempMovies(), name);
+        if (res.isSuccess) {
+          res = this.addCollection(res.data);
+          this.$eventBus.$emit(
+            "open-snackbar",
+            "Collection successfully created",
+            "success"
+          );
+        } else {
+          this.$eventBus.$emit("open-snackbar", res.message, "error");
         }
       } else {
-        await db.updateCollection(
+        res = await db.updateCollection(
           this.tempMovies(),
           this.selectedCollection().id
         );
+        if (res.isSuccess) {
+          this.updateCollectionMovies(res.data.movies);
+          this.$eventBus.$emit(
+            "open-snackbar",
+            "Collection successfully updated",
+            "success"
+          );
+        } else {
+          this.$eventBus.$emit("open-snackbar", res.message, "error");
+        }
       }
       // go back home after save
       this.$router.push("/");
@@ -125,9 +152,6 @@ export default {
       window.localStorage.removeItem("selectedCollection");
       this.$router.push("/");
       return;
-      // await this.collections();
-      // console.log("collections", this.collections());
-      // this.selectCollectionById(id);
     }
     if (this.results.length === 0) {
       const movies = await api.fetchMovies(this.query);

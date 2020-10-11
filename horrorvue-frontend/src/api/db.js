@@ -11,13 +11,7 @@ export default {
       Movies: [...collection]
     };
     return axios.post(`${ROOT_URL}/api/collection`, request).then(res => {
-      if (res.data.isSuccess) {
-        return res.data.data;
-      } else {
-        console.log("save error");
-        console.log(res.data.message);
-        return null;
-      }
+      return res.data;
     });
   },
   async deleteCollection(id) {
@@ -30,14 +24,7 @@ export default {
   },
   async updateCollection(movies, id) {
     return axios.patch(`${ROOT_URL}/api/collection/${id}`, movies).then(res => {
-      if (res.data.isSuccess) {
-        store.dispatch("updateCollectionMovies", res.data.data.movies);
-        return res.data.data;
-      } else {
-        console.log("save error");
-        console.log(res.data.message);
-        return null;
-      }
+      return res.data;
     });
   },
   // userId: google id
@@ -72,7 +59,7 @@ export default {
         return res.data.data;
       })
       .catch(err => {
-        console.log("create err", err);
+        console.log("error on create", err);
         return null;
       });
   },
@@ -100,22 +87,12 @@ export default {
       });
     });
     return axios.post(`${ROOT_URL}/api/invite/`, reqs).then(res => {
-      if (res.data.isSuccess) {
-        return res.data;
-      } else {
-        console.log("error", res.data.message);
-        return res.data;
-      }
+      return res.data;
     });
   },
   rejectInvite(inviteId) {
     return axios.delete(`${ROOT_URL}/api/invite/${inviteId}`).then(res => {
-      if (res.data.isSuccess) {
-        return true;
-      } else {
-        console.log("error", res.data.message);
-        return false;
-      }
+      return res.data;
     });
   },
   acceptInvite(invite) {
@@ -125,12 +102,7 @@ export default {
         invite
       )
       .then(res => {
-        if (res.data.isSuccess) {
-          return res.data.data;
-        } else {
-          console.log("error", res.data.message);
-          return false;
-        }
+        res.data;
       });
   }
 };

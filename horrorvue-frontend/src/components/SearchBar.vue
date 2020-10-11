@@ -1,32 +1,20 @@
 <template>
   <div class="search-bar">
-    <v-autocomplete
-      v-model="model"
-      :items="names"
-      :loading="isLoading"
-      :search-input.sync="search"
-      :value="value"
-      background-color="gray"
+    <v-text-field
+      v-model="search"
       dark
-      hide-no-data
-      hide-selected
-      item-text="Description"
-      item-value="API"
-      label="Franchise Name"
-      :placeholder="placeholder"
-      no-data-text="No saved franchises"
-      :clearable="true"
-      prepend-icon="mdi-database-search"
-      return-object
+      placeholder="Search by movie name to start creating a new collection"
+      filled
+      rounded
+      dense
       @keydown.enter="searchMovies"
-      @change="searchMovies"
-    ></v-autocomplete>
+    ></v-text-field>
   </div>
 </template>
 
 <script>
 import api from "@/api/tmdb.js";
-import { mapActions, mapGetters } from "vuex";
+import { mapGetters } from "vuex";
 
 export default {
   name: "SearchBar",
@@ -39,13 +27,9 @@ export default {
   },
   data() {
     return {
-      descriptionLimit: 60,
-      entries: [],
       isLoading: false,
-      model: null,
       search: null,
-      results: null,
-      value: null
+      results: null
     };
   },
   computed: {
@@ -58,22 +42,23 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["setLastSearched"]),
     ...mapGetters(["collections"]),
     async searchMovies() {
-      if (!this.model && !this.search) return;
-      this.setLastSearched(this.search);
-      const existing = this.collections().find(c => c.name === this.model);
-      if (existing !== undefined) {
-        this.$emit("scroll-to", existing.id);
-        return;
-      }
+      if (!this.search) return;
       const movies = await api.fetchMovies(this.search);
       const results = {
         data: movies,
         searchTerm: this.search
       };
-      this.$emit("search", results);
+      if (movies.length === 0) {
+        this.$eventBus.$emit(
+          "open-snackbar",
+          "No movies found! try a different search term",
+          "error"
+        );
+      } else {
+        this.$emit("search", results);
+      }
     }
   }
 };

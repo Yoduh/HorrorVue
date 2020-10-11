@@ -139,6 +139,7 @@ export default {
     },
     searchFranchise(results) {
       window.localStorage.removeItem("selectedCollection");
+      this.selectCollectionById(null);
       if (results.data.length > 0) {
         this.noResults = false;
         this.setSearchResults(results.data);
@@ -167,15 +168,23 @@ export default {
     async deleteCollection(id) {
       const res = await db.deleteCollection(id);
       if (res.data.isSuccess) {
+        this.$eventBus.$emit("open-snackbar", "Collection deleted", "success");
         this.removeCollection(id);
+      } else {
+        this.$eventBus.$emit("open-snackbar", res.data.message, "error");
       }
     },
     async unsubCollection(id) {
       const res = await db.unsubCollection(id, this.user().id);
       if (res.data.isSuccess) {
+        this.$eventBus.$emit(
+          "open-snackbar",
+          "Unsubscribed from collection",
+          "success"
+        );
         this.removeCollection(id);
       } else {
-        console.log("error", res.data.message);
+        this.$eventBus.$emit("open-snackbar", res.data.message, "error");
       }
     },
     canDeleteOrEdit(createdBy) {

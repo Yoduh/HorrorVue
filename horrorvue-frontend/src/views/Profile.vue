@@ -94,7 +94,11 @@
                 </v-list-item-subtitle>
               </v-list-item-content>
               <v-list-item-action>
-                <v-checkbox v-model="selected" :value="collection"></v-checkbox>
+                <v-checkbox
+                  v-model="selected"
+                  :value="collection"
+                  :disabled="collection.createdBy !== user().id"
+                ></v-checkbox>
               </v-list-item-action>
             </v-list-item>
           </template>
@@ -102,7 +106,7 @@
       </v-col>
     </v-row>
     <v-row class="mt-3">
-      <v-btn class="ml-auto" @click.stop="dialog = true">
+      <v-btn class="ml-auto" @click.stop="openModal">
         <v-icon class="mr-2">mdi-email-outline</v-icon> Send Invites
       </v-btn>
       <email-modal
@@ -118,7 +122,6 @@
 import EmailModal from "@/components/modals/EmailModal";
 import db from "@/api/db";
 import { mapGetters, mapActions } from "vuex";
-import eventBus from "@/eventBus";
 
 export default {
   name: "Profile",
@@ -159,7 +162,7 @@ export default {
     },
     selectToggle() {
       if (this.selected.length < this.user().collections.length) {
-        this.selected = this.collectionIdNames;
+        this.selected = this.user().collections;
       } else {
         this.selected = [];
       }
@@ -178,15 +181,30 @@ export default {
     async subscribe(invite) {
       // returns collection
       const res = await db.acceptInvite(invite);
-      if (res) {
-        this.addCollection(res);
+      if (res.isSuccess) {
+        this.addCollection(res.data);
         this.removeInvite(invite.id);
+      } else {
+        this.$eventBus.$emit("open-snackbar", res.message, "error");
       }
     },
     async reject(invite) {
       const res = await db.rejectInvite(invite.id);
-      if (res) {
+      if (res.isSuccess) {
         this.removeInvite(invite.id);
+      } else {
+        this.$eventBus.$emit("open-snackbar", res.message, "error");
+      }
+    },
+    openModal() {
+      if (this.selected.length > 0) {
+        this.dialog = true;
+      } else {
+        this.$eventBus.$emit(
+          "open-snackbar",
+          "Select at least one collection first!",
+          "error"
+        );
       }
     }
   },
@@ -210,7 +228,6 @@ export default {
       this.collections = this.user().collections;
       this.isLoading = false;
     }
-    eventBus.$emit("open-snackbar", "from Profile!");
   }
 };
 </script>

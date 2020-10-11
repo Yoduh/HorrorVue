@@ -1,9 +1,16 @@
 <template>
-  <v-snackbar :value="show" :timeout="2000">
+  <v-snackbar
+    :value="show"
+    :timeout="2000"
+    dark
+    outlined
+    :color="`${color}`"
+    @input="close"
+  >
     {{ message }}
 
     <template v-slot:action="{ attrs }">
-      <v-btn color="blue" text v-bind="attrs" @click="close">
+      <v-btn :color="color" text v-bind="attrs" @click="close">
         Close
       </v-btn>
     </template>
@@ -11,11 +18,9 @@
 </template>
 
 <script>
-import eventBus from "@/eventBus";
-
 export default {
   name: "snackbar",
-  props: ["message", "show"],
+  props: ["message", "show", "color"],
   data() {
     return {
       timeout: 2000
@@ -23,7 +28,7 @@ export default {
   },
   methods: {
     close() {
-      eventBus.$emit("close-snackbar");
+      this.$eventBus.$emit("close-snackbar");
     }
   }
 };

@@ -2,7 +2,7 @@
   <v-list dense class="blue-grey darken-4">
     <v-list-item-group :value="movies">
       <v-container class="modal-header white--text">
-        <h1 v-if="hasRankings">Edit Your Rankings!</h1>
+        <h1 v-if="hasRankings">Update Your Rankings!</h1>
         <h1 v-else>Create Your Rankings!</h1>
         <p class="font-italic grey--text text--lighten-1  text-caption mb-1">
           Drag and drop to set rankings
@@ -98,8 +98,15 @@ export default {
       }
 
       if (res.data.isSuccess) {
+        if (userRanking !== undefined) {
+          this.$eventBus.$emit("open-snackbar", "Ranking updated!", "success");
+        } else {
+          this.$eventBus.$emit("open-snackbar", "Ranking created!", "success");
+        }
         this.updateCollectionRanking(res.data.data);
         this.$emit("ranking-saved");
+      } else {
+        this.$eventBus.$emit("open-snackbar", res.data.message, "error");
       }
     }
   },

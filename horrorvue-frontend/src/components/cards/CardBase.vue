@@ -11,7 +11,10 @@
       class="text-subtitle-2 px-2 py-2"
     ></v-card-title>
     <v-card-subtitle class="px-2 py-0">
-      {{ result.release_date.substring(0, 4) }} <slot name="info"></slot>
+      {{
+        result.release_date ? result.release_date.substring(0, 4) : "Unknown"
+      }}
+      <slot name="info"></slot>
     </v-card-subtitle>
 
     <slot></slot>
@@ -39,6 +42,9 @@ export default {
 .v-card {
   max-width: fit-content !important;
   background-color: transparent !important;
+}
+.v-image {
+  min-height: 222px;
 }
 .v-card__title {
   color: black;

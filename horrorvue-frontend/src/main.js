@@ -31,12 +31,12 @@ Vue.use(Auth0Plugin, {
 Vue.config.productionTip = false;
 
 Vue.component("snackbar", snackbar);
-let snack = false;
+
+Vue.prototype.$eventBus = new Vue(); // Global event bus
 
 new Vue({
   router,
   store,
   vuetify,
-  snack,
   render: h => h(App)
 }).$mount("#app");
