@@ -6,29 +6,26 @@
           @click="dialog = !dialog"
           v-bind="attrs"
           v-on="on"
-          class="info-btn"
-          light
           icon
+          x-small
+          class="ml-1 arrow"
         >
-          <v-icon>mdi-information-outline</v-icon>
+          <v-icon>mdi-arrow-top-right</v-icon>
         </v-btn>
       </template>
-      <span>Movie Info</span>
+      <span>Show Subscribers</span>
     </v-tooltip>
     <v-dialog v-model="dialog" max-width="600px" dark>
       <v-card>
         <v-card-title>
-          <span class="headline">{{ title }}</span>
+          <span class="headline">Subscribers</span>
         </v-card-title>
-        <v-card-subtitle class="pb-0">
-          {{ subtitle }}
-        </v-card-subtitle>
         <v-card-text class="pb-0">
-          <v-container>
-            <div class="white--text">
-              {{ description }}
-            </div>
-          </v-container>
+          <ol>
+            <li v-for="user in otherUsers" :key="user.id">
+              {{ user.firstName }} {{ user.lastName }}
+            </li>
+          </ol>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -43,12 +40,23 @@
 
 <script>
 export default {
-  name: "InfoModal",
-  props: ["title", "subtitle", "description"],
-  data: () => ({
-    dialog: false
-  })
+  name: "SubscribersModal",
+  props: ["appUsers", "user"],
+  data() {
+    return {
+      dialog: false
+    };
+  },
+  computed: {
+    otherUsers() {
+      return this.appUsers.filter(u => u.id !== this.user.id);
+    }
+  }
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.arrow {
+  color: #afadcb;
+}
+</style>

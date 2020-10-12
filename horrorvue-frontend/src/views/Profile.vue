@@ -3,29 +3,32 @@
     <!-- user info -->
     <v-row>
       <v-form>
-        <v-row><div class="text-h3">My Profile</div></v-row>
-        <v-row>
-          <v-col cols="12" sm="6">
+        <v-row><div class="text-h3 pl-2">My Profile</div></v-row>
+        <v-row class="my-5">
+          <v-col cols="12" sm="6" class="py-1">
             <v-text-field
               :value="user().firstName"
               label="First Name"
+              hide-details
               dark
               disabled
             ></v-text-field>
           </v-col>
-          <v-col cols="12" sm="6">
+          <v-col cols="12" sm="6" class="py-1">
             <v-text-field
               :value="user().lastName"
               label="Last Name"
+              hide-details
               dark
               disabled
             ></v-text-field>
           </v-col>
-          <v-col cols="12" sm="6">
+          <v-col cols="12" sm="6" class="py-1">
             <v-text-field
               :value="user().email"
               dark
               label="Email"
+              hide-details
               disabled
             ></v-text-field>
           </v-col>
@@ -60,78 +63,22 @@
       </v-list>
     </v-row>
     <!-- user collections -->
-    <v-row align="end">
-      <div class="text-h4">Your collections</div>
-      <v-btn class="ml-auto" @click="selectToggle">{{ selectAll }}</v-btn>
-    </v-row>
-    <v-row>
-      <v-icon color="primary">
-        mdi-account-multiple
-      </v-icon>
-      = collection you're subscribed to
-    </v-row>
-    <v-row>
-      <v-col cols="12" class="mt-3 pa-0">
-        <v-list dark>
-          <template v-for="(collection, index) in collections">
-            <v-divider v-if="index != 0" :key="`divider-${index}`"></v-divider>
-            <v-list-item three-line :key="collection.id">
-              <v-list-item-content>
-                <v-list-item-title>
-                  <v-icon v-if="collection.useGroupIcon" color="primary">
-                    mdi-account-multiple
-                  </v-icon>
-                  {{ collection.name }}
-                </v-list-item-title>
-                <v-list-item-subtitle>
-                  Ranked:
-                  <span :class="isRanked(index, collection.id)">{{
-                    isRanked(index, collection.id)
-                  }}</span>
-                </v-list-item-subtitle>
-                <v-list-item-subtitle>
-                  Created by {{ createdBy(collection) }}
-                </v-list-item-subtitle>
-              </v-list-item-content>
-              <v-list-item-action>
-                <v-checkbox
-                  v-model="selected"
-                  :value="collection"
-                  :disabled="collection.createdBy !== user().id"
-                ></v-checkbox>
-              </v-list-item-action>
-            </v-list-item>
-          </template>
-        </v-list>
-      </v-col>
-    </v-row>
-    <v-row class="mt-3">
-      <v-btn class="ml-auto" @click.stop="openModal">
-        <v-icon class="mr-2">mdi-email-outline</v-icon> Send Invites
-      </v-btn>
-      <email-modal
-        :dialog="dialog"
-        @close="dialog = false"
-        :collections="selected"
-      ></email-modal>
-    </v-row>
+    <profile-collections :collections="collections" :user="user" />
   </v-container>
 </template>
 
 <script>
-import EmailModal from "@/components/modals/EmailModal";
+import ProfileCollections from "@/components/ProfileCollections";
 import db from "@/api/db";
 import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "Profile",
   components: {
-    EmailModal
+    ProfileCollections
   },
   data() {
     return {
-      selected: [],
-      dialog: false,
       collections: [],
       isLoading: true,
       isNotLoading: false
@@ -149,34 +96,12 @@ export default {
       const ranking = this.user().collections[index].rankings.find(
         r => r.collectionId === id && r.userId === this.user().id
       );
-      if (
-        ranking &&
-        ranking.order.length === this.user().collections[index].movies.length
-      ) {
-        return "Yes";
-      } else if (ranking) {
-        return "Incomplete";
-      } else {
-        return "No";
-      }
-    },
-    selectToggle() {
-      if (this.selected.length < this.user().collections.length) {
-        this.selected = this.user().collections;
-      } else {
-        this.selected = [];
-      }
-    },
-    createdBy(collection) {
-      if (collection.createdBy === this.user().id) {
-        return "you!";
-      } else {
-        this.$set(collection, "useGroupIcon", true);
-        const user = collection.appUsers.find(
-          u => u.id === collection.createdBy
-        );
-        return `${user.firstName} ${user.lastName}`;
-      }
+      if (!ranking) return "No";
+
+      this.user().collections[index].movies.forEach(m => {
+        if (!ranking.order.includes(m.id)) return "Incomplete";
+      });
+      return "Yes";
     },
     async subscribe(invite) {
       // returns collection
@@ -195,26 +120,6 @@ export default {
       } else {
         this.$eventBus.$emit("open-snackbar", res.message, "error");
       }
-    },
-    openModal() {
-      if (this.selected.length > 0) {
-        this.dialog = true;
-      } else {
-        this.$eventBus.$emit(
-          "open-snackbar",
-          "Select at least one collection first!",
-          "error"
-        );
-      }
-    }
-  },
-  computed: {
-    selectAll() {
-      if (this.selected.length < this.user().collections.length) {
-        return "Select All";
-      } else {
-        return "Deselect All";
-      }
     }
   },
   updated() {
@@ -232,15 +137,6 @@ export default {
 };
 </script>
 <style scoped>
-.Yes {
-  color: green !important;
-}
-.No {
-  color: red !important;
-}
-.Incomplete {
-  color: yellow !important;
-}
 .v-list {
   width: 100%;
   background-color: rgb(51, 57, 65);
@@ -250,5 +146,8 @@ export default {
 }
 .v-list-item__subtitle {
   color: grey !important;
+}
+.arrow {
+  margin-top: -0.3rem;
 }
 </style>
