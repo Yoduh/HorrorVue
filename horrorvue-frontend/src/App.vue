@@ -1,6 +1,7 @@
 <template>
   <v-app>
     <v-main v-if="!this.$auth.loading">
+      <overlay />
       <navbar />
       <v-container fluid>
         <router-view></router-view>
@@ -11,14 +12,12 @@
         :color="snackbarColor"
       />
     </v-main>
-    <div v-else>
-      Loading...
-    </div>
   </v-app>
 </template>
 
 <script>
-import Navbar from "@/components/Navbar.vue";
+import Navbar from "@/components/Navbar";
+import Overlay from "@/components/Overlay";
 import db from "@/api/db";
 import store from "@/store";
 import { mapActions, mapGetters } from "vuex";
@@ -32,7 +31,8 @@ export default {
     };
   },
   components: {
-    Navbar
+    Navbar,
+    Overlay
   },
   methods: {
     ...mapActions(["finalizeLogin", "setCollections", "toggleSnackbar"]),

@@ -22,8 +22,13 @@ export default {
       `${ROOT_URL}/api/collection/${collectionId}/user/${userId}`
     );
   },
-  async updateCollection(movies, id) {
-    return axios.patch(`${ROOT_URL}/api/collection/${id}`, movies).then(res => {
+  async updateCollection(movies, id, name) {
+    const req = {
+      id: id,
+      Name: name,
+      Movies: [...movies]
+    };
+    return axios.patch(`${ROOT_URL}/api/collection/${id}`, req).then(res => {
       return res.data;
     });
   },

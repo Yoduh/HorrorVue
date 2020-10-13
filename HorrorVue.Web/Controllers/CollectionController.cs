@@ -111,11 +111,11 @@ namespace HorrorVue.Web.Controllers
 		}
 
 		[HttpPatch("/api/collection/{id}")]
-		public ActionResult UpdateCollection([FromBody] List<MovieVM> movies, int id)
+		public ActionResult UpdateCollection([FromBody] CollectionVM collection, int id)
 		{
 			_logger.LogInformation($"Updating collection {id}");
-			var movieModels = MovieMapper.SerializeMovies(movies);
-			var updatedCollection = _collectionService.UpdateCollection(movieModels, id);
+			var movieModels = MovieMapper.SerializeMovies(collection.Movies);
+			var updatedCollection = _collectionService.UpdateCollection(movieModels, id, collection.Name);
 			var response = new ServiceResponse<CollectionVM>
 			{
 				IsSuccess = updatedCollection.IsSuccess,

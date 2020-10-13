@@ -157,13 +157,14 @@ namespace HorrorVue.Services.Collection
 			}
 		}
 
-		public ServiceResponse<Data.Models.Collection> UpdateCollection(List<Data.Models.Movie> movies, int id)
+		public ServiceResponse<Data.Models.Collection> UpdateCollection(List<Data.Models.Movie> movies, int id, string name)
 		{
 			try
 			{
 				Data.Models.Collection collection = GetCollectionById(id);
 				collection.UpdatedOn = DateTime.UtcNow;
 				collection.Movies = movies;
+				collection.Name = name;
 				_db.Update(collection);
 				_db.SaveChanges();
 				return new ServiceResponse<Data.Models.Collection>

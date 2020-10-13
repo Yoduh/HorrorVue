@@ -2,8 +2,9 @@
   <div class="search-bar">
     <v-text-field
       v-model="search"
+      :value="searchBarText"
       dark
-      placeholder="Search by movie name to start creating a new collection"
+      :placeholder="placeholder"
       filled
       rounded
       dense
@@ -21,15 +22,15 @@ export default {
   props: {
     placeholder: {
       type: String,
-      default:
-        "Start typing to search existing franchises or to add new franchise"
+      default: "Search by movie name to start creating a new collection"
     }
   },
   data() {
     return {
       isLoading: false,
       search: null,
-      results: null
+      results: null,
+      searchBarText: ""
     };
   },
   computed: {

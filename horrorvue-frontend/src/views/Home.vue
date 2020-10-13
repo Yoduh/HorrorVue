@@ -127,6 +127,7 @@ export default {
   methods: {
     ...mapGetters(["collections", "selectedCollection", "user", "isLoading"]),
     ...mapActions([
+      "setIsLoading",
       "setSearchResults",
       "setCollections",
       "selectCollectionById",
@@ -142,7 +143,6 @@ export default {
       this.selectCollectionById(null);
       if (results.data.length > 0) {
         this.noResults = false;
-        this.setSearchResults(results.data);
         this.$router.push(`/search?q=${results.searchTerm}`);
       } else {
         this.noResults = true;

@@ -50,8 +50,13 @@ const actions = {
     commit("updateCollections", collection, idx);
     dispatch("selectCollectionById", collection.id);
   },
-  updateCollectionMovies: ({ commit }, movies) => {
+  updateCollectionMovies: ({ commit }, args) => {
+    const movies = args[0];
+    const name = args[1];
     commit("setMovies", movies);
+    if (state.selectedCollection.name !== name) {
+      commit("setName", name);
+    }
   },
   sortSelected: ({ commit }, order) => {
     // arrays sort in-place! sort using a copy to not mutate
@@ -111,6 +116,9 @@ const mutations = {
   },
   setMovies: (state, movies) => {
     state.selectedCollection.movies = movies;
+  },
+  setName: (state, name) => {
+    state.selectedCollection.name = name;
   },
   setTempRanking: (state, ranking) => {
     state.tempRanking = ranking;

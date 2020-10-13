@@ -66,7 +66,7 @@
 
 <script>
 import db from "@/api/db";
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "EmailModal",
@@ -90,6 +90,7 @@ export default {
   },
   methods: {
     ...mapGetters(["user"]),
+    ...mapActions(["setIsLoading"]),
     async sendInvite() {
       if (this.email !== "") {
         if (!this.addToList()) return;
@@ -102,6 +103,7 @@ export default {
         );
         return;
       }
+      this.setIsLoading(true);
       const res = await db.sendInvite(
         this.user().id,
         this.emails,
@@ -114,6 +116,7 @@ export default {
           this.$eventBus.$emit("open-snackbar", "Could not find user", "error");
         else this.$eventBus.$emit("open-snackbar", res.message, "error");
       }
+      this.setIsLoading(false);
       this.close();
     },
     addToList() {

@@ -103,6 +103,14 @@ export default {
     },
     async save(name) {
       let res = null;
+      if (name === "") {
+        this.$eventBus.$emit(
+          "open-snackbar",
+          "Error: Collection name can not be blank",
+          "error"
+        );
+        return;
+      }
       if (!this.selectedCollection()) {
         if (this.collections().find(c => c.name === name) !== undefined) {
           this.$eventBus.$emit(
@@ -126,10 +134,11 @@ export default {
       } else {
         res = await db.updateCollection(
           this.tempMovies(),
-          this.selectedCollection().id
+          this.selectedCollection().id,
+          name
         );
         if (res.isSuccess) {
-          this.updateCollectionMovies(res.data.movies);
+          this.updateCollectionMovies([res.data.movies, name]);
           this.$eventBus.$emit(
             "open-snackbar",
             "Collection successfully updated",

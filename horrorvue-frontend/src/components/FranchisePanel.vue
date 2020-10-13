@@ -72,7 +72,8 @@ export default {
       var delta = Math.max(-1, Math.min(1, e.wheelDelta || -e.detail));
       // if cant horizontal scroll anymore, return to vertical scrolling
       if (
-        (el.scrollWidth - el.clientWidth === el.scrollLeft && delta < 0) ||
+        (el.scrollWidth - el.clientWidth === Math.floor(el.scrollLeft) &&
+          delta < 0) ||
         (el.scrollLeft === 0 && delta >= 0)
       )
         return;

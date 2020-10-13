@@ -34,7 +34,7 @@
               <v-col cols="12">
                 <v-text-field
                   label="Name"
-                  v-model="name"
+                  v-model="text"
                   autofocus
                   :rules="[rules.required]"
                 ></v-text-field>
@@ -61,6 +61,7 @@ export default {
   name: "SaveNewModal",
   props: ["show", "name"],
   data: () => ({
+    text: "",
     dialog: false,
     rules: {
       required: value => !!value || "Required."
@@ -71,7 +72,7 @@ export default {
     save() {
       if (this.name === "") return;
       this.dialog = false;
-      this.$emit("save", this.name);
+      this.$emit("save", this.text);
     }
   },
   computed: {
@@ -82,6 +83,9 @@ export default {
         return "Name this franchise before saving";
       }
     }
+  },
+  created() {
+    this.text = this.name;
   }
 };
 </script>
