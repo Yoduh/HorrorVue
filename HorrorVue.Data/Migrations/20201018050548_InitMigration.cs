@@ -5,11 +5,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace HorrorVue.Data.Migrations
 {
-    public partial class InitialMigration : Migration
+    public partial class InitMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            /*migrationBuilder.CreateTable(
+            migrationBuilder.CreateTable(
                 name: "AppUsers",
                 columns: table => new
                 {
@@ -74,7 +74,8 @@ namespace HorrorVue.Data.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     CreatedOn = table.Column<DateTime>(nullable: false),
                     UpdatedOn = table.Column<DateTime>(nullable: false),
-                    Name = table.Column<string>(nullable: true)
+                    Name = table.Column<string>(nullable: true),
+                    CreatedBy = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -212,6 +213,40 @@ namespace HorrorVue.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Invite",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    CreatedOn = table.Column<DateTime>(nullable: false),
+                    FromUserId = table.Column<int>(nullable: false),
+                    ToUserId = table.Column<int>(nullable: false),
+                    CollectionId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Invite", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Invite_Collections_CollectionId",
+                        column: x => x.CollectionId,
+                        principalTable: "Collections",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Invite_AppUsers_FromUserId",
+                        column: x => x.FromUserId,
+                        principalTable: "AppUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Invite_AppUsers_ToUserId",
+                        column: x => x.ToUserId,
+                        principalTable: "AppUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Movies",
                 columns: table => new
                 {
@@ -234,7 +269,7 @@ namespace HorrorVue.Data.Migrations
                         column: x => x.CollectionId,
                         principalTable: "Collections",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -303,6 +338,21 @@ namespace HorrorVue.Data.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Invite_CollectionId",
+                table: "Invite",
+                column: "CollectionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Invite_FromUserId",
+                table: "Invite",
+                column: "FromUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Invite_ToUserId",
+                table: "Invite",
+                column: "ToUserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Movies_CollectionId",
                 table: "Movies",
                 column: "CollectionId");
@@ -310,7 +360,7 @@ namespace HorrorVue.Data.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Rankings_CollectionId",
                 table: "Rankings",
-                column: "CollectionId");*/
+                column: "CollectionId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -334,19 +384,22 @@ namespace HorrorVue.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Invite");
+
+            migrationBuilder.DropTable(
                 name: "Movies");
 
             migrationBuilder.DropTable(
                 name: "Rankings");
 
             migrationBuilder.DropTable(
-                name: "AppUsers");
-
-            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "AppUsers");
 
             migrationBuilder.DropTable(
                 name: "Collections");

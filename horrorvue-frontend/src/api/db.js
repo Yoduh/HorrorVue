@@ -1,7 +1,8 @@
+/* eslint-disable no-undef */
 import axios from "axios";
 import store from "@/store";
 
-const ROOT_URL = "https://localhost:5001";
+// const process.env.VUE_APP_ROOT_URL = "https://localhost:5001";
 export default {
   newCollection(collection, name) {
     const request = {
@@ -10,16 +11,18 @@ export default {
       Name: name,
       Movies: [...collection]
     };
-    return axios.post(`${ROOT_URL}/api/collection`, request).then(res => {
-      return res.data;
-    });
+    return axios
+      .post(`${process.env.VUE_APP_ROOT_URL}/api/collection`, request)
+      .then(res => {
+        return res.data;
+      });
   },
   async deleteCollection(id) {
-    return axios.delete(`${ROOT_URL}/api/collection/${id}`);
+    return axios.delete(`${process.env.VUE_APP_ROOT_URL}/api/collection/${id}`);
   },
   async unsubCollection(collectionId, userId) {
     return axios.delete(
-      `${ROOT_URL}/api/collection/${collectionId}/user/${userId}`
+      `${process.env.VUE_APP_ROOT_URL}/api/collection/${collectionId}/user/${userId}`
     );
   },
   async updateCollection(movies, id, name) {
@@ -28,14 +31,16 @@ export default {
       Name: name,
       Movies: [...movies]
     };
-    return axios.patch(`${ROOT_URL}/api/collection/${id}`, req).then(res => {
-      return res.data;
-    });
+    return axios
+      .patch(`${process.env.VUE_APP_ROOT_URL}/api/collection/${id}`, req)
+      .then(res => {
+        return res.data;
+      });
   },
   // userId: google id
   getUser(userId) {
     return axios
-      .get(`${ROOT_URL}/api/user/${userId}`)
+      .get(`${process.env.VUE_APP_ROOT_URL}/api/user/${userId}`)
       .then(res => {
         return res.data;
       })
@@ -59,7 +64,7 @@ export default {
       Email: user.email
     };
     return axios
-      .post(`${ROOT_URL}/api/user`, newUser)
+      .post(`${process.env.VUE_APP_ROOT_URL}/api/user`, newUser)
       .then(res => {
         return res.data.data;
       })
@@ -74,11 +79,14 @@ export default {
       collectionId: collection.id,
       order: movies.map(m => m.id)
     };
-    return axios.post(`${ROOT_URL}/api/ranking`, ranking);
+    return axios.post(`${process.env.VUE_APP_ROOT_URL}/api/ranking`, ranking);
   },
   updateRanking(ranking, movies) {
     ranking = { ...ranking, order: movies.map(m => m.id) };
-    return axios.patch(`${ROOT_URL}/api/ranking/${ranking.id}`, ranking);
+    return axios.patch(
+      `${process.env.VUE_APP_ROOT_URL}/api/ranking/${ranking.id}`,
+      ranking
+    );
   },
   sendInvite(userId, emails, collectionIds) {
     const reqs = [];
@@ -91,19 +99,23 @@ export default {
         });
       });
     });
-    return axios.post(`${ROOT_URL}/api/invite/`, reqs).then(res => {
-      return res.data;
-    });
+    return axios
+      .post(`${process.env.VUE_APP_ROOT_URL}/api/invite/`, reqs)
+      .then(res => {
+        return res.data;
+      });
   },
   rejectInvite(inviteId) {
-    return axios.delete(`${ROOT_URL}/api/invite/${inviteId}`).then(res => {
-      return res.data;
-    });
+    return axios
+      .delete(`${process.env.VUE_APP_ROOT_URL}/api/invite/${inviteId}`)
+      .then(res => {
+        return res.data;
+      });
   },
   acceptInvite(invite) {
     return axios
       .patch(
-        `${ROOT_URL}/api/collection/${invite.collectionId}/user/${invite.toUserId}`,
+        `${process.env.VUE_APP_ROOT_URL}/api/collection/${invite.collectionId}/user/${invite.toUserId}`,
         invite
       )
       .then(res => {

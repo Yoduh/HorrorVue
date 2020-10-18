@@ -38,7 +38,7 @@ namespace HorrorVue.Web.Controllers
 		[HttpGet("/api/user")]
 		public ActionResult GetUsers()
 		{
-			_logger.LogInformation("Getting all users...");
+			_logger.LogInformation("Getting all users....");
 			var users = _userService.GetAllUsers();
 			return Ok(users);
 		}

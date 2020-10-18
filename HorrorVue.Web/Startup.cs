@@ -46,31 +46,34 @@ namespace HorrorVue.Web
                 };
                 opts.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
             });
-            string connectionString = null;
-            string envVar = Environment.GetEnvironmentVariable("DATABASE_URL");
-            Console.WriteLine("envVar: " + envVar);
-            if (string.IsNullOrEmpty(envVar))
-            {
-                connectionString = Configuration.GetConnectionString("horror.dev");
-            }
-            else
-            {
-                //parse database URL. Format is postgres://<username>:<password>@<host>/<dbname>
-                var uri = new Uri(envVar);
-                var username = uri.UserInfo.Split(':')[0];
-                var password = uri.UserInfo.Split(':')[1];
-                connectionString =
-                "; Database=" + uri.AbsolutePath.Substring(1) +
-                "; Username=" + username +
-                "; Password=" + password +
-                "; Port=" + uri.Port +
-                "; SSL Mode=Require; Trust Server Certificate=true;";
-            }
-            Console.WriteLine("connectionString: " + connectionString);
             services.AddDbContext<HorrorDbContext>(opts =>
             {
+                var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+                string connStr;
+                // Depending on if in development or production, use either Heroku-provided
+                // connection string, or development connection string from env var.
+                if (env == "Development")
+                {
+                    connStr = Configuration.GetConnectionString("horror.dev");
+                }
+                else
+                {
+                    // Use connection string provided at runtime by Heroku.
+                    var connUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
+                    // Parse connection URL to connection string for Npgsql
+                    connUrl = connUrl.Replace("postgres://", string.Empty);
+                    var pgUserPass = connUrl.Split("@")[0];
+                    var pgHostPortDb = connUrl.Split("@")[1];
+                    var pgHostPort = pgHostPortDb.Split("/")[0];
+                    var pgDb = pgHostPortDb.Split("/")[1];
+                    var pgUser = pgUserPass.Split(":")[0];
+                    var pgPass = pgUserPass.Split(":")[1];
+                    var pgHost = pgHostPort.Split(":")[0];
+                    var pgPort = pgHostPort.Split(":")[1];
+                    connStr = $"Server={pgHost};Port={pgPort};User Id={pgUser};Password={pgPass};Database={pgDb}";
+                }
                 opts.EnableDetailedErrors();
-                opts.UseNpgsql(connectionString);
+                opts.UseNpgsql(connStr);
             });
 
             services.AddTransient<IUserService, UserService>();

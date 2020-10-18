@@ -1,6 +1,6 @@
+/* eslint-disable no-undef */
 import axios from "axios";
 
-const API_KEY = "4570328ac40b548442b90446b646e328";
 const http = axios.create({
   baseURL: "https://api.themoviedb.org"
 });
@@ -9,7 +9,7 @@ export default {
     let results = null;
     return http
       .get(
-        `/3/search/movie?api_key=${API_KEY}&language=en-US&query=${search}&page=1&include_adult=false`
+        `/3/search/movie?api_key=${process.env.API_KEY}&language=en-US&query=${search}&page=1&include_adult=false`
       )
       .then(res => {
         if (res.status == 200) {
