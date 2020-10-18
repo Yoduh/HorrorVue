@@ -48,6 +48,7 @@ namespace HorrorVue.Web
             });
             string connectionString = null;
             string envVar = Environment.GetEnvironmentVariable("DATABASE_URL");
+            Console.WriteLine("envVar: " + envVar);
             if (string.IsNullOrEmpty(envVar))
             {
                 connectionString = Configuration.GetConnectionString("horror.dev");
@@ -65,6 +66,7 @@ namespace HorrorVue.Web
                 "; Port=" + uri.Port +
                 "; SSL Mode=Require; Trust Server Certificate=true;";
             }
+            Console.WriteLine("connectionString: " + connectionString);
             services.AddDbContext<HorrorDbContext>(opts =>
             {
                 opts.EnableDetailedErrors();
@@ -104,8 +106,6 @@ namespace HorrorVue.Web
                 app.UseDeveloperExceptionPage();
             }
             app.UseAuthentication();
-
-            app.UseHttpsRedirection();
 
             app.UseRouting();
 

@@ -1,8 +1,11 @@
 #See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim AS base
+RUN useradd dotnetUser
 WORKDIR /app
-EXPOSE 80
+ENV ASPNETCORE_URLS=http://*:8080
+# EXPOSE not supported by heroku. Need to tell heroku manually
+EXPOSE 8080
 EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
@@ -21,4 +24,5 @@ RUN dotnet publish "HorrorVue.Web.csproj" -c Release -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "HorrorVue.Web.dll"]
+USER dotnetUser
+CMD dotnet HorrorVue.Web.dll --urls=http://+:$PORT
