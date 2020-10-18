@@ -9,7 +9,7 @@ export default {
     let results = null;
     return http
       .get(
-        `/3/search/movie?api_key=${process.env.API_KEY}&language=en-US&query=${search}&page=1&include_adult=false`
+        `/3/search/movie?api_key=${process.env.VUE_APP_API_KEY}&language=en-US&query=${search}&page=1&include_adult=false`
       )
       .then(res => {
         if (res.status == 200) {
