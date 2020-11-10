@@ -77,12 +77,18 @@ export default {
     const ranking = {
       userId: store.getters.user.id,
       collectionId: collection.id,
-      order: movies.map(m => m.id)
+      order: movies.map(m => m.id),
+      ratings: movies.map(m => m.rating)
     };
+    console.log("rating", ranking);
     return axios.post(`${process.env.VUE_APP_ROOT_URL}/api/ranking`, ranking);
   },
   updateRanking(ranking, movies) {
-    ranking = { ...ranking, order: movies.map(m => m.id) };
+    ranking = {
+      ...ranking,
+      order: movies.map(m => m.id),
+      ratings: movies.map(m => m.rating)
+    };
     return axios.patch(
       `${process.env.VUE_APP_ROOT_URL}/api/ranking/${ranking.id}`,
       ranking
@@ -119,7 +125,7 @@ export default {
         invite
       )
       .then(res => {
-        res.data;
+        return res.data;
       });
   }
 };

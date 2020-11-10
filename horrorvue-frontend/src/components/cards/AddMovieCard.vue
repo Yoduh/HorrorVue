@@ -48,11 +48,16 @@ export default {
 .checkmark {
   opacity: 0.2;
 }
+.v-btn,
+.v-icon {
+  color: inherit;
+}
 .selected {
   opacity: 1;
   color: green;
 }
 .v-card__actions {
+  color: black;
   background-color: white;
   padding-top: 0;
 }

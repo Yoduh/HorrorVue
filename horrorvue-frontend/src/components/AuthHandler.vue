@@ -38,7 +38,7 @@ export default {
       }
       if (user.collections) this.setCollections(user.collections);
       this.finalizeLogin(user);
-      this.$router.push("/");
+      this.$router.push("/dashboard");
       this.setIsLoading(false);
     }
   }

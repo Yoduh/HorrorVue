@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "../views/Home.vue";
+import Home from "@/views/Home";
+import Dashboard from "@/views/Dashboard.vue";
 import AddMovies from "@/views/AddMovies";
 import AuthHandler from "@/components/AuthHandler";
 import Profile from "@/views/Profile";
@@ -12,6 +13,11 @@ const routes = [
     path: "/",
     name: "Home",
     component: Home
+  },
+  {
+    path: "/dashboard",
+    name: "Dashboard",
+    component: Dashboard
   },
   {
     path: "/search",

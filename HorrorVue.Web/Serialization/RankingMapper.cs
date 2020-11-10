@@ -23,7 +23,8 @@ namespace HorrorVue.Web.Serialization
 				UpdatedOn = ranking.UpdatedOn,
 				UserId = ranking.UserId,
 				CollectionId = ranking.CollectionId,
-				Order = ranking.Order
+				Order = ranking.Order,
+				Ratings = ranking.Ratings
 			};
 		}
 
@@ -51,7 +52,8 @@ namespace HorrorVue.Web.Serialization
 				UpdatedOn = ranking.UpdatedOn,
 				UserId = ranking.UserId,
 				CollectionId = ranking.CollectionId,
-				Order = ranking.Order
+				Order = ranking.Order,
+				Ratings = ranking.Ratings
 			};
 		}
 		public static List<RankingVM> SerializeRankings(IEnumerable<Ranking> rankings)

@@ -28,7 +28,7 @@ namespace HorrorVue.Services.InviteService
 					invite.FromUserId = fromUser.Id;
 					var toUser = _db.AppUsers
 						.Include(u => u.Collections)
-						.First(user => user.Email.Equals(invite.ToUserEmail));
+						.First(user => user.Email.ToLower().Equals(invite.ToUserEmail.ToLower()));
 					// skip if user already has collection
 					if (toUser.Collections.FirstOrDefault(au => au.CollectionId == invite.CollectionId) != null)
 					{

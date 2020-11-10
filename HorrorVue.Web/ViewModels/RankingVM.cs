@@ -13,5 +13,6 @@ namespace HorrorVue.Web.ViewModels
 		public int UserId { get; set; }
 		public int CollectionId { get; set; }
 		public List<int> Order { get; set; }
+		public List<double> Ratings { get; set; }
 	}
 }

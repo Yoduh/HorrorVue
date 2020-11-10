@@ -10,7 +10,7 @@
       ref="form"
       v-model="valid"
       lazy-validation
-      class="white pa-5"
+      class="pa-5"
       @submit.prevent="addToList"
     >
       <v-container>
@@ -138,6 +138,12 @@ export default {
 </script>
 
 <style scoped>
+.v-form {
+  background: rgb(40, 44, 52);
+}
+.v-list {
+  background: rgb(40, 44, 52);
+}
 .remove {
   height: auto;
   margin: 0;

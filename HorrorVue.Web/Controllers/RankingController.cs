@@ -85,6 +85,7 @@ namespace HorrorVue.Web.Controllers
 					Data = false
 				});
 			dbRanking.Order = ranking.Order;
+			dbRanking.Ratings = ranking.Ratings;
 			dbRanking.UpdatedOn = DateTime.UtcNow;
 			var response = _rankingService.UpdateRanking(dbRanking);
 			return Ok(response);

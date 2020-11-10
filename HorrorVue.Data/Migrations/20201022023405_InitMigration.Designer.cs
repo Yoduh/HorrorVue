@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HorrorVue.Data.Migrations
 {
     [DbContext(typeof(HorrorDbContext))]
-    [Migration("20201018050548_InitMigration")]
+    [Migration("20201022023405_InitMigration")]
     partial class InitMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

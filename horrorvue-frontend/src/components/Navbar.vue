@@ -1,69 +1,63 @@
 <template>
-  <v-app-bar color="deep-grey accent-4" dense dark app>
-    <v-app-bar-nav-icon></v-app-bar-nav-icon>
+  <div class="navbar-wrapper">
+    <v-app-bar color="deep-grey accent-4" dense dark app>
+      <v-row class="align-center">
+        <v-btn max-width="40" @click="home">
+          <v-img
+            src="@/components/icons/film.png"
+            max-height="45"
+            class="mr-2"
+            contain
+          ></v-img>
+        </v-btn>
+      </v-row>
 
-    <v-toolbar-title>Franchise Rankings</v-toolbar-title>
+      <v-spacer></v-spacer>
 
-    <v-spacer></v-spacer>
+      <v-app-bar-nav-icon
+        @click.stop="drawer = !drawer"
+        class="d-inline-flex d-sm-none"
+      ></v-app-bar-nav-icon>
 
-    <router-link to="/">
-      <v-tooltip bottom>
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn icon v-bind="attrs" v-on="on">
-            <v-icon>mdi-view-dashboard</v-icon>
-          </v-btn>
-        </template>
-        <span>Home</span>
-      </v-tooltip>
-    </router-link>
+      <div v-if="!$auth.loading">
+        <v-tooltip
+          v-for="(item, index) in authenticatedItems"
+          :key="index"
+          bottom
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              icon
+              @click="item.click"
+              v-bind="attrs"
+              v-on="on"
+              class="d-none d-sm-inline-flex"
+            >
+              <v-icon>{{ item.icon }} </v-icon>
+            </v-btn>
+          </template>
+          <span>{{ item.title }}</span>
+        </v-tooltip>
+      </div>
+    </v-app-bar>
 
-    <div v-if="!$auth.loading">
-      <v-tooltip bottom>
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn
-            v-if="$auth.isAuthenticated"
-            icon
-            @click="profile"
-            v-bind="attrs"
-            v-on="on"
+    <v-navigation-drawer v-model="drawer" absolute right temporary dark>
+      <v-list nav dense>
+        <v-list-item-group v-model="group">
+          <v-list-item
+            v-for="(item, index) in authenticatedItems"
+            :key="index"
+            @click="item.click"
           >
-            <v-icon>mdi-account</v-icon>
-          </v-btn>
-        </template>
-        <span>Profile</span>
-      </v-tooltip>
-
-      <v-tooltip bottom>
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn
-            v-if="!$auth.isAuthenticated"
-            icon
-            @click="navLogin"
-            v-bind="attrs"
-            v-on="on"
-          >
-            <v-icon>mdi-login</v-icon>
-          </v-btn>
-        </template>
-        <span>Login</span>
-      </v-tooltip>
-
-      <v-tooltip bottom>
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn
-            v-if="$auth.isAuthenticated"
-            icon
-            @click="navLogout"
-            v-bind="attrs"
-            v-on="on"
-          >
-            <v-icon>mdi-logout</v-icon>
-          </v-btn>
-        </template>
-        <span>Logout</span>
-      </v-tooltip>
-    </div>
-  </v-app-bar>
+            <v-list-item-title class="text-h6">
+              <v-icon>{{ item.icon }}</v-icon>
+              {{ item.title }}
+            </v-list-item-title>
+          </v-list-item>
+        </v-list-item-group>
+      </v-list>
+    </v-navigation-drawer>
+  </div>
 </template>
 
 <script>
@@ -73,20 +67,60 @@ export default {
   name: "Navbar",
   data() {
     return {
-      drawer: true,
+      drawer: false,
+      group: null,
       items: [
-        { title: "Dashboard", icon: "mdi-view-dashboard" },
-        { title: "Profile", icon: "mdi-account" },
-        { title: "Login", icon: "mdi-login" },
-        { title: "Logout", icon: "mdi-logout" }
+        // {
+        //   title: "Home",
+        //   icon: "mdi-home",
+        //   show: true,
+        //   click: this.home
+        // },
+        {
+          title: "Rankings",
+          icon: "mdi-format-list-bulleted",
+          show: true,
+          click: this.dashboard
+        },
+        {
+          title: "Profile",
+          icon: "mdi-account",
+          show: this.$auth.isAuthenticated,
+          click: this.profile
+        },
+        {
+          title: "Login",
+          icon: "mdi-login",
+          show: !this.$auth.isAuthenticated,
+          click: this.navLogin
+        },
+        {
+          title: "Logout",
+          icon: "mdi-logout",
+          show: this.$auth.isAuthenticated,
+          click: this.navLogout
+        }
       ]
     };
   },
   computed: {
-    ...mapGetters(["isAuthenticated"])
+    ...mapGetters(["isAuthenticated"]),
+    authenticatedItems() {
+      return this.items.filter(i => i.show);
+    }
   },
   methods: {
     ...mapActions(["login", "logout"]),
+    home() {
+      if (this.$route.path !== "/") {
+        this.$router.push("/");
+      }
+    },
+    dashboard() {
+      if (this.$route.path !== "/dashboard") {
+        this.$router.push("/dashboard");
+      }
+    },
     navLogin() {
       this.$auth.loginWithRedirect();
     },
@@ -96,7 +130,14 @@ export default {
       });
     },
     profile() {
-      this.$router.push(`/profile`);
+      if (this.$route.path !== "/profile") {
+        this.$router.push(`/profile`);
+      }
+    }
+  },
+  watch: {
+    group() {
+      this.drawer = false;
     }
   }
 };

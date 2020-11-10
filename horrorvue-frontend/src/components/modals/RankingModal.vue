@@ -1,11 +1,11 @@
 <template>
-  <v-list dense class="blue-grey darken-4">
+  <v-list dense>
     <v-list-item-group :value="movies">
       <v-container class="modal-header white--text">
         <h1 v-if="hasRankings">Update Your Rankings!</h1>
         <h1 v-else>Create Your Rankings!</h1>
         <p class="font-italic grey--text text--lighten-1  text-caption mb-1">
-          Drag and drop to set rankings
+          Drag and drop to set rankings. Click the stars to give a rating.
         </p>
       </v-container>
       <draggable
@@ -14,6 +14,8 @@
         v-model="movies"
         v-bind="dragOptions"
         :move="onMove"
+        :scroll-sensitivity="100"
+        :force-fallback="true"
         @start="isDragging = true"
         @end="isDragging = false"
       >
@@ -23,20 +25,44 @@
             :key="movie.id"
             class="pl-2 py-2"
           >
-            <v-btn fab outlined small class="text-button white--text">
-              #{{ index + 1 }}
-            </v-btn>
-
-            <v-list-item-content class="pl-4">
-              <v-list-item-title
-                class="text-body-1 font-weight-bold grey--text text--lighten-5"
+            <v-row justify="start" class="pl-2">
+              <v-col cols="12" md="auto" class="py-0">
+                <v-row>
+                  <v-btn fab outlined small class="text-button white--text">
+                    #{{ index + 1 }}
+                  </v-btn>
+                  <v-list-item-content>
+                    <v-list-item-title
+                      class="title text-body-1 font-weight-bold pl-4 grey--text text--lighten-5"
+                    >
+                      {{ movie.title }}
+                      <span class="grey--text font-italic"
+                        >({{ movie.release_date.substring(0, 4) }})</span
+                      >
+                    </v-list-item-title>
+                  </v-list-item-content>
+                </v-row>
+              </v-col>
+              <v-col
+                cols="12"
+                md="auto"
+                class="ml-auto py-0 d-flex justify-space-around"
               >
-                {{ movie.title }}
-                <span class="grey--text font-italic"
-                  >({{ movie.release_date.substring(0, 4) }})</span
-                >
-              </v-list-item-title>
-            </v-list-item-content>
+                <v-rating
+                  v-model="movie.rating"
+                  background-color="#eee"
+                  color="yellow lighten-1"
+                  empty-icon="mdi-star-outline"
+                  full-icon="mdi-star"
+                  half-icon="mdi-star-half-full"
+                  half-increments
+                  clearable
+                  hover
+                  length="5"
+                  size="25"
+                ></v-rating>
+              </v-col>
+            </v-row>
           </v-list-item>
         </transition-group>
       </draggable>
@@ -56,20 +82,24 @@ import draggable from "vuedraggable";
 
 export default {
   name: "RankingModal",
+  props: ["dialog"],
   components: {
     draggable
   },
   data() {
     return {
       isDragging: false,
-      delayedDragging: false
+      delayedDragging: false,
+      movies: []
     };
   },
   methods: {
     ...mapActions([
       "sortSelected",
       "setTempRanking",
-      "updateCollectionRanking"
+      "updateCollectionRanking",
+      "setRankOrderMovies",
+      "resetTempRanking"
     ]),
     ...mapGetters(["selectedCollection", "user", "tempRanking"]),
     onMove({ relatedContext, draggedContext }) {
@@ -87,7 +117,7 @@ export default {
         r => r.userId === this.user().id
       );
       if (userRanking !== undefined) {
-        res = await db.updateRanking(userRanking, this.tempRanking());
+        res = await db.updateRanking(userRanking, this.movies);
       }
       // create new ranking
       else {
@@ -104,6 +134,8 @@ export default {
           this.$eventBus.$emit("open-snackbar", "Ranking created!", "success");
         }
         this.updateCollectionRanking(res.data.data);
+        this.setRankOrderMovies();
+        this.resetTempRanking();
         this.$emit("ranking-saved");
       } else {
         this.$eventBus.$emit("open-snackbar", res.data.message, "error");
@@ -111,14 +143,6 @@ export default {
     }
   },
   computed: {
-    movies: {
-      get() {
-        return this.tempRanking();
-      },
-      set(value) {
-        this.setTempRanking(value);
-      }
-    },
     hasRankings() {
       const user = this.selectedCollection().rankings.find(
         r => r.userId === this.user().id
@@ -142,7 +166,13 @@ export default {
       this.$nextTick(() => {
         this.delayedDragging = false;
       });
+    },
+    dialog(val) {
+      if (val) this.movies = [...this.tempRanking()];
     }
+  },
+  created() {
+    this.movies = [...this.tempRanking()];
   }
 };
 </script>
@@ -165,7 +195,17 @@ export default {
 .list-group-item {
   cursor: move;
 }
+.title {
+  line-height: 1.4rem !important;
+  white-space: inherit !important;
+}
+.v-list {
+  background: rgb(40, 44, 52);
+}
 .v-list-item:hover {
   background-color: #232d33;
+}
+.v-icon {
+  padding: 0.1rem !important;
 }
 </style>

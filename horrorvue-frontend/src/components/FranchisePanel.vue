@@ -16,7 +16,6 @@
             <collapse-transition>
               <ranking-table
                 v-show="expandRankings"
-                :collection="collection"
                 :movieId="movie.id"
               ></ranking-table>
             </collapse-transition>
@@ -108,26 +107,5 @@ export default {
 }
 .flip-movies-move {
   transition: transform 0.8s ease;
-}
-/* height (horizontal) */
-::-webkit-scrollbar {
-  height: 10px;
-  cursor: pointer;
-}
-/* Track */
-::-webkit-scrollbar-track {
-  background: transparent;
-  border-radius: 10px;
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 10px;
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background: #555;
 }
 </style>

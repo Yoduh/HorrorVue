@@ -4,6 +4,7 @@ import user from "./modules/user";
 import search from "./modules/search";
 import collections from "./modules/collections";
 import snackbar from "./modules/snackbar";
+import rankings from "./modules/rankings";
 
 Vue.use(Vuex);
 
@@ -12,6 +13,7 @@ export default new Vuex.Store({
     user,
     search,
     collections,
-    snackbar
+    snackbar,
+    rankings
   }
 });

@@ -6,6 +6,12 @@
       <v-container fluid>
         <router-view></router-view>
       </v-container>
+
+      <v-footer class="font-weight-medium">
+        <v-col class="text-center flex-row justify-center" cols="12">
+          {{ new Date().getFullYear() }} — <strong>Alex Handlovits</strong>
+        </v-col>
+      </v-footer>
       <snackbar
         :show="snackbar()"
         :message="snackbarText"
@@ -78,5 +84,28 @@ body,
 }
 .v-expansion-panel-header__icon {
   margin-left: 0 !important;
+}
+
+/* height (horizontal) */
+::-webkit-scrollbar {
+  height: 10px;
+  width: 10px;
+  cursor: pointer;
+}
+/* Track */
+::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 </style>

@@ -7,14 +7,17 @@
             Name
           </th>
           <th class="text-left">
-            Rank
+            Rank/Rating
           </th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(user, i) in users" :key="i">
-          <td>{{ user.name }}</td>
-          <td>{{ rankForMovie(movieId, user.rankings) }}</td>
+        <tr v-for="rank in rankings()" :key="rank.id">
+          <td>{{ userName(rank.userId) }}</td>
+          <td>
+            #{{ rankForMovie(rank) }}
+            <v-icon color="yellow lighten-1" small>mdi-star</v-icon>)
+          </td>
         </tr>
       </tbody>
     </template>
@@ -22,44 +25,57 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   name: "RankingTable",
-  props: ["collection", "movieId"],
-  data() {
-    return {
-      mockData: [
-        {
-          name: "Alex",
-          rank: "1"
-        },
-        {
-          name: "Noelle",
-          rank: "3"
-        }
-      ]
-    };
-  },
+  props: ["movieId"],
   methods: {
-    rankForMovie(movieId, rankings) {
-      return rankings.indexOf(movieId) + 1;
+    ...mapGetters(["selectedCollection", "rankings"]),
+    rankForMovie(ranking) {
+      const rank = ranking.order.indexOf(this.movieId);
+      const rating = ranking.ratings[rank];
+      this.stars = rating;
+      return `${rank + 1} (${rating.toFixed(1)}`;
+    },
+    userName(id) {
+      const user = this.selectedCollection().appUsers.find(u => u.id === id);
+      return user.firstName + " " + user.lastName.charAt(0) + ".";
     }
   },
   computed: {
     users() {
       let users = [];
-      if (this.collection.rankings.length > 0) {
-        users = this.collection.rankings.map(r => {
-          let appUser = this.collection.appUsers.find(u => u.id == r.userId);
-          return {
-            name: appUser.firstName + " " + appUser.lastName.charAt(0) + ".",
-            rankings: r.order
-          };
-        });
-      }
+      users = this.selectedCollection().rankings.map(r => {
+        let appUser = this.selectedCollection().appUsers.find(
+          u => u.id == r.userId
+        );
+        return {
+          id: appUser.id,
+          rankings: r.order,
+          ratings: r.ratings,
+          collection: this.selectedCollection()
+        };
+      });
       return users;
+    }
+  },
+  watch: {
+    rankings(val) {
+      console.log("val", val);
     }
   }
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+tr {
+  text-align: center;
+}
+td,
+th {
+  text-align: center !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+</style>

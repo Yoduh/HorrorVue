@@ -33,10 +33,9 @@ const actions = {
       commit("setSelectedCollection", null);
       return;
     }
-    commit(
-      "setSelectedCollection",
-      state.collections.find(c => c.id === id)
-    );
+    const coll = state.collections.find(c => c.id === id);
+    commit("setSelectedCollection", coll);
+    commit("setRankings", coll.rankings, { root: true });
   },
   updateCollectionRanking: ({ commit, dispatch }, ranking) => {
     const collection = { ...state.selectedCollection };
@@ -44,10 +43,12 @@ const actions = {
     if (idx === -1) {
       collection.rankings.push(ranking);
     } else {
-      collection.rankings[idx] = ranking;
+      collection.rankings[idx] = { ...ranking };
     }
     idx = state.collections.findIndex(c => c.id === state.selectedCollection);
+    console.log("collection", collection);
     commit("updateCollections", collection, idx);
+    commit("setRankings", collection.rankings, { root: true });
     dispatch("selectCollectionById", collection.id);
   },
   updateCollectionMovies: ({ commit }, args) => {
@@ -72,7 +73,8 @@ const actions = {
     commit("setTempRanking", ranking);
   },
   resetTempRanking: ({ commit }) => {
-    commit("setTempRanking", state.rankOrderMovies);
+    const newRanks = JSON.parse(JSON.stringify(state.rankOrderMovies));
+    commit("setTempRanking", newRanks);
   },
   setRankOrderMovies: ({ commit, rootState }) => {
     const userRanking = state.selectedCollection.rankings.find(
@@ -86,6 +88,7 @@ const actions = {
     const sorted = [...state.selectedCollection.movies].sort(function(a, b) {
       return userRanking.order.indexOf(a.id) - userRanking.order.indexOf(b.id);
     });
+    sorted.forEach((m, idx) => (m.rating = userRanking.ratings[idx]));
     commit("setRankOrderMovies", sorted);
   },
   setTempMovies: ({ commit }, movies) => {

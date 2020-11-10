@@ -73,7 +73,13 @@ export default {
       "updateCollectionMovies"
     ]),
     async searchMovies(searchResults) {
-      this.setSearchResults(searchResults.data);
+      window.history.replaceState(
+        null,
+        "Franchise Rankings",
+        `/search?q=${searchResults.searchTerm}`
+      );
+      this.query = searchResults.searchTerm;
+      this.results = [];
       if (this.tempMovies()) {
         this.results = this.tempMovies().slice();
       }
@@ -148,8 +154,8 @@ export default {
           this.$eventBus.$emit("open-snackbar", res.message, "error");
         }
       }
-      // go back home after save
-      this.$router.push("/");
+      // go back dashboard after save
+      this.$router.push("/dashboard");
     }
   },
   async created() {
@@ -159,7 +165,7 @@ export default {
       // ideally figure out how to reset selectedCollection on refresh but for now if refresh
       // detected send user back home
       window.localStorage.removeItem("selectedCollection");
-      this.$router.push("/");
+      this.$router.push("/dashboard");
       return;
     }
     if (this.results.length === 0) {
