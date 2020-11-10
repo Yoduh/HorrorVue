@@ -2,7 +2,7 @@
   <v-container>
     <v-row class="justify-center">
       <v-col class="text-center align-center">
-        <div class="text-h1 font-weight-regular">Movie Rankings</div>
+        <div class="text-h1 font-weight-regular">Movie Ranks</div>
         <div class="text-h4 mb-5 font-italic font-weight-light">
           Ranking movies with friends
         </div>
