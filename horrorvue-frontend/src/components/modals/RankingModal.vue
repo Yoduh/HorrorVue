@@ -121,10 +121,7 @@ export default {
       }
       // create new ranking
       else {
-        res = await db.createRanking(
-          this.selectedCollection(),
-          this.tempRanking()
-        );
+        res = await db.createRanking(this.selectedCollection(), this.movies);
       }
 
       if (res.data.isSuccess) {
@@ -168,11 +165,13 @@ export default {
       });
     },
     dialog(val) {
-      if (val) this.movies = [...this.tempRanking()];
+      // if (val) this.movies = [...this.tempRanking()];
+      if (val) this.movies = JSON.parse(JSON.stringify(this.tempRanking()));
     }
   },
   created() {
-    this.movies = [...this.tempRanking()];
+    // this.movies = [...this.tempRanking()];
+    this.movies = JSON.parse(JSON.stringify(this.tempRanking()));
   }
 };
 </script>

@@ -46,7 +46,6 @@ const actions = {
       collection.rankings[idx] = { ...ranking };
     }
     idx = state.collections.findIndex(c => c.id === state.selectedCollection);
-    console.log("collection", collection);
     commit("updateCollections", collection, idx);
     commit("setRankings", collection.rankings, { root: true });
     dispatch("selectCollectionById", collection.id);

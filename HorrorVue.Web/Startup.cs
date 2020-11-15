@@ -9,6 +9,7 @@ using HorrorVue.Services.Movie;
 using HorrorVue.Services.Ranking;
 using HorrorVue.Services.User;
 using Microsoft.AspNetCore.Authentication.Certificate;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -45,6 +46,14 @@ namespace HorrorVue.Web
                     NamingStrategy = new CamelCaseNamingStrategy()
                 };
                 opts.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            });
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            })
+            .AddCookie(options =>
+            {
+                options.LoginPath = "/account/google-login"; // Must be lowercase
             });
             services.AddDbContext<HorrorDbContext>(opts =>
             {

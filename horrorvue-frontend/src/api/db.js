@@ -78,9 +78,8 @@ export default {
       userId: store.getters.user.id,
       collectionId: collection.id,
       order: movies.map(m => m.id),
-      ratings: movies.map(m => m.rating)
+      ratings: movies.map(m => (m.rating !== undefined ? m.rating : 0))
     };
-    console.log("rating", ranking);
     return axios.post(`${process.env.VUE_APP_ROOT_URL}/api/ranking`, ranking);
   },
   updateRanking(ranking, movies) {

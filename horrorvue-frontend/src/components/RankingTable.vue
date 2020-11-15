@@ -59,11 +59,6 @@ export default {
       });
       return users;
     }
-  },
-  watch: {
-    rankings(val) {
-      console.log("val", val);
-    }
   }
 };
 </script>

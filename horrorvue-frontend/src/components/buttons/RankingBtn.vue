@@ -32,7 +32,6 @@ export default {
   },
   methods: {
     resetSort() {
-      console.log("resetting");
       this.$store.dispatch("resetTempRanking");
     }
   }

@@ -9,7 +9,6 @@ using HorrorVue.Services.Collection;
 using HorrorVue.Services.InviteService;
 using HorrorVue.Services.User;
 using HorrorVue.Web.Serialization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using NETCore.MailKit.Core;

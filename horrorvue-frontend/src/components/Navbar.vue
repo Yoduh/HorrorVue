@@ -70,12 +70,6 @@ export default {
       drawer: false,
       group: null,
       items: [
-        // {
-        //   title: "Home",
-        //   icon: "mdi-home",
-        //   show: true,
-        //   click: this.home
-        // },
         {
           title: "Rankings",
           icon: "mdi-format-list-bulleted",

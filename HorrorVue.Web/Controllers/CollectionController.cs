@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using HorrorVue.Data.Models;
 using HorrorVue.Services;
 using HorrorVue.Services.Collection;
@@ -9,7 +6,6 @@ using HorrorVue.Services.InviteService;
 using HorrorVue.Services.User;
 using HorrorVue.Web.Serialization;
 using HorrorVue.Web.ViewModels;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
