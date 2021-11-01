@@ -24,3 +24,4 @@ pnpm-debug.log*
 *.njsproj
 *.sw?
 node_modules
+horrorvue-frontend/.env

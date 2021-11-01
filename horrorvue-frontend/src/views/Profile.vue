@@ -35,7 +35,7 @@
         </v-row>
       </v-form>
     </v-row>
-    <v-row v-if="user().invites.length > 0">
+    <v-row v-if="user().invites && user().invites.length > 0">
       <div class="text-h4">You've been invited to rank another collection!</div>
       <v-list dense class="mb-5" dark>
         <template v-for="(invite, index) in user().invites">
