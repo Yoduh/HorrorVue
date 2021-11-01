@@ -11,7 +11,7 @@ heroku login
 heroku container: login
 heroku container:pull web --app=movie-ranks
 heroku container:push web --app=movie-ranks
-heroku container:release web
+heroku container:release web --app=movie-ranks
 ```
 
 ### Frontend 
